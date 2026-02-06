@@ -3,7 +3,7 @@
 @section('title', 'Kelola Anggota - Diterima')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/kelola-anggota-diterima.css') }}">
+<link rel="stylesheet" href="{{ asset('css/admin/kelola-anggota-diterima.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 @endpush
 

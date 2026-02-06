@@ -4,8 +4,8 @@
 @section('title', 'Dashboard Anggota')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/dashboard-anggota.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/card.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/siswa/dashboard-anggota.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/siswa/card.css') }}">
 @endpush
 
 @section('content')

@@ -15,11 +15,13 @@ class ReportController extends Controller
     }
 
     public function index()
-    {
-        if (Auth::user()?->role !== 'admin') abort(403);
-        $reports = Report::with('transaction.user', 'transaction.book')->get();
-        return view('admin.laporan_data_kehilangan', compact('reports'));
-    }
+{
+    $transactions = Transaction::with(['user', 'book'])
+        ->where('status', 'hilang')
+        ->get();
+
+    return view('admin.laporan_data_kehilangan', compact('transactions'));
+}
 
     public function create()
     {

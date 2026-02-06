@@ -1,11 +1,10 @@
-
 @extends('layouts.app')
 
 @section('title', 'Transaksi')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/transaksi.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/card.css') }}">
+    <link rel="stylesheet" href="{{ asset(path: 'css/admin/transaksi.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/card.css') }}">
 @endpush
 
 @section('content')

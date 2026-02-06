@@ -1,0 +1,113 @@
+/* ================= RESET ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Times New Roman", serif;
+}
+
+/* ================= PRINT POTRET ================= */
+@page {
+    size: A4 portrait;
+    margin: 20mm;
+}
+
+/* ================= BODY ================= */
+body {
+    background: #f2f2f2;
+}
+
+/* ================= WRAPPER ================= */
+.wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* ================= KERTAS ================= */
+.paper {
+    width: 110mm;              /* TIDAK LEBAR */
+    min-height: 170mm;
+    background: #fff;
+    padding: 18mm;
+    color: #000;
+}
+
+/* ================= HEADER ================= */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.header img {
+    width: 80px;
+    height: auto;
+}
+
+.header-text h1 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.header-text p {
+    font-size: 12px;
+}
+
+/* ================= GARIS ================= */
+.line {
+    border-bottom: 2px solid #000;
+    margin: 8px 0 15px;
+}
+
+/* ================= ROW DATA ================= */
+.row {
+    display: grid;
+    grid-template-columns: 42% 58%;
+    column-gap: 6mm;          /* JARAK LABEL & VALUE */
+    margin-bottom: 7px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.label {
+    font-weight: bold;
+}
+
+.value {
+    word-break: break-word;
+    text-align: left;
+    padding-left: 2mm;        /* VALUE (NYSI DST) KE KANAN */
+}
+
+.value.name {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+/* ================= SECTION ================= */
+.section {
+    margin: 14px 0 6px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 1px solid #000;
+    padding-bottom: 3px;
+}
+
+/* ================= PRINT MODE ================= */
+@media print {
+    body {
+        background: none;
+    }
+
+    .wrapper {
+        justify-content: flex-start;
+    }
+
+    .paper {
+        margin: 0;
+        box-shadow: none;
+    }
+}

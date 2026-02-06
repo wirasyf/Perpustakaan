@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Kelola Data Buku</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/CRUD_kelola_buku.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/CRUD_kelola_buku.css') }}">
 </head>
 <body>
 <div class="app">

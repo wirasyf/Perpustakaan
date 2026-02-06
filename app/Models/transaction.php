@@ -15,14 +15,15 @@ class Transaction extends Model
         'user_id',
         'buku_id',
         'tanggal_peminjaman',
-        'jatuh_tempo',
+        'tanggal_jatuh_tempo',
         'tanggal_pengembalian',
+        'jenis_transaksi',
         'status',
     ];
 
     protected $casts = [
         'tanggal_peminjaman' => 'date',
-        'jatuh_tempo' => 'date',
+        'tanggal_jatuh_tempo' => 'date',
         'tanggal_pengembalian' => 'date',
     ];
 
@@ -36,13 +37,27 @@ class Transaction extends Model
         return $this->belongsTo(Book::class, 'buku_id');
     }
 
+    public function ajukanPengembalian($id)
+    {
+        $transaction = Transaction::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->where('status', 'belum_dikembalikan')
+            ->firstOnFail();
+
+        $transaction->update([
+            'status' => 'menunggu',
+        ]);
+
+        return back()->with('success', 'Menunggu persetujuan admin');
+    }
+
     public function reports()
     {
-        return $this->hasMany(Report::class, 'transactions_id');
+        return $this->hasOne(Report::class, 'transactions_id');
     }
 
     public function visits()
     {
-        return $this->hasMany(Visit::class, 'transactios_id');
+        return $this->hasMany(Visit::class, 'transactions_id');
     }
 }

@@ -22,6 +22,7 @@ class AuthController extends Controller
             'remember' => ['nullable', 'boolean'],
         ]);
 
+
         $credentials = [
             'username' => $validated['username'],
             'password' => $validated['password'],
@@ -34,11 +35,12 @@ class AuthController extends Controller
             if (Auth::attempt($credentials, $remember)) {
                 $request->session()->regenerate();
 
-                $intended = Auth::user()->role === 'admin'
-                    ? route('dashboard.admin')
-                    : route('dashboard.anggota');
+                return redirect()->route(
+                Auth::user()->role === 'admin'
+                    ? 'dashboard.admin'
+                    : 'dashboard.anggota'
+                );
 
-                return redirect()->intended($intended);
             }
 
             return back()->withErrors([
@@ -112,9 +114,8 @@ class AuthController extends Controller
             'status' => 'menunggu',
         ]);
 
-        $remember = $data['remember'] ?? false;
-        Auth::login($user, $remember);
-        return View('auth.succes_register');    
+        return redirect()->route('login')->with('success', 'Registrasi anggota berhasil, Silahkan login.');
+
     }
 
     public function logout(Request $request)

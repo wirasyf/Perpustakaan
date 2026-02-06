@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
     {{-- CSS --}}
-    <link rel="stylesheet" href="{{ asset('css/pengembalian-buku.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/siswa/pengembalian-buku.css') }}">
        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>

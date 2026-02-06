@@ -12,8 +12,9 @@ class Report extends Model
     protected $table = 'report';
 
     protected $fillable = [
+        'user_id',
         'transactions_id',
-        'tanggal_dikembalikan',
+        'tanggal_ganti',
         'status',
         'keterangan',
     ];
@@ -21,5 +22,10 @@ class Report extends Model
     public function transaction()
     {
         return $this->belongsTo(Transaction::class, 'transactions_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -1,11 +1,14 @@
 @extends('layouts.app')
 
 @section('title', 'Laporan Kehilangan Buku')
+
 @push('styles')
-   <link rel="stylesheet" href="{{ asset('css/laporan_data_kehilangan.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">   
+<link rel="stylesheet" href="{{ asset('css/admin/laporan_data_kehilangan.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 @endpush
+
 @section('content')
+
 <div class="header-card">
     <div class="header-left">
         <div class="header-icon">
@@ -78,9 +81,11 @@
 </div>
 
 {{-- JS --}}
+@push('scripts')
 <script>
-document.getElementById('toggleSidebar').onclick = function () {
-    document.querySelector('.sidebar').classList.toggle('active');
-};
+document.getElementById('toggleSidebar')?.addEventListener('click', function () {
+    document.querySelector('.sidebar')?.classList.toggle('active');
+});
 </script>
+@endpush
 @endsection

@@ -5,11 +5,11 @@
 @push('styles')
     {{-- Load CSS sesuai tab --}}
     @if($tab == 'verifikasi')
-        <link rel="stylesheet" href="{{ asset('css/kelola-anggota-verifikasi.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/admin/kelola-anggota-verifikasi.css') }}">
     @elseif($tab == 'diterima')
-        <link rel="stylesheet" href="{{ asset('css/kelola-anggota-diterima.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/admin/kelola-anggota-diterima.css') }}">
     @else
-        <link rel="stylesheet" href="{{ asset('css/kelola-anggota-ditolak.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/admin/kelola-anggota-ditolak.css') }}">
     @endif
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
@@ -335,5 +335,9 @@
     </div>
 </div>
 @endif
+<form id="deleteForm" method="POST" style="display:none;">
+    @csrf
+    @method('DELETE')
+</form>
 <script src="{{ asset('js/kelola_anggota.js') }}"></script>
 @endsection

@@ -4,7 +4,7 @@
 @section('title', 'Dashboard Anggota')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/kelola_data_buku.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/kelola_data_buku.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 @endpush
 
