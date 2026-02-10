@@ -178,16 +178,20 @@ public function pinjam(Request $request, $bukuId)
         // admin or owner can delete
         if (Auth::user()?->role !== 'admin') abort(403);
 
-        if (in_array($transaction->status, ['belum_dikembalikan', 'menunggu'])) {
-        $transaction->book->increment('stok');
-    }
+        try {
+            if (in_array($transaction->status, ['belum_dikembalikan', 'menunggu'])) {
+                $transaction->book->increment('stok');
+            }
 
-
-        // If deleting a dipinjam transaction, restore stock
-        $transaction->delete();
-        
-        return redirect()->route('transactions.index')
-            ->with('success', 'Transaction berhasil dihapus');
+            // If deleting a dipinjam transaction, restore stock
+            $transaction->delete();
+            
+            return redirect()->route('transactions.index')
+                ->with('success', 'Transaction berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->route('transactions.index')
+                ->with('error', 'Gagal menghapus transaksi: ' . $e->getMessage());
+        }
     }
 
     public function myTransactions()
