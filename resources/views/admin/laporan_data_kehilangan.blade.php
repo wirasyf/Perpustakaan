@@ -34,7 +34,12 @@
                 <input type="date">
             </div>
 
-            <button class="btn-print">Cetak Laporan</button>
+            @auth
+                <a href="" class="btn-print">
+                    <i class="fa-solid fa-print"></i>
+                    Cetak Laporan
+                </a>
+                @endauth
         </div>
 
         {{-- TABLE --}}

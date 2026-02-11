@@ -53,8 +53,63 @@
         <button class="btn-filter">
             <i class="fa fa-sliders"></i>
         </button>
+                @auth
+                <a href="" class="btn-print">
+                    <i class="fa-solid fa-print"></i>
+                    Cetak Laporan
+                </a>
+                @endauth
     </div>
        @if(($mode ?? 'peminjaman') == 'peminjaman')
+       <div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama Anggota</th>
+                <th>Judul Buku</th>
+                <th>Kelas</th>
+                <th>Tgl Pinjam</th>
+                <th>Jatuh Tempo</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Erika Putri</td>
+                <td>Tahu Bulat Enak</td>
+                <td>X PH 1</td>
+                <td>20/01/2026</td>
+                <td>27/01/2026</td>
+                <td><span class="status success">Sudah dikembalikan</span></td>
+            </tr>
+
+            <tr>
+                <td>2</td>
+                <td>Niko Sabyan</td>
+                <td>Pengembala Kambing</td>
+                <td>X RPL 2</td>
+                <td>20/01/2026</td>
+                <td>27/01/2026</td>
+                <td><span class="status danger">Belum dikembalikan</span></td>
+            </tr>
+
+            <tr>
+                <td>3</td>
+                <td>Dina Yumna</td>
+                <td>Malang Kota Dingin</td>
+                <td>X TKJ 1</td>
+                <td>20/01/2026</td>
+                <td>27/01/2026</td>
+                <td><span class="status warning">Dikembalikan terlambat</span></td>
+            </tr>
+        </tbody>
+    </table>
+    @endif
+       @if(($mode ?? '') == 'pengembalian')
+
 <div class="table-wrapper">
     <table>
         <thead>
@@ -110,54 +165,6 @@
         </tbody>
     </table>
 </div>
-@endif
-       @if(($mode ?? '') == 'pengembalian')
-<div class="table-wrapper">
-    <table>
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama Anggota</th>
-                <th>Judul Buku</th>
-                <th>Kelas</th>
-                <th>Tgl Pinjam</th>
-                <th>Jatuh Tempo</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>Erika Putri</td>
-                <td>Tahu Bulat Enak</td>
-                <td>X PH 1</td>
-                <td>20/01/2026</td>
-                <td>27/01/2026</td>
-                <td><span class="status success">Sudah dikembalikan</span></td>
-            </tr>
-
-            <tr>
-                <td>2</td>
-                <td>Niko Sabyan</td>
-                <td>Pengembala Kambing</td>
-                <td>X RPL 2</td>
-                <td>20/01/2026</td>
-                <td>27/01/2026</td>
-                <td><span class="status danger">Belum dikembalikan</span></td>
-            </tr>
-
-            <tr>
-                <td>3</td>
-                <td>Dina Yumna</td>
-                <td>Malang Kota Dingin</td>
-                <td>X TKJ 1</td>
-                <td>20/01/2026</td>
-                <td>27/01/2026</td>
-                <td><span class="status warning">Dikembalikan terlambat</span></td>
-            </tr>
-        </tbody>
-    </table>
 </div>
 @endif
 </main>

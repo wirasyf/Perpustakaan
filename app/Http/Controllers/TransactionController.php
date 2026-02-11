@@ -16,15 +16,19 @@ class TransactionController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(Request $request)
+
+   public function index(Request $request)
 {
+    $mode = $request->get('mode', 'peminjaman');
+
     if (Auth::user()->role !== 'admin') {
         abort(403);
     }
 
     $transactions = Transaction::with(['user', 'book'])->get();
 
-    return view('admin.transaksi', compact('transactions'));
+
+    return view('admin.transaksi', compact('transactions','mode'));
 }
 
 public function pinjam(Request $request, $bukuId)
