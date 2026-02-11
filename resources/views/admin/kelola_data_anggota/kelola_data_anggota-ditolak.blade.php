@@ -1,34 +1,14 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Anggota</title>
+@extends('layouts.app')
 
-    <link rel="stylesheet" href="{{ asset('css/kelola-anggota-ditolak.css') }}">
+@section('title', 'Kelola Anggota - Ditolak')
+
+@push('styles')
+   <link rel="stylesheet" href="{{ asset('css/kelola-anggota-ditolak.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-</head>
-<body>
+@endpush
 
-<div class="wrapper">
+@section('content')
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="logo">
-            <img src="{{ asset('img/logo.png') }}">
-        </div>
-
-        <ul class="menu">
-            <li><a href="/kelola_data_buku"><i class="fa fa-book"></i> Kelola Data Buku</a></li>
-            <li class="active"><a href="/kelola_anggota"><i class="fa fa-users"></i> Kelola Anggota</a></li>
-            <li><a href="/transaksi"><i class="fa fa-right-left"></i> Transaksi</a></li>
-            <li><a href="/daftar_pengunjung"><i class="fa fa-list"></i> Daftar Pengunjung</a></li>
-            <li><a href="/laporan_data_kehilangan"><i class="fa fa-file"></i> Laporan Kehilangan</a></li>
-        </ul>
-    </aside>
-
-    <!-- MAIN -->
-    <main class="main-content">
 
         <!-- TOPBAR -->
         <header class="topbar">
@@ -123,8 +103,4 @@
 
             </div>
         </section>
-    </main>
-</div>
-
-</body>
-</html>
+@endsection

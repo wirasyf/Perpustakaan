@@ -1,52 +1,18 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Laporan Kehilangan Buku</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@extends('layouts.app')
 
-    {{-- CSS --}}
-    <link rel="stylesheet" href="{{ asset('css/laporan_data_kehilangan.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body>
+@section('title', 'Laporan Kehilangan Buku')
 
-<div class="layout">
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/admin/laporan_data_kehilangan.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+@endpush
 
-  <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="logo">
-            <img src="{{ asset('img/logo.png') }}">
-        </div>
+@section('content')
 
-        <ul class="menu">
-            <li><a href="/kelola_data_buku"><i class="fa fa-book"></i> Kelola Data Buku</a></li>
-            <li><a href="/kelola_anggota"><i class="fa fa-users"></i> Kelola Anggota</a></li>
-            <li><a href="/transaksi"><i class="fa fa-right-left"></i> Transaksi</a></li>
-            <li><a href="/daftar_pengunjung"><i class="fa fa-list"></i> Daftar Pengunjung</a></li>
-            <li><a href="/laporan_data_kehilangan"><i class="fa fa-file"></i> Laporan Kehilangan</a></li>
-        </ul>
-    </aside>
-
-    <!-- MAIN -->
-    <main class="main-content">
-
-        <!-- TOPBAR -->
-        <header class="topbar">
-            <i class="fa fa-bars"></i>
-            <div class="user">
-                <span>Seulgi</span>
-                <small>Admin</small>
-                <img src="{{ asset('images/avatar.png') }}">
-            </div>
-        </header>
-
-             <!-- CONTENT -->
-        <section class="content">
 <div class="header-card">
     <div class="header-left">
         <div class="header-icon">
-            <i class="fa fa-user-check"></i>
+            <i class="fa fa-file"></i>
         </div>
         <div class="header-text">
             <h3>Laporan Kehilangan Buku</h3>
@@ -115,11 +81,11 @@
 </div>
 
 {{-- JS --}}
+@push('scripts')
 <script>
-document.getElementById('toggleSidebar').onclick = function () {
-    document.querySelector('.sidebar').classList.toggle('active');
-};
+document.getElementById('toggleSidebar')?.addEventListener('click', function () {
+    document.querySelector('.sidebar')?.classList.toggle('active');
+});
 </script>
-
-</body>
-</html>
+@endpush
+@endsection

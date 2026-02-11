@@ -1,65 +1,13 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Daftar Pengunjung</title>
-    <link rel="stylesheet" href="{{ asset('css/daftar_pengunjung.css') }}">
+@extends('layouts.app')
+
+@section('title', 'Daftar Pengunjung')
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/admin/daftar_pengunjung.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body>
+@endpush
 
-<aside class="sidebar">
-    <div class="logo">
-        <img src="{{ asset('img/logo.png') }}" alt="Logo">
-    </div>
-
-    <ul class="menu">
-        <li class="{{ request()->is('kelola_data_buku*') ? '' : '' }}">
-            <a href="/kelola_data_buku">
-                <i class="fa fa-book"></i> Kelola Data Buku
-            </a>
-        </li>
-
-        <li class="{{ request()->is('kelola_anggota*') ? '' : '' }}">
-            <a href="/kelola_anggota">
-                <i class="fa fa-users"></i> Kelola Anggota
-            </a>
-        </li>
-
-        <li class="{{ request()->is('transaksi*') ? '' : '' }}">
-            <a href="/transactions">
-                <i class="fa fa-right-left"></i> Transaksi
-            </a>
-        </li>
-
-        <li class="{{ request()->is('daftar_pengunjung*') ? '' : '' }}">
-            <a href="/daftar_pengunjung">
-                <i class="fa fa-list"></i> Daftar Pengunjung
-            </a>
-        </li>
-
-        <li class="{{ request()->is('laporan_data_kehilangan*') ? '' : '' }}">
-            <a href="/laporan_data_kehilangan">
-                <i class="fa fa-file"></i> Laporan Kehilangan
-            </a>
-        </li>
-    </ul>
-</aside>
-
-
-<!-- TOPBAR -->
-<header class="topbar">
-    <i class="fa fa-bars"></i>
-    <div class="user">
-        <span>Seulgi</span>
-        <small>Admin</small>
-        <img src="{{ asset('img/user.png') }}">
-    </div>
-</header>
-
-<!-- CONTENT -->
-<main class="content">
-
+@section('content')
     <!-- HEADER CARD -->
     <div class="header-card">
         <div class="header-left">
@@ -78,18 +26,35 @@
     <div class="table-card">
 
         <div class="table-header">
-            <div class="filter">
-                <div class="search">
-                    <i class="fa fa-search"></i>
-                    <input type="text" placeholder="Cari sesuatu...">
-                </div>
-
-                <div class="date">
-                    <i class="fa fa-calendar"></i>
-                    <input type="date">
-                </div>
+    <form method="GET" action="{{ route('visits.index') }}">
+        <div class="filter">
+            <div class="search">
+                <i class="fa fa-search"></i>
+                <input 
+                    type="text" 
+                    name="search" 
+                    value="{{ request('search') }}"
+                    placeholder="Cari nama pengunjung..."
+                >
             </div>
+
+            <div class="date">
+                <i class="fa fa-calendar"></i>
+                <input 
+                    type="date" 
+                    name="date"
+                    value="{{ request('date') }}"
+                >
+            </div>
+
+            <button type="submit" class="btn-filter">
+                <i class="fa fa-sliders"></i>
+            </button>
+            <button class="btn-print">Cetak Laporan</button>
         </div>
+    </form>
+</div>
+
 
         <div class="table-wrapper">
             <table>
@@ -104,27 +69,69 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for ($i=1; $i<=10; $i++)
-                    <tr>
-                        <td>{{ $i }}</td>
-                        <td>Afian tombal ban</td>
-                        <td>{{ $i % 2 ? 'Peminjaman' : 'Pengembalian' }}</td>
-                        <td>X RPL {{ rand(1,2) }}</td>
-                        <td>20/01/2026</td>
-                        <td>
-                            <button class="btn-delete">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    @endfor
-                </tbody>
+@forelse ($visits as $visit)
+<tr>
+    <td>{{ $loop->iteration }}</td>
+
+    <td>{{ $visit->user->name }}</td>
+
+    <td>
+        {{ $visit->transaction?->status ?? 'Tidak ada transaksi' }}
+    </td>
+
+    <td>
+        {{ $visit->user->kelas ?? '-' }}
+    </td>
+
+    <td>
+        {{ \Carbon\Carbon::parse($visit->tanggal_datang)->format('d/m/Y') }}
+    </td>
+
+    <td>
+        <button 
+            class="btn-delete" 
+            data-id="{{ $visit->id }}"
+        >
+            <i class="fa fa-trash"></i>
+        </button>
+    </td>
+</tr>
+@empty
+<tr>
+    <td colspan="6" style="text-align:center;">
+        Tidak ada data kunjungan
+    </td>
+</tr>
+@endforelse
+</tbody>
+
             </table>
         </div>
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.btn-delete').forEach(btn => {
+        btn.addEventListener('click', function () {
+            if (!confirm('Yakin ingin menghapus data kunjungan ini?')) return;
+
+            fetch(`{{ route('visits.destroy', ':id') }}`.replace(':id', this.dataset.id), {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Gagal menghapus data');
+                return res.json();
+            })
+            .then(() => location.reload())
+            .catch(err => alert(err.message));
+        });
+    });
+});
+</script>
+@endpush
 
     </div>
-
-</main>
-
-</body>
-</html>
+@endsection

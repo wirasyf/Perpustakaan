@@ -10,48 +10,96 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VisitController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LaporanKehilanganController;
+use App\Http\Controllers\SiswaDashboardController;
+use Illuminate\Support\Facades\Auth;
 
-Route::get('/', fn () => redirect()->route('login.show'));
+Route::get('/', function () {
+    return view('landing');
+})->name('home');
 
 
-Route::get('/succes', function () {
-    return view('auth.succes_register');
+// ADMIN
+Route::get('/dashboard', action: function () {
+    if (Auth::user()?->role !== 'admin') {
+    abort(403);
+    }   
+
+    return view('admin.dashboard');
+})->name('dashboard.admin')->middleware('auth');
+
+
+Route::get('/pinjam-buku', function () {
+    return view('siswa.pinjam-buku');
 });
 
-Route::get('/kelola_data_buku', function () {
-    return view('admin.kelola_data_buku');
+
+Route::get('/pengembalian-buku', function () {
+    if (Auth::user()?->role !== 'anggota') {
+        abort(403);
+    }
+
+    return view('siswa.pengembalian-buku');
+})->name('anggota.pengembalian')->middleware('auth');
+
+
+Route::get('/crud_kelola_buku', function () {
+    return view('admin.CRUD_kelola_buku');
+});
+
+
+
+// VERIFIKASI ANGGOTA
+Route::get('/kelola_anggota-verifikasi', function () {
+    if (Auth::user()?->role !== 'admin') {
+        abort(403);
+    }
+
+    return view('admin.kelola_data_anggota-verifikasi');
 })->middleware('auth');
 
-Route::get('/kelola_anggota', function () {
-    return view('admin.kelola_data_anggota-verifikasi');
-});
-
-
-Route::get('/daftar_pengunjung', function () {
-    return view('admin.daftar_pengunjung');
-});
-
-
-Route::get('/kelola_anggota-diterima', function () {
-    return view('admin.kelola_data_anggota-diterima');
-});
-
-Route::get('/kelola_anggota-verifikasi', function () {
-    return view('admin.kelola_data_anggota-verifikasi');
-});
-
-
 Route::get('/kelola_anggota-ditolak', function () {
+    if (Auth::user()?->role !== 'admin') {
+        abort(403);
+    }
+
     return view('admin.kelola_data_anggota-ditolak');
-});
+})->middleware('auth');
 
-
+// LAPORAN KEHILANGAN
 Route::get('/laporan_data_kehilangan', function () {
     return view('admin.laporan_data_kehilangan');
+})->middleware('auth');
+
+// TRANSAKSI (BUKAN ADMIN)
+Route::get('/transaksi', function () {
+    if (Auth::user()?->role === 'admin') {
+        abort(403);
+    }
+
+    return view('dashboard.transaksi');
+})->name('transaksi.user')->middleware('auth');
+
+// ANGGOTA
+Route::get('/dashboard-anggota', [SiswaDashboardController::class, 'index'])
+    ->name('dashboard.anggota')
+    ->middleware('auth');
+Route::get('/kehilangan-buku', function () {
+    if (Auth::user()?->role !== 'anggota') {
+        abort(403);
+    }
+
+    return 'Halaman Kehilangan Buku (anggota)';
+})->middleware('auth');
+
+
+Route::get('/laporan_kehilangan', function () {
+    return view('siswa.laporan_kehilangan');
 });
 
 Route::get('/profile_admin', [ProfileController::class, 'show'])
         ->name('profile.show');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +115,35 @@ Route::get('/register-anggota', [AuthController::class, 'showRegisterAnggota'])-
 Route::post('/register-anggota', [AuthController::class, 'registerAnggota'])->name('registerAnggota');
 Route::get('/register-admin', [AuthController::class, 'showRegisterAdmin'])->name('register-admin.show');
 Route::post('/register-admin', [AuthController::class, 'registerAdmin'])->name('register-admin');
+Route::get('/succes', function () {
+return view('auth.succes_register');
+})->name('succes.register');
+
+/*
+|--------------------------------------------------------------------------
+| Routes SISWA
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+
+    Route::get('/dashboard-siswa', [SiswaDashboardController::class, 'index'])
+        ->name('siswa.dashboard');
+
+    Route::get('/laporan-kehilangan', [LaporanKehilanganController::class, 'index'])
+        ->name('laporan-kehilangan.index');
+
+    Route::get('/laporan-kehilangan/create', [LaporanKehilanganController::class, 'create'])
+        ->name('laporan-kehilangan.create');
+
+    Route::post('/laporan-kehilangan', [LaporanKehilanganController::class, 'store'])
+        ->name('laporan-kehilangan.store');
+
+    Route::get('/laporan-kehilangan/{id}/edit', [LaporanKehilanganController::class, 'edit'])
+        ->name('laporan-kehilangan.edit');
+
+    Route::put('/laporan-kehilangan/{id}', [LaporanKehilanganController::class, 'update'])
+        ->name('laporan-kehilangan.update');
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -74,29 +151,20 @@ Route::post('/register-admin', [AuthController::class, 'registerAdmin'])->name('
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth')->group(function () {
-    // List semua anggota
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    
-    // Form tambah anggota
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-    
-    // Simpan data user baru diutamakan untuk menambahkan admin namun bisa untuk anggota juga
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
-    
-    // Form edit anggota
-    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-    
-    // Update anggota
-    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-    
+Route::prefix('admin')->middleware(['auth'])->group(function () {
+    // Kelola Data Anggota
+    Route::get('/anggota', [UserController::class, 'index'])->name('admin.anggota.index');
+    //verifikasi, setatus anggota
+    Route::post('/anggota/{id}/status', [UserController::class, 'updateStatus'])->name('admin.anggota.status');
     // Hapus anggota
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
-
-    // Approve anggota (ubah status dari nonaktif ke aktif)
-    Route::put('/admin/users/{id}/approve', [UserController::class, 'approve']);
+    Route::delete('/anggota/{id}', [UserController::class, 'destroy'])->name('admin.anggota.destroy');
+    // Detail anggota
+    Route::get('/anggota/{id}', [UserController::class, 'show'])->name('admin.anggota.show');
+    // Update status anggota
+    Route::put('/anggota/{id}', [UserController::class, 'update'])->name('admin.anggota.update');
+    // Reset password anggota
+    Route::put('/anggota/{id}/reset-password', [UserController::class, 'resetPassword'])->name('admin.anggota.resetPassword');
 });
-
 /*
 |--------------------------------------------------------------------------
 | Bookshelf Routes (RAK BUKU - HANYA ADMIN)
@@ -294,7 +362,56 @@ Route::middleware('auth')->group(function () {
     // Riwayat kunjungan dan transaksi untuk anggota
     Route::get('/my-visits-history', [VisitController::class, 'history'])->name('visit.history');
 });
-    Route::get('/fitur', function () {
-    return view('admin.kelola_data_buku');
+
+Route::middleware(['auth'])->group(function () {
+
+    // Halaman profil
+    Route::get('/profile', [ProfileController::class, 'show'])
+        ->name('profile.show');
+
+    // Update profil
+    Route::put('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
+
+    // Hapus foto profil
+    Route::delete('/profile/photo', [ProfileController::class, 'deletePhoto'])
+        ->name('profile.photo.delete');
+
+});
+    Route::get('/Dashboard_Admin', function () {
+    return view('Admin.Dashboard_Admin');
+});
+
+
+Route::get('/cetak-peminjaman', function () {
+    return view('cetak.cetak-peminjaman');
+});
+
+
+Route::get('/cetak-pengembalian', function () {
+    return view('cetak.cetak-pengembalian');
+});
+
+
+Route::get('/dashboard-siswa', function () {
+    return view('siswa.dashboard-siswa');
+});
+
+
+Route::get('/edit-profil-user', function () {
+    return view('siswa.edit-profil-user');
+});
+
+
+Route::get('/edit-foto-profil', function () {
+    return view('siswa.edit-foto-profil');
+});
+
+
+Route::get('/cetak-transaksi', function () {
+    return view('cetak.cetak-transaksi');
+});
+Route::get('/dashboard-admin', function () {
+    return view('admin.dashboard_admin');
 });
 

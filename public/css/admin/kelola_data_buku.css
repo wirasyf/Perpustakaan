@@ -1,108 +1,9 @@
-/* ================= RESET ================= */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
-    
-}
-
-body {
-    background: #f5f7fb;
-    overflow-x: hidden;
-}
-
 /* ================= LAYOUT ================= */
 .layout {
     display: flex;
     min-height: 100vh;
 }
 
-/* ================= SIDEBAR ================= */
-/* SIDEBAR */
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 230px;
-    height: 100vh;
-    background: #fff;
-    padding: 20px;
-    border-right: 1px solid #e5e7eb;
-}
-
-.logo img {
-    width: 50px;
-    margin-bottom: 30px;
-}
-
-.menu li {
-    list-style: none;
-    margin-bottom: 6px;
-    border-radius: 8px;
-}
-
-.menu li a {
-    display: flex;
-    gap: 10px;
-    padding: 12px;
-    color: #555;
-    text-decoration: none;
-    align-items: center;
-}
-
-.menu li.active,
-.menu li:hover {
-    background: #2196f3;
-}
-
-.menu li.active a,
-.menu li:hover a {
-    color: #fff;
-}
-
-
-/* ================= CONTENT ================= */
-.content {
-    margin-left: 230px;
-    width: calc(100% - 230px);
-    padding: 24px;
-    padding-top: 88px;
-}
-
-/* ================= TOPBAR ================= */
-.topbar {
-    position: fixed;
-    top: 0;
-    left: 230px;
-    right: 0;
-    height: 64px;
-    background: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 24px;
-    z-index: 1000;
-}
-
-.topbar i {
-    font-size: 20px;
-    color: #4b5563;
-    cursor: pointer;
-}
-
-.user {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.user img {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-}
 
 /* ================= HEADER CARD ================= */
 .header-card {
@@ -138,21 +39,47 @@ body {
     flex-wrap: wrap;
 }
 
-.search {
+/* CONTAINER FILTER UTAMA */
+.filter {
     display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
     align-items: center;
-    background: #f1f3f7;
-    padding: 8px 12px;
-    border-radius: 8px;
-    width: 250px;
 }
 
-.search input {
+/* PEMBUNGKUS SEARCH DAN DATE */
+.search{
+    display: flex;
+    align-items: center;
+    background: #fff; /* Latar belakang putih */
+    border: 1.5px solid #ccc; /* Garis tepi abu-abu */
+    border-radius: 10px;
+    overflow: hidden; /* Agar sudut ikon ikut melengkung */
+    height: 45px;
+    min-width: 250px;
+}
+
+/* KOTAK IKON BIRU (Kiri) */
+.search i{
+    background-color: #2196f3; /* Warna biru sesuai app.css */
+    color: #fff;
+    height: 100%;
+    width: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+/* AREA INPUT TEKS */
+.search input{
     border: none;
-    outline: none;
     background: transparent;
-    margin-left: 8px;
+    outline: none;
+    padding: 0 15px;
     width: 100%;
+    font-size: 14px;
+    color: #333;
 }
 
 .btn-add {
@@ -172,7 +99,8 @@ table {
 }
 
 thead {
-    background: #f5f7fb;
+    background: #1e88e5;
+    color: #fff;
 }
 
 th, td {
@@ -336,6 +264,7 @@ tbody tr {
     display: flex;
     gap: 25px;
     padding: 25px;
+    text-align: left;
 }
 
 .modal-detail-body img {

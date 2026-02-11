@@ -1,0 +1,308 @@
+/* =========================
+   RESET & GLOBAL
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: #f4f6f9;
+}
+
+
+/* =========================
+   LAYOUT UTAMA
+========================= */
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+.content {
+    flex: 1;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 230px;
+    height: 100vh;
+    background: #fff;
+    padding: 20px;
+    border-right: 1px solid #e5e7eb;
+}
+
+.logo img {
+    width: 50px;
+    margin-bottom: 30px;
+}
+
+.menu li {
+    list-style: none;
+    margin-bottom: 6px;
+    border-radius: 8px;
+}
+
+.menu li a {
+    display: flex;
+    gap: 10px;
+    padding: 12px;
+    color: #555;
+    text-decoration: none;
+    align-items: center;
+}
+
+.menu li.active,
+.menu li:hover {
+    background: #2196f3;
+}
+
+.menu li.active a,
+.menu li:hover a {
+    color: #fff;
+}
+
+
+/* ================= CONTENT ================= */
+.content {
+    margin-left: 230px;
+    width: calc(100% - 230px);
+    padding: 24px;
+    padding-top: 88px;
+}
+
+
+
+/* =========================
+   TOPBAR
+========================= */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 230px;
+    right: 0;
+    height: 64px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 1000;
+}
+
+.topbar i {
+    font-size: 20px;
+    color: #4b5563;
+    cursor: pointer;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+
+/* =========================
+   HEADER CARD
+========================= */
+.header-card {
+    background: linear-gradient(90deg, #0d47a1, #1e88e5);
+    border-radius: 12px;
+    padding: 22px 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.header-card img {
+    width: 60px;
+}
+
+/* =========================
+   FORM CARD
+========================= */
+.card {
+    background: #fff;
+    margin: 25px;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: #555;
+}
+
+.form-group input,
+.form-container {
+    background: #fff;
+    padding: 24px;
+    border-radius: 8px;
+}
+
+/* GRID UTAMA */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+}
+
+/* TAMBAHAN */
+.col-1 { grid-column: span 1; }
+.col-2 { grid-column: span 2; }
+.col-3 { grid-column: span 3; }
+.col-4 { grid-column: span 4; }
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #111827;
+}
+
+.form-group input {
+    height: 40px;
+    padding: 0 12px;
+    font-size: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+.error {
+    margin-top: 4px;
+    font-size: 11px;
+    color: #ef4444;
+}
+
+
+/* ERROR TEXT */
+.error {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-group select {
+    height: 38px;
+    padding: 0 12px;
+    font-size: 13px;
+
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+
+/* =========================
+   VALIDATION ERROR
+========================= */
+.error {
+    margin-top: 4px;
+    font-size: 11px;
+    color: red;
+}
+
+
+/* =========================
+   UPLOAD BOX
+========================= */
+.upload-box {
+    height: 160px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 13px;
+    color: #64748b;
+    text-align: center;
+}
+
+
+/* =========================
+   EDITOR
+========================= */
+.editor {
+    min-height: 120px;
+    padding: 10px;
+
+    font-size: 13px;
+
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+.btn {
+    margin-top: 20px;
+    padding: 10px 25px;
+
+    background: #1e90ff;
+    color: #fff;
+    font-size: 13px;
+
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+
+    float: right;
+}
+

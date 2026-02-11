@@ -18,7 +18,7 @@ class BookController extends Controller
     {
         if (Auth::user()?->role !== 'admin') abort(403);
         $books = Book::with('row')->get();
-        return view('books.index', compact('books'));
+        return view('admin.kelola_data_buku', compact('books'));
     }
 
     public function create()

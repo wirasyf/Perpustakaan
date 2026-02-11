@@ -29,13 +29,16 @@ class UserController extends Controller
         $query = User::where('role', 'anggota');
 
         // Logic Filter Tab
-        if ($tab == 'verifikasi') {
-            $query->where('status', 'menunggu');
-        } elseif ($tab == 'diterima') {
-            $query->where('status', 'aktif');
-        } elseif ($tab == 'ditolak') {
-            $query->where('status', 'nonaktif');
-        }
+if ($tab == 'verifikasi') {
+    $query->where('status', 'menunggu');
+
+} elseif ($tab == 'diterima') {
+    $query->whereIn('status', ['aktif', 'nonaktif']);
+
+} elseif ($tab == 'ditolak') {
+    $query->where('status', 'ditolak');
+}
+
 
         // Search: Nama, Username, NIS/NISN
         if ($search) {
@@ -58,7 +61,7 @@ class UserController extends Controller
 
         $users = $query->latest()->paginate(10);
 
-    return view('admin.anggota.index', compact('users', 'tab', 'search', 'kelas', 'date'
+    return view('admin.kelola_data_anggota', compact('users', 'tab', 'search', 'kelas', 'date'
 ));
 
     }
@@ -94,7 +97,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update Anggota (Hanya status, password, dan nis_nisn)
+     * Update Status Anggota (Hanya status saja)
      */
     public function update(Request $request, $id)
     {
@@ -102,26 +105,35 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $request->validate([
-            'nis_nisn' => 'required',
-            'status'   => 'required|in:aktif,nonaktif,menunggu',
-            'password' => 'nullable|min:6'
+            'status'   => 'required|in:aktif,nonaktif,menunggu,ditolak'
         ]);
 
-        $data = [
-            'nis_nisn' => $request->nis_nisn,
-            'status'   => $request->status,
-        ];
+        $user->update([
+            'status' => $request->status,
+        ]);
 
-        // Update password jika diisi
-        if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
-        }
-
-        // Note: Foto profil sengaja tidak dimasukkan agar tidak bisa diubah admin
-        $user->update($data);
-
-        return redirect()->back()->with('success', 'Data anggota berhasil diupdate.');
+        return redirect()->back()->with('success', 'Status anggota berhasil diperbarui.');
     }
+
+    /**
+     * Reset Password Anggota
+     */
+    public function resetPassword(Request $request, $id)
+    {
+        if (Auth::user()?->role !== 'admin') abort(403);
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'password' => 'required|min:6|confirmed'
+        ]);
+
+        $user->update([
+            'password' => Hash::make($request->password)
+        ]);
+
+        return redirect()->back()->with('success', 'Password anggota berhasil direset.');
+    }
+
 
     /**
      * Hapus Anggota

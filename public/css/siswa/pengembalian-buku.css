@@ -1,0 +1,322 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    margin: 0;
+    background: #f4f6fb;
+}
+
+/* LAYOUT */
+.app {
+    display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+    position: fixed;
+    width: 240px;
+    height: 100vh;
+    background: #fff;
+    border-right: 1px solid #e5e7eb;
+    padding: 20px;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.menu {
+    padding: 0;
+}
+
+.menu li {
+    list-style: none;
+    margin-bottom: 8px;
+}
+
+.menu a {
+    display: flex;
+    gap: 10px;
+    padding: 12px 14px;
+    color: #555;
+    text-decoration: none;
+    border-radius: 10px;
+}
+
+.menu li.active a,
+.menu a:hover {
+    background: #2563eb;
+    color: #fff;
+}
+
+/* MAIN */
+.main {
+    margin-left: 240px;
+    padding: 100px 30px 30px;
+    width: 100%;
+}
+
+/* TOPBAR */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 240px;
+    right: 0;
+    height: 64px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+}
+
+.user {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.user img {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+}
+
+/* HEADER */
+.header-card {
+    background: linear-gradient(90deg, #1d4ed8, #38bdf8);
+    color: #fff;
+    border-radius: 14px;
+    padding: 20px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header-card img {
+    width: 60px;
+}
+
+/* FILTER */
+.filter-card {
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.filter-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f1f5f9;
+    padding: 8px 12px;
+    border-radius: 8px;
+    width: 220px;
+}
+
+.filter-item input {
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 100%;
+}
+
+.btn-filter {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 10px 12px;
+    border-radius: 8px;
+}
+
+/* TABLE */
+.table-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 10px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #2196f3;
+    color: #fff;
+}
+
+th, td {
+    padding: 14px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+tbody tr {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* STATUS */
+.status {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #fff;
+}
+
+.status.success { background: #22c55e; }
+.status.danger { background: #ef4444; }
+.status.warning { background: #f59e0b; }
+/* AKSI ICON */
+.aksi {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.aksi-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* WARNA SESUAI GAMBAR */
+.aksi-btn.blue {
+    background: #1d4ed8;
+}
+
+.aksi-btn.orange {
+    background: #f59e0b;
+}
+
+.aksi-btn.red {
+    background: #ef4444;
+}
+
+/* HOVER */
+.aksi-btn:hover {
+    opacity: 0.85;
+}
+
+/* RESPONSIF */
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+
+    .topbar {
+        left: 0;
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 90px 15px 20px;
+    }
+
+    .filter-card {
+        flex-direction: column;
+    }
+
+    .filter-item {
+        width: 100%;
+    }
+
+    .header-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+}
+
+
+/* ===== MODAL CUSTOM ===== */
+.modal-content {
+    border-radius: 18px;
+    overflow: hidden;
+    border: none;
+}
+
+/* HEADER BIRU */
+.modal-header.custom-header {
+    background: linear-gradient(90deg, #1d4ed8, #38bdf8);
+    color: #fff;
+    justify-content: center;
+    border-bottom: none;
+}
+
+.modal-header.custom-header h5 {
+    margin: 0;
+    font-weight: 600;
+}
+
+/* BODY */
+.modal-body {
+    padding: 30px;
+    font-size: 15px;
+    color: #333;
+}
+
+/* INPUT */
+.modal-body input,
+.modal-body textarea {
+    border-radius: 12px;
+    padding: 12px;
+}
+
+/* FOOTER */
+.modal-footer {
+    border-top: none;
+    padding: 20px 30px;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* BUTTON */
+.btn-rounded {
+    border-radius: 20px;
+    padding: 8px 22px;
+    font-size: 14px;
+}
+
+.btn-batal {
+    background: #ef4444;
+    color: white;
+    border: none;
+}
+
+.btn-simpan {
+    background: #38bdf8;
+    color: white;
+    border: none;
+}
+
+.btn-yakin {
+    background: #38bdf8;
+    color: white;
+    border: none;
+}
+
+.btn-batal:hover,
+.btn-simpan:hover,
+.btn-yakin:hover {
+    opacity: 0.9;
+}

@@ -16,43 +16,28 @@ class VisitController extends Controller
     }
 
     public function index(Request $request)
-    {
-        if (Auth::user()?->role !== 'admin') abort(403);
-        $query = Visit::with('user', 'transaction.book')->get();
-        // 🔎 Search nama user
+{
+    if (Auth::user()?->role !== 'admin') abort(403);
+
+    $query = Visit::with('user', 'transaction.book');
+
+    // 🔎 Search nama user
     if ($request->filled('search')) {
         $query->whereHas('user', function ($q) use ($request) {
             $q->where('name', 'like', '%' . $request->search . '%');
         });
     }
 
-    // 🏫 Filter kelas
-    if ($request->filled('kelas')) {
-        $query->whereHas('user', function ($q) use ($request) {
-            $q->where('kelas', $request->kelas);
-        });
-    }
-
-    // 🔄 Filter status transaksi
-    if ($request->filled('status')) {
-        $query->whereHas('transaction', function ($q) use ($request) {
-            $q->where('status', $request->status);
-        });
-    }
-
-    // 📅 Filter tanggal kunjungan
+    // 📅 Filter tanggal
     if ($request->filled('date')) {
         $query->whereDate('tanggal_datang', $request->date);
     }
 
     $visits = $query->orderBy('tanggal_datang', 'desc')->get();
 
-    // Data untuk dropdown filter
-    $kelasList = User::select('kelas')->distinct()->pluck('kelas');
-    $users     = User::where('role', 'anggota')->get();
+    return view('admin.daftar_pengunjung', compact('visits'));
+}
 
-    return view('visits.index', compact('visits', 'kelasList'));
-    }
     public function destroy(Visit $visit)
     {
         if (Auth::user()?->role !== 'admin') abort(403);
