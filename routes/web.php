@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BookshelfController;
@@ -9,9 +10,9 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VisitController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LaporanKehilanganController;
 use App\Http\Controllers\SiswaDashboardController;
+use App\Http\Controllers\AdminDashboardController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -20,13 +21,15 @@ Route::get('/', function () {
 
 
 // ADMIN
-Route::get('/dashboard', action: function () {
-    if (Auth::user()?->role !== 'admin') {
-    abort(403);
-    }   
+// Route::get('/dashboard', action: function () {
+//     if (Auth::user()?->role !== 'admin') {
+//     abort(403);
+//     }   
 
-    return view('admin.dashboard');
-})->name('dashboard.admin')->middleware('auth');
+//     return view('admin.dashboard_admin');
+// })->name('dashboard.admin')->middleware('auth');
+
+Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard.admin')->middleware('auth');
 
 
 Route::get('/pinjam-buku', function () {
@@ -84,19 +87,10 @@ Route::get('/transaksi', function () {
 Route::get('/dashboard-anggota', [SiswaDashboardController::class, 'index'])
     ->name('dashboard.anggota')
     ->middleware('auth');
-Route::get('/kehilangan-buku', function () {
-    if (Auth::user()?->role !== 'anggota') {
-        abort(403);
-    }
-
-    return 'Halaman Kehilangan Buku (anggota)';
-})->middleware('auth');
 
 
-Route::get('/laporan_kehilangan', function () {
-    return view('siswa.laporan_kehilangan');
-});
-
+Route::get('/profile_admin', [ProfileController::class, 'show'])
+        ->name('profile.show');
 
 
 /*
@@ -251,6 +245,8 @@ Route::middleware('auth')->group(function () {
     
     // Cari buku
     Route::get('/books/search/results', [BookController::class, 'search'])->name('books.search');
+
+    Route::get('/pinjam-buku', [BookController::class, 'browse'])->name('books.browse');
 });
 
 /*
@@ -267,7 +263,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/transactions/create', [TransactionController::class, 'create'])->name('transactions.create');
     
     // Simpan peminjaman baru
-    Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
+    Route::post('/books/{book}/pinjam', [TransactionController::class, 'pinjam'])->name('books.pinjam');
     
     // Detail peminjaman
     Route::get('/transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
@@ -409,7 +405,27 @@ Route::get('/edit-foto-profil', function () {
 Route::get('/cetak-transaksi', function () {
     return view('cetak.cetak-transaksi');
 });
+
+Route::get('/cetak-daftar-pengunjung', function () {
+    return view('cetak.cetak-daftar-pengunjung');
+});
+
 Route::get('/dashboard-admin', function () {
     return view('admin.dashboard_admin');
 });
 
+Route::get('/cetak-kehilangan', function () {
+    return view('cetak.cetak-kehilangan');
+});
+Route::get('/edit-foto-profile-admin', function () {
+    return view('admin.edit-foto-profile-admin');
+});
+
+//edit profil admin
+Route::get('/edit-profil', function () {
+    return view('admin.edit-profil');
+});
+
+Route::get('/edit-password', function () {
+    return view('admin.edit-password');
+});
