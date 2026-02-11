@@ -409,3 +409,15 @@ Route::get('/dashboard-admin', function () {
     return view('admin.dashboard_admin');
 });
 
+Route::get('/edit-foto-profile-admin', function () {
+    return view('admin.edit-foto-profile-admin');
+});
+
+//edit profil admin
+Route::get('/edit-profil', function () {
+    return view('admin.edit-profil');
+});
+
+Route::get('/edit-password', function () {
+    return view('admin.edit-password');
+});
