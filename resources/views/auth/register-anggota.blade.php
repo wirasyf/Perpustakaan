@@ -18,77 +18,66 @@
       <img src="{{ asset('img/login.png') }}" alt="Register">
     </div>
 
-    <!-- RIGHT -->
-    <div class="right">
-      <form action="{{ route('registerAnggota') }}" method="POST">
-        @csrf
+   <!-- RIGHT -->
+   <div class="right">
+   <form action="{{ route('registerAnggota') }}" method="POST" enctype="multipart/form-data">
+    @csrf
 
-        <label>Nama Lengkap</label>
-        <input type="text" name="name" placeholder="Nama Lengkap" value="{{ old('name') }}" required class="{{ $errors->has('name') ? 'input-error' : '' }}">
-        @error('name')
-            <small style="color: red; font-size: 12px; display: block; margin-top: 3px;">{{ $message }}</small>
-        @enderror
-
-        <label>Username</label>
-        <input type="text" name="username" placeholder="Username" value="{{ old('username') }}" required class="{{ $errors->has('username') ? 'input-error' : '' }}">
-        @error('username')
-            <small style="color: red; font-size: 12px; display: block; margin-top: 3px;">{{ $message }}</small>
-        @enderror
-
-        <label>No. Telp</label>
-        <input type="text" name="telephone" placeholder="08xxxxxxxxxx" value="{{ old('telephone') }}" class="{{ $errors->has('telephone') ? 'input-error' : '' }}">
-        @error('telephone')
-            <small style="color: red; font-size: 12px; display: block; margin-top: 3px;">{{ $message }}</small>
-        @enderror
-
-        <!-- NIS & NISN -->
-        <div class="row-input">
-          <div>
-            <label>NIS</label>
-            <input type="text" id="nis_field" placeholder="NIS" value="{{ old('nis') }}" class="{{ $errors->has('nis') || $errors->has('nis_nisn') ? 'input-error' : '' }}">
-          </div>
-          <div>
-            <label>NISN</label>
-            <input type="text" id="nisn_field" placeholder="NISN" value="{{ old('nisn') }}" class="{{ $errors->has('nisn') || $errors->has('nis_nisn') ? 'input-error' : '' }}">
-          </div>
-        </div>
-        <!-- Hidden field untuk menyimpan gabungan NIS-NISN -->
-        <input type="hidden" name="nis_nisn" id="nis_nisn_combined">
-        @error('nis_nisn')
-            <small style="color: red; font-size: 12px; display: block; margin-top: 3px;">{{ $message }}</small>
-        @enderror
-
-        <label>Kelas</label>
-        <input type="text" name="kelas" placeholder="Kelas" value="{{ old('kelas') }}" class="{{ $errors->has('kelas') ? 'input-error' : '' }}">
-        @error('kelas')
-            <small style="color: red; font-size: 12px; display: block; margin-top: 3px;">{{ $message }}</small>
-        @enderror
-
-        <label>Password</label>
-        <div class="password">
-          <input type="password" name="password" placeholder="Password" required class="pwd-input {{ $errors->has('password') ? 'input-error' : '' }}">
-          <i class="fa-solid fa-eye-slash pwd-toggle"></i>
-        </div>
-        @error('password')
-            <small style="color: red; font-size: 12px; display: block; margin-top: 3px;">{{ $message }}</small>
-        @enderror
-
-        <div class="remember">
-          <label>
-            <input type="checkbox" name="remember">
-            Ingat Saya
-          </label>
-        </div>
-
-        <button type="submit">Daftar</button>
-
-        <p class="register">
-          Sudah Memiliki Akun ?
-          <a href="{{route('login.show')}}">Masuk</a>
-        </p>
-
-      </form>
+    <!-- FOTO -->
+    <div class="photo-upload">
+      <input type="file" id="photo" name="photo" hidden>
+      <label for="photo" class="photo-circle">
+        <i class="fa-solid fa-camera"></i>
+      </label>
     </div>
+
+    <label>Nama Lengkap</label>
+    <input type="text" name="name" placeholder="Nama Lengkap" value="{{ old('name') }}">
+
+    <label>Username</label>
+    <input type="text" name="username" placeholder="Username" value="{{ old('username') }}">
+
+    <label>No. Telp</label>
+    <input type="text" name="telephone" placeholder="08xxxxxxxxxx" value="{{ old('telephone') }}">
+
+    <label>Password</label>
+    <div class="password">
+      <input type="password" name="password" placeholder="Password" class="pwd-input">
+      <i class="fa-solid fa-eye-slash pwd-toggle"></i>
+    </div>
+
+    <label>Alamat</label>
+    <input type="text" name="alamat" placeholder="Alamat">
+
+    <!-- NIS & Kelas -->
+    <div class="row-input">
+      <div>
+        <label>NIS</label>
+        <input type="text" id="nis_field" placeholder="NIS">
+      </div>
+      <div>
+        <label>Kelas</label>
+        <input type="text" name="kelas" placeholder="Kelas">
+      </div>
+    </div>
+
+    <div class="remember">
+      <label>
+        <input type="checkbox" name="remember">
+        Ingat Saya
+      </label>
+    </div>
+
+    <button type="submit">Masuk</button>
+
+    <p class="register">
+      Belum Memiliki Akun ?
+      <a href="#">Daftar</a>
+    </p>
+
+  </form>
+</div>
+
 
   </div>
 </div>

@@ -107,6 +107,16 @@
         </h4>
 
         <ul class="visitor-list">
+
+        <li>
+    <a href="/cetak-kartu" class="visitor-item">
+        <span class="icon card">
+     <i class="fa fa-id-card"></i>
+     </span>
+        <span class="text">Cetak Kartu</span>
+      </a>
+      </li>
+
             <li>
                 <a href="/laporan_kehilangan" class="visitor-item">
                     <span class="icon warning">
