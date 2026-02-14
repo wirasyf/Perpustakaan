@@ -109,10 +109,56 @@
 </tr>
 @empty
 <tr>
-    <td colspan="7" style="text-align:center">Tidak ada data</td>
+    <td colspan="8" style="text-align:center">Tidak ada data</td>
 </tr>
 @endforelse
 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="8">
+                            <div class="table-pagination">
+                                <span class="page-info">Menampilkan {{ $transactions->firstItem() }}–{{ $transactions->lastItem() }} dari {{ $transactions->total() }} data</span>
+                                <div class="pagination">
+                                    @if ($transactions->onFirstPage())
+                                        <span class="page-btn disabled"><i class="fa fa-chevron-left"></i></span>
+                                    @else
+                                        <a href="{{ $transactions->previousPageUrl() }}" class="page-btn"><i class="fa fa-chevron-left"></i></a>
+                                    @endif
+
+                                    @php $current = $transactions->currentPage(); $last = $transactions->lastPage(); @endphp
+
+                                    @if ($current == 1)
+                                        <span class="page-btn active">1</span>
+                                    @else
+                                        <a href="{{ $transactions->url(1) }}" class="page-btn">1</a>
+                                    @endif
+
+                                    @if ($current > 1)
+                                        <span class="page-btn active">{{ $current }}</span>
+                                    @endif
+
+                                    @if ($current + 1 <= $last)
+                                        <a href="{{ $transactions->url($current + 1) }}" class="page-btn">{{ $current + 1 }}</a>
+                                    @endif
+
+                                    @if ($current + 1 < $last)
+                                        <span class="page-dots">…</span>
+                                    @endif
+
+                                    @if ($last > 1)
+                                        <a href="{{ $transactions->url($last) }}" class="page-btn">{{ $last }}</a>
+                                    @endif
+
+                                    @if ($transactions->hasMorePages())
+                                        <a href="{{ $transactions->nextPageUrl() }}" class="page-btn"><i class="fa fa-chevron-right"></i></a>
+                                    @else
+                                        <span class="page-btn disabled"><i class="fa fa-chevron-right"></i></span>
+                                    @endif
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
 </table>
 </div>
 @endif
@@ -159,6 +205,52 @@
 </tr>
 @endforelse
 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="7">
+                            <div class="table-pagination">
+                                <span class="page-info">Menampilkan {{ $transactions->firstItem() }}–{{ $transactions->lastItem() }} dari {{ $transactions->total() }} data</span>
+                                <div class="pagination">
+                                    @if ($transactions->onFirstPage())
+                                        <span class="page-btn disabled"><i class="fa fa-chevron-left"></i></span>
+                                    @else
+                                        <a href="{{ $transactions->previousPageUrl() }}" class="page-btn"><i class="fa fa-chevron-left"></i></a>
+                                    @endif
+
+                                    @php $current = $transactions->currentPage(); $last = $transactions->lastPage(); @endphp
+
+                                    @if ($current == 1)
+                                        <span class="page-btn active">1</span>
+                                    @else
+                                        <a href="{{ $transactions->url(1) }}" class="page-btn">1</a>
+                                    @endif
+
+                                    @if ($current > 1)
+                                        <span class="page-btn active">{{ $current }}</span>
+                                    @endif
+
+                                    @if ($current + 1 <= $last)
+                                        <a href="{{ $transactions->url($current + 1) }}" class="page-btn">{{ $current + 1 }}</a>
+                                    @endif
+
+                                    @if ($current + 1 < $last)
+                                        <span class="page-dots">…</span>
+                                    @endif
+
+                                    @if ($last > 1)
+                                        <a href="{{ $transactions->url($last) }}" class="page-btn">{{ $last }}</a>
+                                    @endif
+
+                                    @if ($transactions->hasMorePages())
+                                        <a href="{{ $transactions->nextPageUrl() }}" class="page-btn"><i class="fa fa-chevron-right"></i></a>
+                                    @else
+                                        <span class="page-btn disabled"><i class="fa fa-chevron-right"></i></span>
+                                    @endif
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
 </table>
 </div>
 @endif

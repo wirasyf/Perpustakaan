@@ -34,8 +34,8 @@ class TransactionController extends Controller
             ->when($mode === 'pengembalian', function($q) {
                 $q->whereIn('status', ['menunggu_konfirmasi', 'sudah_dikembalikan']);
             })
-            ->latest()
-            ->get();
+                ->latest()
+                ->paginate(10);
 
         return view('admin.transaksi', compact('transactions', 'mode'));
     }

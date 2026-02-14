@@ -33,7 +33,7 @@ class VisitController extends Controller
         $query->whereDate('tanggal_datang', $request->date);
     }
 
-    $visits = $query->orderBy('tanggal_datang', 'desc')->get();
+    $visits = $query->orderBy('tanggal_datang', 'desc')->paginate(10);
 
     return view('admin.daftar_pengunjung', compact('visits'));
 }
