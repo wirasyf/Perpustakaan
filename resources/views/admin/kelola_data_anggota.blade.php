@@ -227,8 +227,44 @@
                         </tr>
                     </tfoot>
                 </table>
-                
+            
+                </table>
+@if ($users->hasPages())
+    <div class="simple-pagination">
 
+        {{-- Previous --}}
+        @if ($users->onFirstPage())
+            <button class="nav-btn disabled">
+                &#8249;
+            </button>
+        @else
+            <a href="{{ $users->previousPageUrl() }}" class="nav-btn active">
+                &#8249;
+            </a>
+        @endif
+
+        {{-- Page Info --}}
+        <div class="page-info">
+            {{ $users->currentPage() }} of {{ $users->lastPage() }}
+        </div>
+
+        {{-- Next --}}
+        @if ($users->hasMorePages())
+            <a href="{{ $users->nextPageUrl() }}" class="nav-btn active">
+                &#8250;
+            </a>
+        @else
+            <button class="nav-btn disabled">
+                &#8250;
+            </button>
+        @endif
+
+    </div>
+@endif
+
+
+            </div>
+        </div>
 
         <!-- MODAL EDIT - Hanya muncul di tab Diterima -->
         @if($tab == 'diterima')

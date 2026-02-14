@@ -48,6 +48,25 @@
             </div>
         </div>
 
+        <div class="stat-box green">
+    <div class="stat-left">
+        <p class="title">Sudah Dikembalikan</p>
+        <h2>{{ $totalPengembalian }}</h2>
+    </div>
+    <div class="stat-icon">
+        <i class="fa fa-arrow-rotate-left"></i>
+    </div>
+</div>
+
+        <div class="stat-box red">
+            <div class="stat-left">
+                <p class="title">Buku Hilang</p>
+                <h2>{{ $totalBukuHilang }}</h2>
+            </div>
+            <div class="stat-icon">
+                <i class="fa fa-flag"></i>
+            </div>
+        </div>
     </section>
 
     <!-- HADIR -->
@@ -59,7 +78,7 @@
                     <i class="fa fa-user-check"></i>
                 </div>
                 <div class="hadir-text">
-                    <h3>Absensi Kehadiran</h3>
+                    <h3>Kunjungan Perpustakaan</h3>
                     <p>Klik tombol hadir untuk check-in hari ini</p>
                 </div>
             </div>
@@ -143,7 +162,7 @@
                         <tr>
                             <td>{{ $trx->book->judul ?? '-' }}</td>
                             <td>{{ $trx->tanggal_peminjaman }}</td>
-                            <td>{{ $trx->tanggal_pengembalian }}</td>
+                            <td>{{ $trx->tanggal_jatuh_tempo }}</td>
                             <td>
                                 <span class="badge">
                                     {{ $trx->status }}

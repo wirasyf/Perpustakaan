@@ -110,7 +110,7 @@
             </td>
 
             <td>
-                {{ optional($report->tanggal_ganti)->format('d/m/Y') }}
+                {{ $report->tanggal_ganti ?? '-' }}
             </td>
 
             <td>
@@ -142,8 +142,6 @@
         </tbody>
 
     </table>
-
-
 {{-- PAGINATION --}}
 <div style="margin-top:20px;">
     <div class="table-pagination">
