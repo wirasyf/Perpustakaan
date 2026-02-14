@@ -164,63 +164,64 @@
                                     </span>
 
                                     <div class="pagination">
-                                        {{-- PREV --}}
-                                        @if ($users->onFirstPage())
-                                            <span class="page-btn disabled">
-                                                <i class="fa fa-chevron-left"></i>
-                                            </span>
-                                        @else
-                                            <a href="{{ $users->previousPageUrl() }}" class="page-btn">
-                                                <i class="fa fa-chevron-left"></i>
-                                            </a>
-                                        @endif
-
                                         @php
-                                            $current = $users->currentPage();
-                                            $last = $users->lastPage();
-                                        @endphp
+    $current = $users->currentPage();
+    $last = $users->lastPage();
+@endphp
 
-                                        {{-- PAGE 1 --}}
-                                        @if ($current == 1)
-                                            <span class="page-btn active">1</span>
-                                        @else
-                                            <a href="{{ $users->url(1) }}" class="page-btn">1</a>
-                                        @endif
+{{-- PREV --}}
+@if ($users->onFirstPage())
+    <span class="page-btn disabled">
+        <i class="fa fa-chevron-left"></i>
+    </span>
+@else
+    <a href="{{ $users->appends(request()->query())->previousPageUrl() }}" class="page-btn">
+        <i class="fa fa-chevron-left"></i>
+    </a>
+@endif
 
-                                        {{-- CURRENT PAGE (jika bukan page 1) --}}
-                                        @if ($current > 1)
-                                            <span class="page-btn active">{{ $current }}</span>
-                                        @endif
+{{-- PAGE 1 --}}
+@if ($current == 1)
+    <span class="page-btn active">1</span>
+@else
+    <a href="{{ $users->appends(request()->query())->url(1) }}" class="page-btn">1</a>
+@endif
 
-                                        {{-- NEXT PAGE --}}
-                                        @if ($current + 1 <= $last)
-                                            <a href="{{ $users->url($current + 1) }}" class="page-btn">
-                                                {{ $current + 1 }}
-                                            </a>
-                                        @endif
+{{-- CURRENT PAGE (jika bukan page 1) --}}
+@if ($current > 1)
+    <span class="page-btn active">{{ $current }}</span>
+@endif
 
-                                        {{-- DOTS --}}
-                                        @if ($current + 1 < $last)
-                                            <span class="page-dots">…</span>
-                                        @endif
+{{-- NEXT PAGE NUMBER --}}
+@if ($current + 1 <= $last)
+    <a href="{{ $users->appends(request()->query())->url($current + 1) }}" class="page-btn">
+        {{ $current + 1 }}
+    </a>
+@endif
 
-                                        {{-- LAST PAGE --}}
-                                        @if ($last > 1)
-                                            <a href="{{ $users->url($last) }}" class="page-btn">
-                                                {{ $last }}
-                                            </a>
-                                        @endif
+{{-- DOTS --}}
+@if ($current + 1 < $last)
+    <span class="page-dots">…</span>
+@endif
 
-                                        {{-- NEXT --}}
-                                        @if ($users->hasMorePages())
-                                            <a href="{{ $users->nextPageUrl() }}" class="page-btn">
-                                                <i class="fa fa-chevron-right"></i>
-                                            </a>
-                                        @else
-                                            <span class="page-btn disabled">
-                                                <i class="fa fa-chevron-right"></i>
-                                            </span>
-                                        @endif
+{{-- LAST PAGE --}}
+@if ($last > 1)
+    <a href="{{ $users->appends(request()->query())->url($last) }}" class="page-btn">
+        {{ $last }}
+    </a>
+@endif
+
+{{-- NEXT --}}
+@if ($users->hasMorePages())
+    <a href="{{ $users->appends(request()->query())->nextPageUrl() }}" class="page-btn">
+        <i class="fa fa-chevron-right"></i>
+    </a>
+@else
+    <span class="page-btn disabled">
+        <i class="fa fa-chevron-right"></i>
+    </span>
+@endif
+
                                     </div>
                                 </div>
                             </td>
