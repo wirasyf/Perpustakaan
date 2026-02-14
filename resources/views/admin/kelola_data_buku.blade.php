@@ -125,8 +125,21 @@
                     @endif
                     @endforeach
                 </tbody>
+
             </table>
 
+            <!-- PAGINATION START -->
+<div class="pagination-wrapper">
+    <div class="pagination-info">
+        Menampilkan {{ $books->firstItem() }}–
+        {{ $books->lastItem() }} dari
+        {{ $books->total() }} data
+    </div>
+
+    <div class="pagination-links">
+        {{ $books->appends(request()->query())->links() }}
+    </div>
+</div>
         </div>
 
     </main>
