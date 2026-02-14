@@ -245,6 +245,7 @@
     overflow:hidden;
 }
 
+
 /* HEADER */
 .card-header{
     display:flex;
@@ -423,4 +424,9 @@
     background:#bbf7d0;
     color:#15803d;
     cursor:not-allowed;
+}
+
+.icon.card {
+    background:#e0f2fe;
+    color:#0284c7;
 }
