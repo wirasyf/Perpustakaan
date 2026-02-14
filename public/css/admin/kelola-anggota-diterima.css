@@ -605,8 +605,10 @@ tbody tr:hover {
 table tfoot,
 table tfoot td {
     border-top: none !important;
-=======
 
+    
+
+}
 /* ===============================
    SIMPLE PAGINATION
 =================================*/
