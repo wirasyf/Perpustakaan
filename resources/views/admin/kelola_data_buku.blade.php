@@ -125,8 +125,20 @@
                     @endif
                     @endforeach
                 </tbody>
-            </table>
 
+            </table>
+            <!-- PAGINATION START -->
+<div class="pagination-wrapper">
+    <div class="pagination-info">
+        Menampilkan {{ $books->firstItem() }}–
+        {{ $books->lastItem() }} dari
+        {{ $books->total() }} data
+    </div>
+
+    <div class="pagination-links">
+        {{ $books->appends(request()->query())->links() }}
+    </div>
+</div>
         <tfoot>
             <tr>
                 <td colspan="8">
@@ -203,10 +215,6 @@
     </table>
 
 </div>
-
-
-
-@endsection
         </div>
 
     </main>
@@ -325,3 +333,6 @@ function toggleFilterKategori(){
         if (e.target === this) closeDetail();
     });
 </script>
+
+
+@endsection
