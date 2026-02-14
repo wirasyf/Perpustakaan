@@ -25,11 +25,14 @@
 
     <!-- FOTO -->
     <div class="photo-upload">
-      <input type="file" id="photo" name="photo" hidden>
-      <label for="photo" class="photo-circle">
-        <i class="fa-solid fa-camera"></i>
-      </label>
-    </div>
+  <input type="file" id="photo" name="photo_profile" accept="image/*" hidden>
+  
+  <label for="photo" class="photo-circle" id="photoCircle">
+      <i class="fa-solid fa-camera" id="cameraIcon"></i>
+      <img id="previewImage" alt="Preview">
+  </label>
+</div>
+
 
     <label>Nama Lengkap</label>
     <input type="text" name="name" placeholder="Nama Lengkap" value="{{ old('name') }}">
@@ -53,11 +56,11 @@
     <div class="row-input">
       <div>
         <label>NIS</label>
-        <input type="text" id="nis_field" placeholder="NIS">
+        <input type="text" name="nis_nisn" placeholder="NIS" value="{{ old('nis_nisn') }}">
       </div>
       <div>
         <label>Kelas</label>
-        <input type="text" name="kelas" placeholder="Kelas">
+        <input type="text" name="kelas" placeholder="Kelas" value="{{ old('kelas') }}">
       </div>
     </div>
 
@@ -99,20 +102,26 @@
         });
     });
 
-    // Fungsi untuk menggabungkan NIS dan NISN
-    function updateNisNisn() {
-        const nisField = document.getElementById('nis_field').value;
-        const nisnField = document.getElementById('nisn_field').value;
-        const combined = (nisField || nisnField) ? nisField + '-' + nisnField : '';
-        document.getElementById('nis_nisn_combined').value = combined;
+const photoInput = document.getElementById('photo');
+const previewImage = document.getElementById('previewImage');
+const cameraIcon = document.getElementById('cameraIcon');
+
+photoInput.addEventListener('change', function() {
+    const file = this.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            previewImage.style.display = 'block';
+            cameraIcon.style.display = 'none';
+        }
+
+        reader.readAsDataURL(file);
     }
+});
 
-    // Update saat input berubah
-    document.getElementById('nis_field').addEventListener('input', updateNisNisn);
-    document.getElementById('nisn_field').addEventListener('input', updateNisNisn);
-
-    // Update saat form di-submit
-    document.querySelector('form').addEventListener('submit', updateNisNisn);
 </script>
 
 </body>

@@ -68,7 +68,7 @@
 
                 <p class="register">
                     Belum Memiliki Akun?
-                    <a href="{{route('registerAnggota.show')}}">Daftar</a>
+                    <a href="{{ route('home') }}#register">Daftar</a>
                 </p>
 
             </form>
@@ -76,6 +76,20 @@
 
     </div>
 </div>
+@if(session('success'))
+<div class="toast success" id="toast">
+    <i class="fa-solid fa-circle-check"></i>
+    <span>{{ session('success') }}</span>
+</div>
+@endif
+
+@if(session('error'))
+<div class="toast error" id="toast">
+    <i class="fa-solid fa-circle-xmark"></i>
+    <span>{{ session('error') }}</span>
+</div>
+@endif
+
 
 <script>
     document.querySelectorAll('.pwd-toggle').forEach(function(toggle) {
@@ -91,6 +105,18 @@
                 this.classList.add('fa-eye-slash');
             }
         });
+        document.addEventListener("DOMContentLoaded", function () {
+    const toast = document.getElementById("toast");
+    if (toast) {
+        setTimeout(() => {
+            toast.classList.add("show");
+        }, 200);
+
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 4000);
+    }
+});
     });
 </script>
 

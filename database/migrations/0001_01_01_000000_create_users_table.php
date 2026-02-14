@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('kelas')->nullable();  
             $table->string('profile_photo')->nullable();  
+            $table->string('alamat')->nullable();  
             $table->timestamp('tanggal_pengajuan')->useCurrent();
             $table->rememberToken();
             $table->timestamps();

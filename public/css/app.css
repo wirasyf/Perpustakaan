@@ -342,3 +342,43 @@
     pointer-events: none;
     background: #f5f5f5;
 }
+
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 14px 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.5s ease;
+    z-index: 9999;
+    color: white;
+    min-width: 250px;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Success */
+.toast.success {
+    background: linear-gradient(135deg, #4CAF50, #2E7D32);
+}
+
+/* Error */
+.toast.error {
+    background: linear-gradient(135deg, #f44336, #c62828);
+}
+
+/* Warning */
+.toast.warning {
+    background: linear-gradient(135deg, #ff9800, #ef6c00);
+}
+
