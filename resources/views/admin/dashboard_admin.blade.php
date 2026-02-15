@@ -70,6 +70,17 @@
         </div>
     </div>
 
+    <div class="stat-box red">
+       <div class="stat-left">
+            <p class="title">Terlambat</p>
+            <h2>{{ number_format($totalTerlambat) }}</h2>
+            <span class="down">Total transaksi terlambat</span>
+        </div>
+        <div class="stat-icon">
+            <i class="fa fa-clock"></i>
+        </div>
+    </div>
+
 </section>
 
 <!-- TABLE PENGUNJUNG -->

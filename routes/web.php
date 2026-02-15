@@ -12,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LaporanKehilanganController;
 use App\Http\Controllers\SiswaDashboardController;
+use App\Http\Controllers\AdminDashboardController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -20,14 +21,9 @@ Route::get('/', function () {
 
 
 // ADMIN
-Route::get('/dashboard', action: function () {
-    if (Auth::user()?->role !== 'admin') {
-    abort(403);
-    }   
-
-    return view('admin.dashboard');
-})->name('dashboard.admin')->middleware('auth');
-
+Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+    ->name('dashboard.admin')
+    ->middleware('auth');
 
 Route::get('/pinjam-buku', function () {
     return view('siswa.pinjam-buku');
@@ -310,6 +306,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-transactions', [TransactionController::class, 'myTransactions'])->name('transactions.mine');
 
     Route::get('/cek-jatuh-tempo', [TransactionController::class, 'cekJatuhTempo']);
+
+    Route::get('/cek-terlambat', [TransactionController::class, 'cekKeterlambatan']);
 });
 
 /*

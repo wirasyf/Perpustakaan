@@ -366,6 +366,27 @@ class TransactionController extends Controller
             }
         }
     }
+
+    public function cekKeterlambatan()
+    {
+        $today = Carbon::today();
+
+        $terlambat = Transaction::where('status', 'belum_dikembalikan')
+            ->whereDate('tanggal_jatuh_tempo', '<', $today)
+            ->get();
+
+        foreach ($terlambat as $trx) {
+            $trx->update([
+                'status' => 'terlambat'
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Status keterlambatan berhasil diperbarui',
+            'jumlah' => $terlambat->count()
+        ]);
+    }
+
 }
 
     
