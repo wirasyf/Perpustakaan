@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BookshelfController;
@@ -10,9 +9,9 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VisitController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LaporanKehilanganController;
 use App\Http\Controllers\SiswaDashboardController;
-use App\Http\Controllers\AdminDashboardController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -21,34 +20,32 @@ Route::get('/', function () {
 
 
 // ADMIN
-// Route::get('/dashboard', action: function () {
-//     if (Auth::user()?->role !== 'admin') {
-//     abort(403);
-//     }   
+Route::get('/dashboard', action: function () {
+    if (Auth::user()?->role !== 'admin') {
+    abort(403);
+    }   
 
-//     return view('admin.dashboard_admin');
-// })->name('dashboard.admin')->middleware('auth');
+    return view('admin.dashboard');
+})->name('dashboard.admin')->middleware('auth');
 
-Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard.admin')->middleware('auth');
 
-// Pinjam Buku - Route ke controller
-Route::get('/pinjam-buku', [BookController::class, 'browse'])->name('pinjam-buku')->middleware('auth');
+Route::get('/pinjam-buku', function () {
+    return view('siswa.pinjam-buku');
+});
 
-// Pengembalian Buku - Route ke controller
-Route::get('/pengembalian-buku', [TransactionController::class, 'myTransactions'])->name('anggota.pengembalian')->middleware('auth');
+
+Route::get('/pengembalian-buku', function () {
+    if (Auth::user()?->role !== 'anggota') {
+        abort(403);
+    }
+
+    return view('siswa.pengembalian-buku');
+})->name('anggota.pengembalian')->middleware('auth');
+
 
 Route::get('/crud_kelola_buku', function () {
     return view('admin.CRUD_kelola_buku');
 });
-
-Route::middleware(['auth'])->group(function () {
-
-    Route::get('/admin/laporan-kunjungan', function () {
-        return view('admin.laporan-kunjungan');
-    })->name('admin.laporan.kunjungan');
-
-});
-
 
 
 
@@ -70,9 +67,9 @@ Route::get('/kelola_anggota-ditolak', function () {
 })->middleware('auth');
 
 // LAPORAN KEHILANGAN
-Route::get('/laporan_data_kehilangan', [ReportController::class, 'index'])
-    ->name('admin.laporan_data_kehilangan')
-    ->middleware('auth');
+Route::get('/laporan_data_kehilangan', function () {
+    return view('admin.laporan_data_kehilangan');
+})->middleware('auth');
 
 // TRANSAKSI (BUKAN ADMIN)
 Route::get('/transaksi', function () {
@@ -87,8 +84,16 @@ Route::get('/transaksi', function () {
 Route::get('/dashboard-anggota', [SiswaDashboardController::class, 'index'])
     ->name('dashboard.anggota')
     ->middleware('auth');
+Route::get('/kehilangan-buku', function () {
+    if (Auth::user()?->role !== 'anggota') {
+        abort(403);
+    }
+
+    return 'Halaman Kehilangan Buku (anggota)';
+})->middleware('auth');
 
 
+<<<<<<< HEAD
 // PROFILE ROUTES
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.show');
@@ -106,6 +111,14 @@ Route::middleware(['auth'])->group(function () {
 //      Route::get('/profile-siswa', function () {
 //     return view('auth.profile.siswa.profile-siswa');
 // })->name('profile');
+=======
+Route::get('/laporan_kehilangan', function () {
+    return view('siswa.laporan_kehilangan');
+});
+
+
+
+>>>>>>> f1aaf1b (Menambahkan route cek jatuh tempo)
 /*
 |--------------------------------------------------------------------------
 | Authentication Routes
@@ -148,13 +161,6 @@ Route::middleware('auth')->group(function () {
 
     Route::put('/laporan-kehilangan/{id}', [LaporanKehilanganController::class, 'update'])
         ->name('laporan-kehilangan.update');
-
-    // Aksi kembalikan buku dari laporan (oleh anggota)
-    Route::post('/laporan-kehilangan/{id}/kembalikan', [LaporanKehilanganController::class, 'kembalikan'])
-        ->name('laporan-kehilangan.kembalikan');
-
-    Route::delete('/laporan-kehilangan/{id}', [LaporanKehilanganController::class, 'destroy'])
-        ->name('laporan-kehilangan.destroy');
 });
 
 /*
@@ -266,7 +272,7 @@ Route::middleware('auth')->group(function () {
     // Cari buku
     Route::get('/books/search/results', [BookController::class, 'search'])->name('books.search');
 
-    Route::get('/pinjam-buku', [BookController::class, 'browse'])->name('books.browse');
+    
 });
 
 /*
@@ -276,14 +282,14 @@ Route::middleware('auth')->group(function () {
 */
 
 Route::middleware('auth')->group(function () {
-    // List semua peminjaman (untuk admin)
+    // List semua peminjaman
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
     
     // Form peminjaman buku
     Route::get('/transactions/create', [TransactionController::class, 'create'])->name('transactions.create');
     
     // Simpan peminjaman baru
-    Route::post('/books/{book}/pinjam', [TransactionController::class, 'pinjam'])->name('books.pinjam');
+    Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
     
     // Detail peminjaman
     Route::get('/transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
@@ -294,32 +300,16 @@ Route::middleware('auth')->group(function () {
     // Update peminjaman (admin)
     Route::put('/transactions/{transaction}', [TransactionController::class, 'update'])->name('transactions.update');
     
+    // Pengembalian buku
+    Route::put('/transactions/{transaction}/return', [TransactionController::class, 'returnBook'])->name('transactions.return');
+    
     // Hapus peminjaman (admin)
     Route::delete('/transactions/{transaction}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
     
     // Lihat peminjaman saya (anggota)
     Route::get('/my-transactions', [TransactionController::class, 'myTransactions'])->name('transactions.mine');
-    
-    // Ajukan pengembalian
-    Route::post('/transactions/{id}/ajukan-pengembalian', [TransactionController::class, 'ajukanPengembalian'])->name('transactions.ajukanPengembalian');
-    
-    // Terima pengembalian (admin)
-    Route::post('/transactions/{id}/terima-pengembalian', [TransactionController::class, 'terimaPengembalian'])->name('transactions.terimaPengembalian');
-    
-    // Tolak pengembalian (admin)
-    Route::post('/transactions/{id}/tolak-pengembalian', [TransactionController::class, 'tolakPengembalian'])->name('transactions.tolakPengembalian');
-    
-    // Ajukan ulang pengembalian (anggota)
-    Route::post('/transactions/{id}/ajukan-ulang', [TransactionController::class, 'ajukanUlang'])->name('transactions.ajukanUlang');
-    
-    // Tandai buku hilang
-    Route::post('/transactions/{id}/tandai-hilang', [TransactionController::class, 'tandaiHilang'])->name('transactions.tandaiHilang');
-    
-    // Perpanjang peminjaman
-    Route::post('/transactions/{id}/perpanjang', [TransactionController::class, 'perpanjang'])->name('transactions.perpanjang');
-    
-    // Cari transaksi
-    Route::get('/transactions/cari', [TransactionController::class, 'search'])->name('transactions.search');
+
+    Route::get('/cek-jatuh-tempo', [TransactionController::class, 'cekJatuhTempo']);
 });
 
 /*
@@ -389,7 +379,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/visits/date/search', [VisitController::class, 'getByDate'])->name('visits.by-date');
 
     // Check-in kunjungan untuk anggota
-    Route::post('/check-in', [VisitController::class, 'checkIn'])->name('checkin');
+    Route::post('/check-in', [VisitController::class, 'checkIn'])->name('visit.check-in');
 
     // Riwayat kunjungan dan transaksi untuk anggota
     Route::get('/my-visits-history', [VisitController::class, 'history'])->name('visit.history');
@@ -410,9 +400,26 @@ Route::middleware(['auth'])->group(function () {
         ->name('profile.photo.delete');
 
 });
-    Route::get('/Dashboard_Admin', function () {
-    return view('Admin.Dashboard_Admin');
+
+Route::middleware('auth')->prefix('admin')->group(function () {
+
+    // TRANSAKSI
+    Route::get('/cetak/transaksi/print', [CetakController::class, 'transaksiPrint']);
+    Route::get('/cetak/transaksi/pdf', [CetakController::class, 'transaksiPdf']);
+    Route::get('/cetak/transaksi/excel', [CetakController::class, 'transaksiExcel']);
+
+    // KEHILANGAN
+    Route::get('/cetak/kehilangan/print', [CetakController::class, 'kehilanganPrint']);
+    Route::get('/cetak/kehilangan/pdf', [CetakController::class, 'kehilanganPdf']);
+    Route::get('/cetak/kehilangan/excel', [CetakController::class, 'kehilanganExcel']);
+
+    // KUNJUNGAN
+    Route::get('/cetak/kunjungan/print', [CetakController::class, 'kunjunganPrint']);
+    Route::get('/cetak/kunjungan/pdf', [CetakController::class, 'kunjunganPdf']);
+    Route::get('/cetak/kunjungan/excel', [CetakController::class, 'kunjunganExcel']);
+
 });
+
 
 
 Route::get('/cetak-peminjaman', function () {
@@ -442,28 +449,4 @@ Route::get('/edit-foto-profil', function () {
 
 Route::get('/cetak-transaksi', function () {
     return view('cetak.cetak-transaksi');
-});
-
-Route::get('/cetak-daftar-pengunjung', function () {
-    return view('cetak.cetak-daftar-pengunjung');
-});
-
-Route::get('/dashboard-admin', function () {
-    return view('admin.dashboard_admin');
-});
-
-Route::get('/cetak-kehilangan', function () {
-    return view('cetak.cetak-kehilangan');
-});
-Route::get('/edit-foto-profile-admin', function () {
-    return view('admin.edit-foto-profile-admin');
-});
-
-//edit profil admin
-Route::get('/edit-profil', function () {
-    return view('admin.edit-profil');
-});
-
-Route::get('/edit-password', function () {
-    return view('admin.edit-password');
 });
