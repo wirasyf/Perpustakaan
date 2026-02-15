@@ -36,6 +36,7 @@ class CetakController extends Controller
         return Pdf::loadView('pdf.transaction-id', compact('transaction'))
             ->setPaper('A5')
             ->stream("transaksi-$id.pdf");
+            return view('cetak.nota.cetak-peminjaman', compact('transaction'));
     }
 
     // =====================================================

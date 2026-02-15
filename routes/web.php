@@ -13,6 +13,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LaporanKehilanganController;
 use App\Http\Controllers\SiswaDashboardController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\CetakController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -89,7 +90,6 @@ Route::get('/kehilangan-buku', function () {
 })->middleware('auth');
 
 
-<<<<<<< HEAD
 // PROFILE ROUTES
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.show');
@@ -99,22 +99,12 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
 });
 
-// Route::get('/profile_admin', [ProfileController::class, 'show'])
-//         ->name('profile.show');
-
-
-//         // Profile-siswa
-//      Route::get('/profile-siswa', function () {
-//     return view('auth.profile.siswa.profile-siswa');
-// })->name('profile');
-=======
 Route::get('/laporan_kehilangan', function () {
     return view('siswa.laporan_kehilangan');
 });
 
 
 
->>>>>>> f1aaf1b (Menambahkan route cek jatuh tempo)
 /*
 |--------------------------------------------------------------------------
 | Authentication Routes
@@ -416,35 +406,13 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/cetak/kunjungan/pdf', [CetakController::class, 'kunjunganPdf']);
     Route::get('/cetak/kunjungan/excel', [CetakController::class, 'kunjunganExcel']);
 
+    Route::get('/filter-daftar-kunjungan', function () { return view('cetak.laporan.cetak-daftar-pengunjung');})->name('cetak.filter-daftar-kunjungan');
+    Route::get('/filter-transaksi', function () { return view('cetak.laporan.cetak-transaksi');})->name('cetak.filter-transaksi');
+    Route::get('/filter-kehilangan', function () { return view('cetak.laporan.cetak-kehilangan');})->name('cetak.filter-kehilangan');
+
 });
 
-
-
-Route::get('/cetak-peminjaman', function () {
-    return view('cetak.cetak-peminjaman');
-});
-
-
-Route::get('/cetak-pengembalian', function () {
-    return view('cetak.cetak-pengembalian');
-});
-
-
-Route::get('/dashboard-siswa', function () {
-    return view('siswa.dashboard-siswa');
-});
-
-
-Route::get('/edit-profil-user', function () {
-    return view('siswa.edit-profil-user');
-});
-
-
-Route::get('/edit-foto-profil', function () {
-    return view('siswa.edit-foto-profil');
-});
-
-
-Route::get('/cetak-transaksi', function () {
-    return view('cetak.cetak-transaksi');
+Route::middleware(auth())->group(function () {
+    Route::get('/cetak-nota-transaksi/{id}', [CetakController::class, 'notaTransaksi'])->name('cetak-nota-transaksi');
+    Route::get('/cetak-nota-kehilangan/{id}', [CetakController::class, 'notaKehilangan'])->name('cetak-nota-kehilangan');
 });
