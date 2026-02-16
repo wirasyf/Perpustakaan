@@ -458,3 +458,7 @@ Route::get('/edit-profil', function () {
 Route::get('/edit-password', function () {
     return view('admin.edit-password');
 });
+
+Route::get('/cetak-kartu', function () {
+    return view('cetak.cetak-kartu');
+});
