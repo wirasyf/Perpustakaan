@@ -38,13 +38,14 @@ class Transaction extends Model
         return $this->belongsTo(Book::class, 'buku_id');
     }
 
-    public function reports()
+   public function reports()
     {
-        return $this->hasOne(Report::class, 'transactions_id');
+        return $this->hasOne(Report::class, 'transaction_id');
     }
 
     public function visits()
     {
-        return $this->hasMany(Visit::class, 'transactions_id');
+        return $this->hasMany(Visit::class, 'transaction_id');
     }
+
 }
