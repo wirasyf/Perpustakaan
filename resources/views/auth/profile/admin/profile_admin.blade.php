@@ -1,51 +1,9 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Admin</title>
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body>
-
-<div class="wrapper">
-
-<!-- ================= SIDEBAR ================= -->
-<aside class="sidebar">
-    <div class="logo">
-        <img src="{{ asset('img/logo.png') }}">
-    </div>
-
-    <ul class="menu">
-        <li><a href="/kelola_data_buku"><i class="fa fa-book"></i> Kelola Data Buku</a></li>
-        <li><a href="/kelola_anggota"><i class="fa fa-users"></i> Kelola Anggota</a></li>
-        <li><a href="/transactions"><i class="fa fa-right-left"></i> Transaksi</a></li>
-        <li><a href="/daftar_pengunjung"><i class="fa fa-list"></i> Daftar Pengunjung</a></li>
-        <li><a href="/laporan_data_kehilangan"><i class="fa fa-file"></i> Laporan Kehilangan</a></li>
-
-        <li class="menu-profile">
-            <a href="/profile_admin">
-                <i class="fa fa-user"></i> Profil
-            </a>
-        </li>
-    </ul>
-</aside>
-
-<!-- ================= MAIN CONTENT ================= -->
-<main class="main-content">
-
-<!-- TOPBAR -->
-<header class="topbar">
-    <i class="fa fa-bars"></i>
-    <div class="user">
-        <span>Seulgi</span>
-        <small>Admin</small>
-        <img src="{{ asset('img/profile.png') }}">
-    </div>
-</header>
+@extends('layouts.app')
+@section('title', 'Profil Admin')
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/admin/profile-admin.css') }}">
+@endpush
+@section('content')
 
 <!-- HEADER PROFIL -->
 <div class="profile-header">
@@ -175,6 +133,4 @@ document.addEventListener('click', function (e) {
 });
 
 </script>
-
-</body>
-</html>
+@endsection

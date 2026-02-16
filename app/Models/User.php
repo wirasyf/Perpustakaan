@@ -27,6 +27,7 @@ class User extends Authenticatable
         'kelas',
         'status',
         'profile_photo',
+        'alamat',   
         'tanggal_pengajuan',
     ];
 

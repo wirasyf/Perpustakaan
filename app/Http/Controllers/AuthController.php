@@ -39,7 +39,7 @@ class AuthController extends Controller
                 Auth::user()->role === 'admin'
                     ? 'dashboard.admin'
                     : 'dashboard.anggota'
-                );
+                )->with('success', 'Login berhasil!');
 
             }
 
@@ -92,37 +92,52 @@ class AuthController extends Controller
     }
 
     public function registerAnggota(Request $request)
-    {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users',
-            'nis_nisn' => 'nullable|string|max:255',
-            'telephone' => 'nullable|string|max:255',
-            'password' => 'required|string|min:6',
-            'kelas' => 'nullable|string|max:255',
-            'remember' => 'nullable|boolean',
-        ]);
+{
+    $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'username' => 'required|string|max:255|unique:users',
+        'nis_nisn' => 'nullable|string|max:255',
+        'telephone' => 'nullable|string|max:255',
+        'password' => 'required|string|min:6',
+        'kelas' => 'nullable|string|max:255',
+        'alamat' => 'nullable|string|max:255',
+        'photo_profile' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
 
-        $user = User::create([
-            'name' => $data['name'],
-            'username' => $data['username'],
-            'nis_nisn' => $data['nis_nisn'],
-            'telephone' => $data['telephone'],
-            'password' => Hash::make($data['password']),
-            'kelas' => $data['kelas'],
-            'role' => 'anggota',
-            'status' => 'menunggu',
-        ]);
+    // Upload foto jika ada
+    $photoPath = null;
 
-        return redirect()->route('login')->with('success', 'Registrasi anggota berhasil, Silahkan login.');
+    if ($request->hasFile('photo_profile')) {
+        $file = $request->file('photo_profile');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->move(public_path('uploads/profile'), $filename);
 
+        $photoPath = 'uploads/profile/' . $filename;
     }
+
+    $user = User::create([
+        'name' => $data['name'],
+        'username' => $data['username'],
+        'nis_nisn' => $data['nis_nisn'],
+        'telephone' => $data['telephone'],
+        'password' => Hash::make($data['password']),
+        'kelas' => $data['kelas'],
+        'alamat' => $data['alamat'],
+        'photo_profile' => $photoPath,
+        'role' => 'anggota',
+        'status' => 'menunggu',
+    ]);
+
+    return redirect()->route('login')
+        ->with('success', 'Registrasi anggota berhasil, mohon tunggu konfirmasi admin.');
+}
+
 
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
+        return redirect('/')->with('success', 'Logout berhasil!');
     }
 }

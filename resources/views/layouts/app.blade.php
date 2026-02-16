@@ -81,6 +81,29 @@
 
 </div>
 
+{{-- TOAST GLOBAL --}}
+@if(session('success'))
+<div class="toast success" id="toast">
+    <i class="fa-solid fa-circle-check"></i>
+    <span>{{ session('success') }}</span>
+</div>
+@endif
+
+@if(session('error'))
+<div class="toast error" id="toast">
+    <i class="fa-solid fa-circle-xmark"></i>
+    <span>{{ session('error') }}</span>
+</div>
+@endif
+
+@if(session('warning'))
+<div class="toast warning" id="toast">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <span>{{ session('warning') }}</span>
+</div>
+@endif
+
+{{-- SCRIPT GLOBAL --}}
 <script>
 function toggleUserPopup(event) {
     event.stopPropagation();
@@ -104,6 +127,20 @@ document.querySelectorAll('.btn-profile').forEach(btn => {
         document.getElementById('userPopup').classList.remove('show');
     });
 });
+document.addEventListener("DOMContentLoaded", function () {
+    const toast = document.getElementById("toast");
+    if (toast) {
+
+        setTimeout(() => {
+            toast.classList.add("show");
+        }, 200);
+
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 4000);
+    }
+});
+
 </script>
 
 </body>

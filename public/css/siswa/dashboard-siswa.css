@@ -430,3 +430,23 @@
     background:#e0f2fe;
     color:#0284c7;
 }
+
+/* ===== NOTIFICATION ===== */
+
+.notif-danger { 
+    background:#ffe5e5; 
+}
+
+.notif-warning { 
+    background:#fff8e1; 
+}
+
+.notif-info { 
+    background:#e3f2fd; 
+}
+
+.notification-section li {
+    padding:10px;
+    border-radius:8px;
+    margin-bottom:8px;
+}

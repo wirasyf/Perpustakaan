@@ -6,6 +6,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Book;
 use App\Models\Visit;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -232,7 +233,12 @@ class TransactionController extends Controller
     public function myTransactions()
     {
         $user = Auth::user();
-        $transactions = Transaction::where('user_id', $user->id)->with('book')->get();
+        // paginate user's transactions so view pagination works
+        $transactions = Transaction::where('user_id', $user->id)
+            ->with('book')
+            ->latest()
+            ->paginate(10);
+
         return view('siswa.pengembalian-buku', compact('transactions'));
     }
 
@@ -328,6 +334,59 @@ class TransactionController extends Controller
 
         return view('siswa.pengembalian-buku', compact('transactions'));
     }
+
+    public function cekJatuhTempo()
+    {
+        $today = Carbon::today();
+
+        $peminjaman = Peminjaman::where('status', 'dipinjam')->get();
+
+        foreach ($peminjaman as $pinjam) {
+
+            // H-1 Reminder
+            if ($pinjam->due_date->subDay()->isSameDay($today)) {
+            
+                Notifikasi::create([
+                    'user_id' => $pinjam->user_id,
+                    'pesan' => 'Besok adalah batas pengembalian buku Anda.'
+                ]);
+            }
+
+            // Sudah lewat jatuh tempo
+            if ($today->greaterThan($pinjam->due_date)) {
+            
+                $pinjam->update([
+                    'status' => 'terlambat'
+                ]);
+
+                Notifikasi::create([
+                    'user_id' => $pinjam->user_id,
+                    'pesan' => 'Anda terlambat mengembalikan buku.'
+                ]);
+            }
+        }
+    }
+
+    public function cekKeterlambatan()
+    {
+        $today = Carbon::today();
+
+        $terlambat = Transaction::where('status', 'belum_dikembalikan')
+            ->whereDate('tanggal_jatuh_tempo', '<', $today)
+            ->get();
+
+        foreach ($terlambat as $trx) {
+            $trx->update([
+                'status' => 'terlambat'
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Status keterlambatan berhasil diperbarui',
+            'jumlah' => $terlambat->count()
+        ]);
+    }
+
 }
 
     

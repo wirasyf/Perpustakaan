@@ -334,6 +334,21 @@ form {
   font-size: 22px;
   background: #fff;
   transition: all .2s ease;
+  position: relative;     /* supaya img bisa absolute */
+  overflow: hidden;   
+}
+.photo-circle i {
+  font-size: 22px;
+  color: #666;
+  z-index: 1;
+}
+.photo-circle img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      /* biar tidak gepeng */
+  display: none;          /* sembunyikan default */
+  z-index: 0;
 }
 
 
@@ -353,4 +368,37 @@ button {
   font-weight: 500;
   cursor: pointer;
   margin-top: 10px;
+}
+
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 14px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.5s ease;
+    z-index: 9999;
+    color: white;
+}
+
+/* SUCCESS */
+.toast.success {
+    background: #4CAF50;
+}
+
+/* ERROR */
+.toast.error {
+    background: #f44336;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
 }

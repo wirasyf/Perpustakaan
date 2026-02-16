@@ -36,6 +36,10 @@ class AdminDashboardController extends Controller
         //Total Buku Hilang
         $totalLostBooks = Report::where('status', 'buku_hilang')->count();
 
+        // Total keterlambatan
+        $totalTerlambat = Transaction::where('status', 'terlambat')->count();
+
+
 
         // =====================
         // LIST DATA DASHBOARD
@@ -56,14 +60,16 @@ class AdminDashboardController extends Controller
         // KIRIM KE VIEW
         // =====================
 
-        return view('admin.dashboard_admin', compact(
-        'totalBook',
-        'totalBorrow',
-        'totalReturn',
-        'totalVisit',
-        'totalLostBooks',
-        'todayVisit',
-        'latestReport'
-    ));
+       return view('admin.dashboard_admin', compact(
+            'totalBook',
+            'totalBorrow',
+            'totalReturn',
+            'totalVisit',
+            'totalLostBooks',
+            'totalTerlambat',
+            'todayVisit',
+            'latestReport'
+        ));
+
     }     
 }
