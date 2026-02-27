@@ -32,7 +32,7 @@
                             name="username" 
                             id="username"
                             class="form-control {{ $errors->has('username') ? 'error' : '' }}" 
-                            placeholder="silkyara@gmail.com"
+                            placeholder="Masukkan username Anda"
                             value="{{ old('username') }}"
                             required
                         >
@@ -53,7 +53,7 @@
                                 name="password" 
                                 id="password"
                                 class="form-control {{ $errors->has('password') ? 'error' : '' }}" 
-                                placeholder="••••••••••••••••••••"
+                                placeholder="Masukkan password Anda"
                                 required
                             >
                             <i class="fa-solid fa-eye-slash pwd-toggle"></i>

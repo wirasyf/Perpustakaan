@@ -39,41 +39,41 @@
 
                     <div class="form-group">
                         <label for="name">Nama Lengkap</label>
-                        <input type="text" name="name" id="name" class="form-control" placeholder="Nama Lengkap" value="{{ old('name') }}" required>
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Masukkan nama lengkap Anda" value="{{ old('name') }}" required>
                     </div>
 
                     <div class="form-group">
                         <label for="reg-username">Username</label>
-                        <input type="text" name="username" id="reg-username" class="form-control" placeholder="Username" value="{{ old('username') }}" required>
+                        <input type="text" name="username" id="reg-username" class="form-control" placeholder="Masukkan username Anda" value="{{ old('username') }}" required>
                     </div>
 
                     <div class="form-group">
                         <label for="telephone">No. Telp</label>
-                        <input type="text" name="telephone" id="telephone" class="form-control" placeholder="08xxxxxxxxxx" value="{{ old('telephone') }}" required>
+                        <input type="text" name="telephone" id="telephone" class="form-control" placeholder="Masukkan nomor telepon Anda" value="{{ old('telephone') }}" required>
                     </div>
 
                     <div class="form-group">
                         <label for="reg-password">Password</label>
                         <div class="input-container">
-                            <input type="password" name="password" id="reg-password" class="form-control" placeholder="Password" required>
+                            <input type="password" name="password" id="reg-password" class="form-control" placeholder="Masukkan password Anda" required>
                             <i class="fa-solid fa-eye-slash pwd-toggle"></i>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="alamat">Alamat</label>
-                        <input type="text" name="alamat" id="alamat" class="form-control" placeholder="Alamat" required>
+                        <input type="text" name="alamat" id="alamat" class="form-control" placeholder="Masukkan alamat Anda" required>
                     </div>
 
                     <!-- NIS & Kelas -->
                     <div class="form-row">
                         <div class="form-group">
                             <label for="nis_nisn">NIS</label>
-                            <input type="text" name="nis_nisn" id="nis_nisn" class="form-control" placeholder="NIS" value="{{ old('nis_nisn') }}" required>
+                            <input type="text" name="nis_nisn" id="nis_nisn" class="form-control" placeholder="Masukkan NIS Anda" value="{{ old('nis_nisn') }}" required>
                         </div>
                         <div class="form-group">
                             <label for="kelas">Kelas</label>
-                            <input type="text" name="kelas" id="kelas" class="form-control" placeholder="Kelas" value="{{ old('kelas') }}" required>
+                            <input type="text" name="kelas" id="kelas" class="form-control" placeholder="Masukkan kelas Anda" value="{{ old('kelas') }}" required>
                         </div>
                     </div>
 
