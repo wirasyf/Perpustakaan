@@ -1,11 +1,6 @@
-* {
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
+/* global reset removed - handled by app.css */
 
-body {
-    margin: 0;
-}
+/* body reset removed - handled by app.css */
 
 /* overlay */
 .overlay {

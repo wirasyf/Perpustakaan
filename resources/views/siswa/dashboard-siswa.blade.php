@@ -11,196 +11,131 @@
 
 <main class="main-content">
 
-    <!-- HEADER -->
-    <div class="header-card">
-        <div class="header-left">
-            <div class="header-icon">
-                <i class="fa fa-user"></i>
-            </div>
-            <div>
-                <h3>Hello {{ auth()->user()->name ?? 'Siswa' }} 👋</h3>
-                <p>Selamat datang di perpustakaan</p>
-            </div>
+    <!-- HERO SECTION -->
+    <div class="hero-card">
+        <div class="hero-left">
+            @php
+                $firstName = explode(' ', auth()->user()->name ?? 'Siswa')[0];
+            @endphp
+            <h1 class="hero-greeting">Hola, {{ $firstName }}!</h1>
+            <p class="hero-subtext">Selamat Datang Di Edutech Library</p>
         </div>
-        <img src="{{ asset('img/book.png') }}" class="header-img">
+        <img src="{{ asset('img/hero.png') }}" alt="Welcome Illustration" class="hero-img">
     </div>
 
-    <!-- STATS -->
-    <section class="stats-modern">
-
-        <div class="stat-box blue">
-            <div class="stat-left">
-                <p class="title">Sedang Dipinjam</p>
-                <h2>{{ $totalDipinjam }}</h2>
-            </div>
-            <div class="stat-icon">
-                <i class="fa fa-book"></i>
-            </div>
-        </div>
-
-        <div class="stat-box orange">
-            <div class="stat-left">
-                <p class="title">Terlambat</p>
-                <h2>{{ $totalTerlambat }}</h2>
-            </div>
-            <div class="stat-icon">
-                <i class="fa fa-circle-exclamation"></i>
-            </div>
-        </div>
-
-        <div class="stat-box green">
-    <div class="stat-left">
-        <p class="title">Sudah Dikembalikan</p>
-        <h2>{{ $totalPengembalian }}</h2>
-    </div>
-        </div>
-    <div class="stat-box red">
-            <div class="stat-left">
-                <p class="title">Buku Hilang</p>
-                <h2>{{ $totalBukuHilang }}</h2>
-            </div>
-            <div class="stat-icon">
-                <i class="fa fa-flag"></i>
-            </div>
-        </div>
-
-</section>
-
-    <!-- HADIR -->
-    <section class="hadir-section">
-
-        <div class="hadir-card">
-            <div class="hadir-left">
-                <div class="hadir-icon">
-                    <i class="fa fa-user-check"></i>
-                </div>
-                <div class="hadir-text">
-                    <h3>Kunjungan Perpustakaan</h3>
-                    <p>Klik tombol hadir untuk check-in hari ini</p>
-                </div>
-            </div>
-
-            <button class="btn-hadir-action"
-                id="btnHadir"
-                {{ $kunjunganHariIni ? 'disabled' : '' }}>
-
-                @if($kunjunganHariIni)
-                    <i class="fa fa-check"></i> Sudah Hadir
-                @else
-                    <i class="fa fa-check-circle"></i> Hadir Sekarang
-                @endif
-            </button>
-
-        </div>
+    <!-- STATS (5 CARDS) -->
+    <section class="stats-grid">
         
-            <!-- BUTTON CETAK KARTU ANGGOTA -->
-            <div class="cetak-card">
-                <div class="cetak-left">
-                    <div class="cetak-icon">
-                        <i class="fa fa-id-card"></i>
-                    </div>
-                    <div class="cetak-text">
-                        <h3>Kartu Anggota</h3>
-                        <p>Unduh kartu anggota perpustakaan kamu</p>
-                    </div>
-                </div>
-
-                <button type="button" class="btn-cetak-action" id="btnCetakKartu" onclick="downloadKartuSiswa()">
-                    <i class="fa fa-download"></i> Unduh Kartu
-                </button>
+        <div class="stat-item">
+            <div class="stat-icon-wrapper icon-yellow">
+                <i class="fa fa-book-open"></i>
             </div>
+            <div class="stat-title">Perpanjangan Buku</div>
+            <div class="stat-number">0</div>
+        </div>
+
+        <div class="stat-item">
+            <div class="stat-icon-wrapper icon-purple">
+                <i class="fa fa-book-bookmark"></i>
+            </div>
+            <div class="stat-title">Sedang dipinjam</div>
+            <div class="stat-number">{{ $totalDipinjam ?? 0 }}</div>
+        </div>
+
+        <div class="stat-item">
+            <div class="stat-icon-wrapper icon-red">
+                <i class="fa fa-book-skull"></i>
+            </div>
+            <div class="stat-title">Buku Hilang</div>
+            <div class="stat-number">{{ $totalBukuHilang ?? 0 }}</div>
+        </div>
+
+        <div class="stat-item">
+            <div class="stat-icon-wrapper icon-purple">
+                <i class="fa fa-users"></i>
+            </div>
+            <div class="stat-title">Kunjungan</div>
+            <div class="stat-number">{{ $totalKunjungan ?? 0 }}</div>
+        </div>
+
+        <div class="stat-item">
+            <div class="stat-icon-wrapper icon-red">
+                <i class="fa fa-clock-rotate-left"></i>
+            </div>
+            <div class="stat-title">Terlambat</div>
+            <div class="stat-number">{{ $totalTerlambat ?? 0 }}</div>
+        </div>
 
     </section>
 
-    <!-- MENU -->
-    <section class="dashboard-content">
-
-        <div class="card visitor-card">
-            <h4 class="card-title">
-                <i class="fa fa-users"></i> Menu
-            </h4>
-
-            <ul class="visitor-list">
-                <li>
-                    <a href="#" class="visitor-item" onclick="event.preventDefault(); downloadKartuSiswa()">
-                            <span class="icon card">
-                        <i class="fa fa-id-card"></i>
-                        </span>
-                            <span class="text">Cetak Kartu</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{ route('laporan-kehilangan.index') }}" class="visitor-item">
-                        <span class="icon warning">
-                            <i class="fa fa-triangle-exclamation"></i>
-                        </span>
-                        <span class="text">Laporan Kehilangan</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/pengembalian-buku" class="visitor-item">
-                        <span class="icon primary">
-                            <i class="fa fa-book"></i>
-                        </span>
-                        <span class="text">Kembali Buku</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/pinjam-buku" class="visitor-item">
-                        <span class="icon danger">
-                            <i class="fa fa-flag"></i>
-                        </span>
-                        <span class="text">Pinjam Buku</span>
-                    </a>
-                </li>
-
-            </ul>
-        </div>
-
-        <!-- RIWAYAT -->
-        <div class="card modern-card">
-
-            <div class="card-header">
-                <i class="fa fa-rotate-left"></i>
-                <h4>Riwayat Peminjaman</h4>
-            </div>
-
-            <div class="table-responsive">
-                <table class="modern-table">
+    <!-- MAIN CONTENT (2 COLUMNS) -->
+    <section class="content-grid">
+        
+        <!-- TRANSAKSI TABLE -->
+        <div class="table-card">
+            <h3>Riwayat Transaksi</h3>
+            <div style="overflow-x:auto;">
+                <table class="custom-table">
                     <thead>
                         <tr>
                             <th>Judul Buku</th>
                             <th>Tanggal Pinjam</th>
-                            <th>Jatuh Tempo</th>
+                            <th>Tanggal Mengganti</th>
                             <th>Status</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         @forelse($riwayatPeminjaman as $trx)
                         <tr>
                             <td>{{ $trx->book->judul ?? '-' }}</td>
-                            <td>{{ $trx->tanggal_peminjaman }}</td>
-                            <td>{{ $trx->tanggal_jatuh_tempo }}</td>
+                            <td>{{ \Carbon\Carbon::parse($trx->tanggal_peminjaman)->format('d/m/Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($trx->tanggal_jatuh_tempo)->format('d/m/Y') }}</td>
                             <td>
-                                <span class="badge">
-                                    {{ $trx->status }}
+                                @php
+                                    $statusClass = 'status-warning';
+                                    if(strtolower($trx->status) == 'sudah dikembalikan' || strtolower($trx->status) == 'dikembalikan') $statusClass = 'status-success';
+                                    if(strtolower($trx->status) == 'belum dikembalikan' || strtolower($trx->status) == 'dipinjam') $statusClass = 'status-danger';
+                                @endphp
+                                <span class="status-badge {{ $statusClass }}">
+                                    {{ ucfirst(str_replace('_', ' ', $trx->status)) }}
                                 </span>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="4" style="text-align:center">
-                                Tidak ada data
+                            <td colspan="4" style="text-align:center; padding: 20px;">
+                                Belum ada riwayat transaksi
                             </td>
                         </tr>
                         @endforelse
                     </tbody>
-
                 </table>
+            </div>
+        </div>
+
+        <!-- ACTION CARDS -->
+        <div class="action-cards">
+            
+            <!-- ABSEN CARD -->
+            <div class="action-card">
+                <h4>Lakukan Absensi Kunjungan Perpustakaan</h4>
+                <img src="{{ asset('img/hero.png') }}" alt="Absen" class="action-img">
+                <button class="btn-action" id="btnHadir" {{ ($kunjunganHariIni ?? false) ? 'disabled' : '' }}>
+                    @if($kunjunganHariIni ?? false)
+                        Sudah Hadir
+                    @else
+                        Absen Kunjungan
+                    @endif
+                </button>
+            </div>
+
+            <!-- CETAK KARTU CARD -->
+            <div class="action-card">
+                <h4>Cetak Kartu Anggota</h4>
+                <img src="{{ asset('img/hero.png') }}" alt="Cetak Kartu" class="action-img">
+                <button type="button" class="btn-action" id="btnCetakKartu" onclick="downloadKartuSiswa()">
+                    Cetak Kartu Anggota
+                </button>
             </div>
 
         </div>
@@ -210,11 +145,10 @@
 </main>
 
 <script>
+// Absensi Kunjungan
 const btnHadir = document.getElementById('btnHadir');
-
 if(btnHadir){
     btnHadir.addEventListener('click', async () => {
-
         try {
             const response = await fetch("{{ route('checkin') }}", {
                 method: "POST",
@@ -227,27 +161,25 @@ if(btnHadir){
             const data = await response.json();
 
             if(response.ok){
-                btnHadir.innerHTML = '<i class="fa fa-check"></i> Sudah Hadir';
+                btnHadir.innerHTML = 'Sudah Hadir';
                 btnHadir.disabled = true;
-                alert(data.message);
-            }else{
-                alert(data.message);
+                alert(data.message || 'Berhasil check-in');
+            } else {
+                alert(data.message || 'Gagal check-in');
             }
-
         } catch (error) {
             alert("Terjadi error");
         }
-
     });
 }
-</script>
 
-<script>
+// Download Kartu
 function downloadKartuSiswa() {
     const btn = document.getElementById('btnCetakKartu');
     const originalHTML = btn ? btn.innerHTML : '';
+    
     if (btn) {
-        btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Mengunduh...';
+        btn.innerHTML = 'Mengunduh...';
         btn.disabled = true;
     }
 

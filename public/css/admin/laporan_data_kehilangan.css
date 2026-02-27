@@ -1,7 +1,5 @@
 /* ================= LAYOUT ================= */
-.layout {
-    display: flex;
-}
+/* layout wrapper removed - handled by app.css */
 
 
 /* ================= HEADER CARD ================= */
@@ -225,10 +223,7 @@ tbody tr {
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
-    .sidebar {
-        left: -240px;
-        transition: 0.3s;
-    }
+    /* sidebar layout removed to rely on app.css */
 
     .sidebar.active {
         left: 0;

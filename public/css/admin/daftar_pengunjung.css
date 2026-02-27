@@ -156,11 +156,7 @@ tbody tr {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-    }
+    /* sidebar layout removed to rely on app.css */
 
     .topbar {
         left: 0;
@@ -242,3 +238,4 @@ table tfoot,
 table tfoot td {
     border-top: none !important;
 }
+

@@ -1,118 +1,38 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
-}
+/* global reset removed - handled by app.css */
 
-body {
-    background: #f4f6f9;
-    overflow-x: hidden;
-}
+/* body reset removed - handled by app.css */
 
 /* ===== LAYOUT ===== */
-.wrapper {
-    min-height: 100vh;
-}
+/* layout wrapper removed - handled by app.css */
 
 /* ===== SIDEBAR (FIXED & TIDAK GESER) ===== */
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-
-    width: 240px;
-    height: 100vh;
-
-    background: #fff;
-    padding: 20px;
-    border-right: 1px solid #eee;
-
-    overflow-y: auto;
-}
+/* removed .sidebar */
 
 /* LOGO */
-.logo {
-    text-align: center;
-    margin-bottom: 30px;
-}
+/* removed .logo - use app.css */
 
-.logo img {
-    max-width: 100%;
-}
+/* removed .logo img - use app.css */
 
 /* MENU */
-.menu li {
-    list-style: none;
-    margin-bottom: 8px;
-}
+/* removed menu item */
 
-.menu a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+/* removed menu item */
 
-    padding: 10px 12px;
-    text-decoration: none;
-    color: #555;
-    border-radius: 8px;
-    font-size: 14px;
-
-    transition: .2s;
-}
-
-.menu li.active a,
-.menu a:hover {
-    background: #1e88e5;
-    color: #fff;
-}
+/* removed menu item */
 
 /* ===== MAIN CONTENT ===== */
-.main-content {
-    margin-left: 240px; /* PENTING */
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
+/* removed .main-content layout - use app.css */
 
 /* ===== TOPBAR (FIXED & TIDAK GESER) ===== */
-.topbar {
-    position: fixed;
-    top: 0;
-    left: 240px;
-    right: 0;
-
-    height: 64px;
-    background: #fff;
-    border-bottom: 1px solid #eee;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 0 20px;
-    z-index: 1000;
-}
+/* removed .topbar - use app.css */
 
 /* USER */
-.user {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-}
+/* removed .user - use app.css */
 
-.user img {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-}
+/* removed .user img - use app.css */
 
 /* ===== CONTENT ===== */
-.content {
-    padding: 20px;
-    padding-top: 90px; /* ruang topbar */
-}
+/* removed .content - use app.css */
 
 /* HEADER CARD */
 .header-card {
@@ -237,9 +157,7 @@ tbody tr {
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-    .sidebar {
-        transform: translateX(-100%);
-    }
+    /* sidebar layout removed to rely on app.css */
 
     .main-content {
         margin-left: 0;
@@ -394,3 +312,6 @@ tbody tr {
     cursor: not-allowed;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
+
+
+

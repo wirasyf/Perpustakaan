@@ -17,17 +17,19 @@
         <div class="container">
             <nav class="navbar">
                 <div class="logo">
-                    <i class="fas fa-book-open"></i>
-                    <span>Perpustakaan <strong>SMKN 4 Bojonegoro</strong></span>
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo" class="logo-img">
+                    <span class="logo-text">
+                        <span class="edutech">Edutech</span> <span class="library">Library</span>
+                    </span>
                 </div>
-                <ul class="nav-menu">
-                    <li><a href="#home">Beranda</a></li>
-                    <li><a href="#about">Tentang</a></li>
-                    <li><a href="#services">Layanan</a></li>
-                    <li><a href="#register">Registrasi</a></li>
-                    <li><a href="#school">Sekolah</a></li>
-                    <li><a href="{{ route('login') }}" class="btn-nav">Login</a></li>
-                </ul>
+                <div class="nav-container">
+                    <ul class="nav-menu">
+                        <li><a href="#home">Beranda</a></li>
+                        <li><a href="#about">Tentang</a></li>
+                        <li><a href="#services">Layanan</a></li>
+                    </ul>
+                    <a href="{{ route('login') }}" class="btn-nav">Masuk</a>
+                </div>
                 <div class="hamburger">
                     <i class="fas fa-bars"></i>
                 </div>
@@ -40,264 +42,214 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
-                    <h2 class="hero-title">
-                        <span class="highlight"><i class="fas fa-book"></i> Perpustakaan Digital</span><br>
-                        <span class="school-name">SMKN 4 Bojonegoro</span>
-                    </h2>
-                    <p class="hero-subtitle">Pusat literasi dan sumber belajar untuk membentuk generasi cerdas, terampil, dan berwawasan luas.</p>
-                    <p class="hero-description">Perpustakaan SMKN 4 Bojonegoro menyediakan berbagai koleksi buku dan layanan perpustakaan yang mendukung kegiatan belajar mengajar serta meningkatkan minat baca warga sekolah.</p>
+                    <h1 class="hero-title">
+                        <span class="title-blue">Perpustakaan Digital</span>
+                        <span class="title-black">SMKN 4 Bojonegoro</span>
+                    </h1>
+                    <p class="hero-description">Belajar jadi lebih mudah dengan Perpustakaan Digital SMKN 4 Bojonegoro. Temukan buku favoritmu, lakukan peminjaman, dan pantau riwayat bacaan hanya dalam beberapa klik. Semua dirancang dengan kebutuhan yang cepat, nyaman, dan sesuai dengan kebutuhan siswa di era digital.</p>
                     <div class="hero-buttons">
-                        <a href="{{ route('login') }}" class="btn-primary">
-                            <i class="fas fa-sign-in-alt"></i> Login Perpustakaan
+                        <a href="#about" class="btn-primary">
+                            Mulai <i class="fas fa-arrow-right"></i>
                         </a>
-                        <a href="{{ route('registerAnggota.show') }}" class="btn-secondary">
-                            <i class="fas fa-user-plus"></i> Daftar Anggota Sekarang
+                        <a href="{{ route('registerAnggota.show') }}" class="btn-outline">
+                            Daftar
                         </a>
                     </div>
                 </div>
                 <div class="hero-image">
-                    <div class="image-container">
-                        <img src="{{ asset('img/landing.png') }}" alt="Siswa membaca di perpustakaan SMKN 4 Bojonegoro" class="hero-img">
-                        <div class="floating-elements">
-                            <div class="floating-element el1">
-                                <i class="fas fa-book"></i>
-                                <span>Koleksi Buku</span>
-                            </div>
-                            <div class="floating-element el2">
-                                <i class="fas fa-users"></i>
-                                <span>Komunitas Baca</span>
-                            </div>
-                            <div class="floating-element el3">
-                                <i class="fas fa-graduation-cap"></i>
-                                <span>Literasi Digital</span>
-                            </div>
-                        </div>
-                    </div>
+                    <img src="{{ asset('img/hero.png') }}" alt="Siswa membaca di perpustakaan" class="hero-img">
                 </div>
             </div>
         </div>
-
     </section>
 
-    <!-- Tentang Perpustakaan -->
+    <!-- Tentang Perpustakaan Digital (Layout: Image Left, Text Right) -->
     <section class="about" id="about">
         <div class="container">
-            <div class="section-header">
-                <h2><i class="fas fa-star"></i> Tentang Perpustakaan</h2>
-                <p>Mengenal lebih dekat peran perpustakaan dalam meningkatkan budaya literasi</p>
-            </div>
             <div class="about-content">
                 <div class="about-image">
-                    <img src="{{ asset('img/landing2.jpg') }}" alt="Interior perpustakaan SMKN 4 Bojonegoro">
-                    <div class="about-stats">
-                        <div class="stat">
-                            <h3>5000+</h3>
-                            <p>Koleksi Buku</p>
-                        </div>
-                        <div class="stat">
-                            <h3>1000+</h3>
-                            <p>Anggota Aktif</p>
-                        </div>
-                    </div>
+                    <img src="{{ asset('img/detail.png') }}" alt="Mengenal Perpustakaan Digital">
                 </div>
                 <div class="about-text">
-                    <p>Perpustakaan SMKN 4 Bojonegoro merupakan fasilitas pendukung pembelajaran yang berperan penting dalam meningkatkan budaya literasi di lingkungan sekolah. Perpustakaan ini dikelola secara sistematis untuk memudahkan akses informasi dan koleksi buku bagi siswa, guru, dan tenaga kependidikan.</p>
-                    <div class="about-features">
-                        <div class="feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Akses informasi yang mudah dan cepat</span>
-                        </div>
-                        <div class="feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Koleksi buku terlengkap dan terkini</span>
-                        </div>
-                        <div class="feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Pengelolaan sistematis dan profesional</span>
-                        </div>
-                        <div class="feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Lingkungan nyaman untuk membaca</span>
-                        </div>
-                    </div>
+                    <h2 class="section-title">Mengenal Perpustakaan Digital</h2>
+                    <p>Perpustakaan Digital SMKN 4 Bojonegoro merupakan sistem layanan perpustakaan berbasis digital yang dirancang untuk meningkatkan efisiensi pengelolaan dan akses informasi di lingkungan sekolah. Melalui platform ini, kamu dapat melakukan pencarian koleksi, peminjaman, serta pemantauan status buku secara sistematis dan terintegrasi.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Layanan Perpustakaan -->
+    <!-- Layanan Perpustakaan Digital -->
     <section class="services" id="services">
         <div class="container">
             <div class="section-header">
-                <h2><i class="fas fa-book"></i> Layanan Perpustakaan SMKN 4 Bojonegoro</h2>
-                <p>Berbagai layanan unggulan untuk mendukung kegiatan literasi dan pembelajaran</p>
+                <h2>Layanan Perpustakaan Digital</h2>
+                <p>Nikmati berbagai layanan perpustakaan digital yang dirancang untuk memudahkan akses informasi dan mendukung kegiatan belajar secara efisien.</p>
             </div>
             <div class="services-grid">
+                <!-- Peminjaman -->
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-exchange-alt"></i>
+                    <div class="icon-box">
+                        <i class="fas fa-th-large"></i>
                     </div>
                     <h3>Peminjaman Buku</h3>
-                    <p>Layanan peminjaman buku bagi anggota perpustakaan untuk mendukung kegiatan belajar, tugas sekolah, dan pengembangan wawasan sesuai dengan peraturan yang berlaku.</p>
+                    <p>Mengelola proses peminjaman buku oleh anggota, mulai dari pencatatan data hingga penentuan tanggal pengembalian.</p>
                 </div>
+                <!-- Pengembalian -->
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-undo-alt"></i>
+                    <div class="icon-box">
+                        <i class="fas fa-exchange-alt"></i>
                     </div>
                     <h3>Pengembalian Buku</h3>
-                    <p>Layanan pengembalian buku yang dilakukan secara tertib dan tepat waktu guna menjaga ketersediaan koleksi serta kedisiplinan anggota perpustakaan.</p>
+                    <p>Mengatur proses pengembalian buku yang dipinjam serta memperbarui status ketersediaan buku di sistem.</p>
                 </div>
+                <!-- Pengelolaan -->
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-tasks"></i>
+                    <div class="icon-box">
+                        <i class="fas fa-plus-square"></i>
                     </div>
                     <h3>Pengelolaan Buku</h3>
-                    <p>Pengelolaan koleksi buku oleh petugas perpustakaan meliputi pendataan buku, pengelompokan, pemeliharaan, serta pembaruan data buku secara berkala.</p>
+                    <p>Mengelola data koleksi buku seperti menambah, mengubah, atau menghapus informasi buku dalam perpustakaan.</p>
                 </div>
+                <!-- Kunjungan -->
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-school"></i>
+                    <div class="icon-box">
+                        <i class="fas fa-chart-bar"></i>
                     </div>
                     <h3>Kunjungan Perpustakaan</h3>
-                    <p>Layanan kunjungan perpustakaan bagi siswa dan guru sebagai sarana membaca, belajar mandiri, diskusi, dan meningkatkan minat literasi di lingkungan sekolah.</p>
+                    <p>Mencatat dan memantau data kunjungan anggota yang datang ke perpustakaan.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Register Section -->
+    <!-- Register CTA Section -->
     <section class="register" id="register">
         <div class="container">
-            <div class="section-header">
-                <h2><i class="fas fa-user-plus"></i> Bergabung dengan Perpustakaan</h2>
-                <p>Pilih peran Anda untuk mengakses layanan perpustakaan digital kami</p>
-            </div>
-            <div class="register-cards">
-                <div class="register-card admin-card">
-                    <div class="card-icon">
-                        <i class="fas fa-user-shield"></i>
-                    </div>
-                    <h3>Register Admin Perpustakaan</h3>
-                    <p>Layanan khusus bagi petugas perpustakaan untuk mengelola data buku, anggota, peminjaman, pengembalian, serta laporan perpustakaan.</p>
-                    <a href="{{ route('register-admin.show') }}" class="btn-card">
-                        <i class="fas fa-key"></i> Daftar sebagai Admin
+            <div class="register-content">
+                <div class="register-text">
+                    <h2 class="section-title">Jadilah Bagian dari Anggota Perpustakaan Kami!</h2>
+                    <p>Daftarkan dirimu sebagai anggota perpustakaan dan nikmati kemudahan meminjam buku, akses koleksi lengkap, serta pengalaman belajar yang lebih nyaman dan terorganisir.</p>
+                    <a href="{{ route('registerAnggota.show') }}" class="btn-outline">
+                        Daftar
                     </a>
                 </div>
-                <div class="register-card member-card">
-                    <div class="card-icon">
-                        <i class="fas fa-user-graduate"></i>
-                    </div>
-                    <h3>Register Anggota Perpustakaan</h3>
-                    <p>Layanan pendaftaran bagi siswa dan warga sekolah untuk dapat meminjam buku, mengakses katalog, serta melihat riwayat peminjaman.</p>
-                    <a href="{{ route('registerAnggota.show') }}" class="btn-card">
-                        <i class="fas fa-book"></i> Daftar sebagai Anggota
-                    </a>
+                <div class="register-image">
+                    <img src="{{ asset('img/register.png') }}" alt="Daftar Anggota">
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Tentang Sekolah -->
-    <section class="school" id="school">
-        <div class="container">
-            <div class="section-header">
-                <h2><i class="fas fa-school"></i> Tentang SMKN 4 Bojonegoro</h2>
-                <p>Sekolah berfokus pada pengembangan kompetensi siswa untuk masa depan</p>
-            </div>
-            <div class="school-content">
-                <div class="school-text">
-                    <p>SMKN 4 Bojonegoro adalah sekolah menengah kejuruan yang berfokus pada pengembangan kompetensi siswa agar siap memasuki dunia kerja, berwirausaha, dan melanjutkan pendidikan ke jenjang yang lebih tinggi. Perpustakaan sekolah menjadi salah satu sarana pendukung utama dalam proses pembelajaran dan peningkatan literasi.</p>
-                    <div class="school-features">
-                        <div class="school-feature">
-                            <i class="fas fa-briefcase"></i>
-                            <div>
-                                <h4>Fokus Dunia Kerja</h4>
-                                <p>Menyiapkan siswa dengan keterampilan yang dibutuhkan industri</p>
-                            </div>
-                        </div>
-                        <div class="school-feature">
-                            <i class="fas fa-lightbulb"></i>
-                            <div>
-                                <h4>Pengembangan Wirausaha</h4>
-                                <p>Mendorong jiwa kewirausahaan sejak dini</p>
-                            </div>
-                        </div>
-                        <div class="school-feature">
-                            <i class="fas fa-graduation-cap"></i>
-                            <div>
-                                <h4>Kesempatan Melanjutkan Studi</h4>
-                                <p>Membuka peluang pendidikan ke jenjang lebih tinggi</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="school-image">
-                    <img src="{{ asset('img/logo_smk4.png') }}" alt="SMKN 4 Bojonegoro">
-                    <div class="school-badge">
-                        <i class="fas fa-award"></i>
-                        <span>Sekolah Literasi</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Penutup -->
-    <section class="cta-final">
-        <div class="container">
-            <div class="cta-content">
-                <h2><i class="fas fa-rocket"></i> Ayo Manfaatkan Perpustakaan Sekolah!</h2>
-                <p>Tingkatkan minat baca, perluas wawasan, dan dukung prestasi belajar dengan memanfaatkan layanan Perpustakaan SMKN 4 Bojonegoro.</p>
-                <div class="cta-buttons">
-                    <a href="{{ route('login') }}" class="btn-primary btn-large">
-                        <i class="fas fa-sign-in-alt"></i> Login Sekarang
-                    </a>
-                    <a href="{{ route('registerAnggota.show') }}" class="btn-secondary btn-large">
-                        <i class="fas fa-users"></i> Gabung Menjadi Anggota
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="wave-divider-bottom">
-            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
-                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#ffffff"></path>
-            </svg>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer-new">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <i class="fas fa-book-open"></i>
-                    <div>
-                        <h3>Perpustakaan Digital</h3>
-                        <p>SMKN 4 Bojonegoro</p>
+            <div class="footer-top-wrap">
+                <div class="footer-left">
+                    <div class="footer-logo">
+                        <img src="{{ asset('img/logo.png') }}" alt="Logo" class="footer-logo-img">
+                        <div class="footer-logo-text">
+                            Edutech Liblary
+                        </div>
+                    </div>
+                    <div class="footer-brand-title">Perpustakaan Digital SMK Negeri 4 Bojonegoro</div>
+                    <p class="footer-description">
+                        Tingkatkan minat baca, perluas wawasan, dan<br>
+                        dukung prestasi belajar dengan memanfaatkan<br>
+                        layanan Perpustakaan SMKN 4 Bojonegoro.
+                    </p>
+                    <div class="footer-social-new">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
-                <div class="footer-info">
-                    <p><i class="fas fa-map-marker-alt"></i> JL. RAYA SURABAYA BOJONEGORO, Sukowati, Kec. Kapas, Kab. Bojonegoro, Jawa Timur.</p>
-                    <p><i class="fas fa-clock"></i> Senin - Jumat: 07.30 - 15.30 WIB</p>
-                </div>
-                <div class="footer-social">
-                    <a href="https://www.bing.com/ck/a?!&&p=d204843fab92c681205cfb6969743b6a311b47a8ee1dee1c1f6ac825426f9931JmltdHM9MTc2OTI5OTIwMA&ptn=3&ver=2&hsh=4&fclid=02f5638b-b516-6ced-07ed-7742b4746d8a&psq=facebook+smkn+4+bojonegoro&u=a1aHR0cHM6Ly93d3cuZmFjZWJvb2suY29tL29mZmljaWFsc21rbjRiam4vZm9sbG93aW5nLw"><i class="fab fa-facebook"></i></a>
-                    <a href="https://www.bing.com/ck/a?!&&p=e249a79ec1f8eaeae0a6d4fd538155ecf0e479764460f15c1af8d0104a6858e3JmltdHM9MTc2OTI5OTIwMA&ptn=3&ver=2&hsh=4&fclid=02f5638b-b516-6ced-07ed-7742b4746d8a&psq=facebook+smkn+4+bojonegoro&u=a1aHR0cHM6Ly93d3cuaW5zdGFncmFtLmNvbS9vZmZpY2lhbF9zbWtuNGJvam9uZWdvcm8v"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.bing.com/ck/a?!&&p=b26bc920ce71554e239c947b90c0574310878f9bae02cc8d51745610420bda75JmltdHM9MTc2OTI5OTIwMA&ptn=3&ver=2&hsh=4&fclid=02f5638b-b516-6ced-07ed-7742b4746d8a&psq=tiktok+smkn+4+bojonegoro&u=a1aHR0cHM6Ly93d3cudGlrdG9rLmNvbS9Ab2ZmaWNpYWxfc21rbjRib2pvbmVnb3Jv"><i class="fab fa-tiktok"></i></a>
-                    <a href="https://www.bing.com/ck/a?!&&p=a0c41d55a34e07441c6054a0cfad7f7506d55ad161d9dd7afddbc978b21cb2a5JmltdHM9MTc2OTI5OTIwMA&ptn=3&ver=2&hsh=4&fclid=02f5638b-b516-6ced-07ed-7742b4746d8a&psq=youtube+smkn+4+bojonegoro&u=a1aHR0cHM6Ly93d3cueW91dHViZS5jb20vQHNta25lZ2VyaTRib2pvbmVnb3JvMTg5L3ZpZGVvcw"><i class="fab fa-youtube"></i></a>
+                
+                <div class="footer-right">
+                    <div class="footer-info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Jalan Raya Surabaya, Sukowati, Kab Bojonegoro 62181</span>
+                    </div>
+                    <div class="footer-info-item-noicon">
+                        <span>Senin - Jumat: 07.30 - 15.30 WIB</span>
+                    </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 Perpustakaan SMKN 4 Bojonegoro - Membangun Generasi Cerdas dan Literat</p>
+            
+            <div class="footer-bottom-new">
+                <p>&copy; 2026 Perpustakaan SMKN 4 Bojonegoro - Membangun Generasi Cerdas Dan Literat</p>
             </div>
         </div>
     </footer>
 
     <!-- Back to Top Button -->
-    <a href="#home" class="back-to-top">
+    <a href="#home" class="back-to-top" id="backToTop">
         <i class="fas fa-arrow-up"></i>
     </a>
 
-    <script src="{{ asset('js/landing.js') }}"></script>
+    <script>
+        // Hamburger menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        const navContainer = document.querySelector('.nav-container');
+
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                navContainer.classList.toggle('active');
+            });
+        }
+
+        // Close menu on link click
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navContainer.classList.remove('active');
+            });
+        });
+
+        // Back to top button
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('active');
+            } else {
+                backToTop.classList.remove('active');
+            }
+        });
+
+        // Header shadow on scroll
+        const header = document.querySelector('.header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Active link on scroll (Intersection Observer)
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-menu a');
+
+        const options = {
+            threshold: 0,
+            rootMargin: '-150px 0px -70% 0px' // Detect when section is near top
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, options);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
 </body>
 </html>

@@ -1,45 +1,17 @@
-* {
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
+/* global reset removed - handled by app.css */
 
-body {
-    margin: 0;
-    background: #f4f6f9;
-    overflow-x: hidden; /* penting */
-}
+/* body reset removed - handled by app.css */
 
-.wrapper {
-    display: flex;
-}
+/* layout wrapper removed - handled by app.css */
 
 /* ================= SIDEBAR ================= */
-.sidebar {
-    width: 220px;
-    background: #ffffff;
-    height: 100vh;
-    padding: 20px;
-    position: fixed; /* FIX UTAMA */
-    top: 0;
-    left: 0;
-}
+/* removed .sidebar */
 
-.logo img {
-    width: 100%;
-    margin-bottom: 20px;
-}
+/* removed .logo img - use app.css */
 
-.menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+/* removed menu item */
 
-.menu li {
-    padding: 10px;
-    color: #555;
-    cursor: pointer;
-}
+/* removed menu item */
 
 .btn-profile {
     margin-top: 20px;
@@ -52,19 +24,10 @@ body {
 }
 
 /* ================= CONTENT ================= */
-.content {
-    margin-left: 220px; /* SAMA dengan sidebar */
-    width: calc(100% - 220px);
-    padding: 20px;
-}
+/* removed .content - use app.css */
 
 /* ================= TOPBAR ================= */
-.topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative; /* penting utk dropdown */
-}
+/* removed .topbar - use app.css */
 
 .user-area {
     display: flex;
@@ -217,19 +180,9 @@ td {
     cursor: pointer;
 }
 
-.menu li a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: #333;
-    padding: 10px;
-    border-radius: 6px;
-}
+/* removed menu item */
 
-.menu li a:hover {
-    background: #f2f6ff;
-}
+/* removed menu item */
 
 /* tombol profile */
 .btn-profile {
@@ -245,3 +198,5 @@ td {
 .btn-profile:hover {
     background: #1976d2;
 }
+
+

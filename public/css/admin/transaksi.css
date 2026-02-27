@@ -1,20 +1,10 @@
 /* RESET */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
-}
+/* global reset removed - handled by app.css */
 
-body {
-    background: #f2f4f7;
-}
+/* body reset removed - handled by app.css */
 
 /* LAYOUT */
-.wrapper {
-    display: flex;
-    min-height: 100vh;
-}
+/* layout wrapper removed - handled by app.css */
 
 
 /* HEADER CARD */
@@ -239,10 +229,7 @@ td {
         display: block;
     }
 
-    .sidebar {
-        left: -230px;
-        transition: .3s ease;
-    }
+    /* sidebar layout removed to rely on app.css */
 
     .sidebar.active {
         left: 0;
@@ -503,5 +490,6 @@ table tfoot,
 table tfoot td {
     border-top: none !important;
 }
+
 
 

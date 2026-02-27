@@ -1,18 +1,9 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
-}
+/* global reset removed - handled by app.css */
 
-body {
-    background: #f4f6fb;
-}
+/* body reset removed - handled by app.css */
 
 /* ================= LAYOUT ================= */
-.layout {
-    display: flex;
-}
+/* layout wrapper removed - handled by app.css */
 
 /* ================= HEADER ================= */
 .header-card {

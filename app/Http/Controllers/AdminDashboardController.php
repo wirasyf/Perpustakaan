@@ -35,8 +35,11 @@ class AdminDashboardController extends Controller
         //Total Buku Hilang
         $totalLostBooks = Report::where('status', 'buku_hilang')->count();
 
-        // Total keterlambatan
-        $totalTerlambat = Transaction::where('status', 'terlambat')->count();
+        // Total Belum Dikembalikan
+        $totalBelumDikembalikan = Transaction::where('status', 'belum_dikembalikan')->count();
+
+        // Total Akun Belum diverifikasi
+        $unverifiedUsers = User::where('role', 'anggota')->where('status', 'menunggu')->count();
 
 
 
@@ -45,13 +48,13 @@ class AdminDashboardController extends Controller
         // =====================
 
         // Pengunjung hari ini
-        $todayVisit = Visit::whereDate('tanggal_datang', now())->take(5)->get();
+        $todayVisit = Visit::whereDate('tanggal_datang', now())->latest()->take(5)->get();
 
 
         // Laporan kehilangan terbaru
          $latestReport = Report::with(['transaction.user', 'transaction.book', 'user'])
         ->latest()
-        ->take(5)
+        ->take(10)
         ->get();
 
 
@@ -65,7 +68,8 @@ class AdminDashboardController extends Controller
             'totalReturn',
             'totalVisit',
             'totalLostBooks',
-            'totalTerlambat',
+            'totalBelumDikembalikan',
+            'unverifiedUsers',
             'todayVisit',
             'latestReport'
         ));

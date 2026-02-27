@@ -131,9 +131,7 @@ tbody tr {
 
 /* RESPONSIF */
 @media (max-width: 768px) {
-    .sidebar {
-        display: none;
-    }
+    /* sidebar layout removed to rely on app.css */
 
     .topbar {
         left: 0;
@@ -366,3 +364,4 @@ table tfoot td {
     cursor: not-allowed;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
+

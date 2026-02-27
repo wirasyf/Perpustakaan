@@ -1,27 +1,20 @@
 /* RESET */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Segoe UI", sans-serif;
-}
+/* global reset removed - handled by app.css */
 
-body {
-    background: #f4f6fb;
-}
+/* body reset removed - handled by app.css */
 
 
 
 /* MAIN */
 .main {
-    margin-left: 240px;
+    margin-left: 262px;
     margin-top: 64px;
     padding: 30px;
 }
 
 /* BANNER */
 .banner {
-    background: linear-gradient(90deg,#1e3c72,#2a8fdc);
+    background: linear-gradient(90deg, #1e3c72, #2a8fdc);
     color: #fff;
     padding: 25px;
     border-radius: 14px;
@@ -54,7 +47,7 @@ body {
     background: #fff;
     border-radius: 14px;
     padding: 14px;
-    box-shadow: 0 6px 18px rgba(0,0,0,.08);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .08);
     display: flex;
     flex-direction: column;
 }
@@ -121,7 +114,7 @@ body {
 .modal {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,.4);
+    background: rgba(0, 0, 0, .4);
     display: none;
     justify-content: center;
     align-items: center;
@@ -204,7 +197,8 @@ body {
 .page-info {
     font-size: 14px;
     color: #6b7280;
-    white-space: nowrap; /* cegah turun */
+    white-space: nowrap;
+    /* cegah turun */
 }
 
 /* container pagination kanan */
@@ -212,7 +206,8 @@ body {
     display: flex;
     align-items: center;
     gap: 6px;
-    margin-left: auto; /* 🔥 paksa ke kanan */
+    margin-left: auto;
+    /* 🔥 paksa ke kanan */
 }
 
 /* tombol page */
@@ -304,7 +299,8 @@ table tfoot td {
    ACTIVE (BIRU)
 =================================*/
 .nav-btn.active {
-    background: #4c6ef5; /* biru lembut seperti desain */
+    background: #4c6ef5;
+    /* biru lembut seperti desain */
     color: #ffffff;
     box-shadow: 0 8px 20px rgba(76, 110, 245, 0.35);
 }
@@ -321,5 +317,5 @@ table tfoot td {
     background: #f1f3f5;
     color: #adb5bd;
     cursor: not-allowed;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }

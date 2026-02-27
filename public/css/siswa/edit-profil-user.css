@@ -1,12 +1,6 @@
-* {
-    box-sizing: border-box;
-}
+/* global reset removed - handled by app.css */
 
-body {
-    margin: 0;
-    background: #3f3f3f;
-    font-family: Arial, sans-serif;
-}
+/* body reset removed - handled by app.css */
 
 .profile-container {
     background: #ffffff;
