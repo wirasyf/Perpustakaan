@@ -2,8 +2,10 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>@yield('title')</title>
-
+    <title>@yield('title', 'EduTech Library') | EduTech</title>
+    
+    {{-- FAVICON --}}
+    <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/png">
     {{-- GOOGLE FONTS --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,8 +29,6 @@
 
     {{-- TOPBAR --}}
 <div class="topbar">
-    <i class="fa fa-bars"></i>
-
     <div class="user">
         <div class="user-info">
             <span class="user-name">{{ Auth::user()->name }}</span>

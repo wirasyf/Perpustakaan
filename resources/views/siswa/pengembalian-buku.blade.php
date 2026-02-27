@@ -12,12 +12,17 @@
 @section('content')
 
         {{-- HEADER --}}
-        <div class="header-card">
-            <div>
-                <h5>Pengembalian Buku</h5>
-                <p>Pengelolaan pengembalian buku</p>
+        <div class="header-card" style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <div style="width: 65px; height: 65px; background: rgba(255, 255, 255, 0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; backdrop-filter: blur(4px);">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                </div>
+                <div>
+                    <h5 style="font-size: 22px; font-weight: 700; margin-bottom: 4px; letter-spacing: 0.5px;">Pengembalian Buku</h5>
+                    <p style="font-size: 14px; opacity: 0.9; margin: 0;">Pengelolaan pengembalian buku</p>
+                </div>
             </div>
-            <img src="https://cdn-icons-png.flaticon.com/512/29/29302.png">
+            <img src="{{ asset('img/ikon-buku.png') }}" alt="Ilustrasi Buku">
         </div>
 
         {{-- FILTER --}}

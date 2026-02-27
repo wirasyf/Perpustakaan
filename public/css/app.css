@@ -21,11 +21,11 @@
     left: 262px;
     /* Sama dengan lebar sidebar */
     right: 0;
-    height: 64px;
+    height: 80px;
     background: #fff;
     border-bottom: 1px solid #eee;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     padding: 0 20px;
     z-index: 100;
@@ -213,8 +213,8 @@
     margin-left: 262px;
     width: calc(100% - 262px);
     padding: 24px;
-    padding-top: 64px;
-    /* 64px topbar + 24px */
+    padding-top: 104px;
+    /* 80px topbar + 24px */
     background: #f5f7fa;
     min-height: 100vh;
     position: relative;
@@ -234,7 +234,7 @@
 /* USER POPUP */
 .user-popup {
     position: absolute;
-    top: 70px;
+    top: 86px;
     right: 0;
     width: 260px;
     background: #fff;

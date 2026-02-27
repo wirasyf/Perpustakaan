@@ -1,14 +1,13 @@
-
 /* HEADER */
 .header-card {
-    background: linear-gradient(90deg, #1d4ed8, #38bdf8);
+    background: #2D588C;
     color: #fff;
-    border-radius: 14px;
-    padding: 20px 25px;
+    border-radius: 12px;
+    padding: 25px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .header-card img {
@@ -43,7 +42,7 @@
 }
 
 .btn-filter {
-    background: #2563eb;
+    background: #2D588C;
     color: #fff;
     border: none;
     padding: 10px 12px;
@@ -65,11 +64,12 @@ table {
 }
 
 thead {
-    background: #2196f3;
+    background: #2D588C;
     color: #fff;
 }
 
-th, td {
+th,
+td {
     padding: 14px;
     text-align: center;
     white-space: nowrap;
@@ -88,9 +88,18 @@ tbody tr {
     color: #fff;
 }
 
-.status.success { background: #22c55e; }
-.status.danger { background: #ef4444; }
-.status.warning { background: #f59e0b; }
+.status.success {
+    background: #22c55e;
+}
+
+.status.danger {
+    background: #ef4444;
+}
+
+.status.warning {
+    background: #f59e0b;
+}
+
 /* AKSI ICON */
 .aksi {
     display: flex;
@@ -113,7 +122,7 @@ tbody tr {
 
 /* WARNA SESUAI GAMBAR */
 .aksi-btn.blue {
-    background: #1d4ed8;
+    background: #2D588C;
 }
 
 .aksi-btn.orange {
@@ -167,7 +176,7 @@ tbody tr {
 
 /* HEADER BIRU */
 .modal-header.custom-header {
-    background: linear-gradient(90deg, #1d4ed8, #38bdf8);
+    background: #2D588C;
     color: #fff;
     justify-content: center;
     border-bottom: none;
@@ -214,13 +223,13 @@ tbody tr {
 }
 
 .btn-simpan {
-    background: #38bdf8;
+    background: #2D588C;
     color: white;
     border: none;
 }
 
 .btn-yakin {
-    background: #38bdf8;
+    background: #2D588C;
     color: white;
     border: none;
 }
@@ -245,7 +254,8 @@ tbody tr {
 .page-info {
     font-size: 14px;
     color: #6b7280;
-    white-space: nowrap; /* cegah turun */
+    white-space: nowrap;
+    /* cegah turun */
 }
 
 /* container pagination kanan */
@@ -253,7 +263,8 @@ tbody tr {
     display: flex;
     align-items: center;
     gap: 6px;
-    margin-left: auto; /* 🔥 paksa ke kanan */
+    margin-left: auto;
+    /* 🔥 paksa ke kanan */
 }
 
 /* tombol page */
@@ -345,7 +356,8 @@ table tfoot td {
    ACTIVE (BIRU)
 =================================*/
 .nav-btn.active {
-    background: #4c6ef5; /* biru lembut seperti desain */
+    background: #4c6ef5;
+    /* biru lembut seperti desain */
     color: #ffffff;
     box-shadow: 0 8px 20px rgba(76, 110, 245, 0.35);
 }
@@ -362,6 +374,5 @@ table tfoot td {
     background: #f1f3f5;
     color: #adb5bd;
     cursor: not-allowed;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
-

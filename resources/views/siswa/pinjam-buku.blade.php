@@ -32,62 +32,72 @@
     @endif
 
     <div class="banner">
-        <div>
-            <h3>Pinjam Buku</h3>
-            <p>Daftar buku yang tersedia untuk dipinjam</p>
+        <div class="banner-left">
+            <div class="banner-icon">
+                <i class="fa-solid fa-book-medical"></i>
+            </div>
+            <div class="banner-text">
+                <h3>Peminjaman Buku</h3>
+                <p>Pengelolaan Peminjaman Buku</p>
+            </div>
         </div>
-        <span>📚</span>
+        <div class="banner-right">
+            <img src="{{ asset('img/ikon-buku.png') }}" alt="Ilustrasi Buku">
+        </div>
     </div>
 
-    <div class="search">
-        <input type="text" id="searchInput" placeholder="Cari buku..." onkeyup="filterBooks()">
+    <div class="search-container">
+        <div class="search-input-wrapper">
+            <i class="fa fa-search search-icon"></i>
+            <input type="text" id="searchInput" placeholder="Cari Sesuatu..." onkeyup="filterBooks()">
+        </div>
+        <button class="filter-btn"><i class="fa-solid fa-sliders"></i></button>
     </div>
 
     <!-- GRID -->
     <div class="grid" id="booksGrid">
         @forelse($books as $book)
             <div class="card" data-title="{{ strtolower($book->judul) }}">
-                <img src="{{ asset('images/buku.jpg') }}" alt="{{ $book->judul }}">
+                <div class="card-image">
+                    <img src="{{ asset('img/buku.png') }}" alt="{{ $book->judul }}">
+                </div>
 
                 <div class="card-content">
-                    <h4>{{ $book->judul }}</h4>
-                    <small>By: {{ $book->pengarang }}</small>
+                    <div class="card-header-info">
+                        <h4>{{ $book->judul }}</h4>
+                        <small>By: {{ $book->pengarang }}</small>
+                    </div>
 
-                    <div class="badge">
-                        <span>{{ $book->kategori_buku }}</span>
-                        <span>
-                            @if($book->status === 'tersedia')
-                                <i class="fa fa-check"></i> Tersedia
-                            @else
-                                <i class="fa fa-times"></i> Dipinjam
-                            @endif
+                    <div class="badge-row">
+                        <span class="badge-category">{{ $book->kategori_buku }}</span>
+                        <span class="stock-info">
+                            <i class="fa-solid fa-book-open"></i> {{ rand(5, 20) }} Stok buku
                         </span>
                     </div>
 
-                    <p>{{ $book->deskripsi }}</p>
+                    <p class="desc-text">{{ Str::limit($book->deskripsi, 180) }}</p>
 
-                    @if($hasActiveLoan)
-                        <button type="button" class="btn-pinjam" disabled style="opacity: 0.5; cursor: not-allowed;">
-                            Tidak Bisa Meminjam
-                        </button>
-                    @elseif($book->status === 'tersedia')
-                        <button type="button" class="btn-pinjam" onclick="openModal({{ $book->id }}, '{{ $book->judul }}')">
-                            Pinjam Buku
-                        </button>
-                    @else
-                        <button type="button" class="btn-pinjam" disabled style="opacity: 0.5; cursor: not-allowed;">
-                            Sedang Dipinjam
-                        </button>
-                    @endif
+                    <div class="card-actions">
+                        @if($hasActiveLoan)
+                            <button type="button" class="btn-pinjam disabled" disabled>
+                                Tidak Bisa Meminjam
+                            </button>
+                        @elseif($book->status === 'tersedia')
+                            <button type="button" class="btn-pinjam" onclick="openModal({{ $book->id }}, '{{ $book->judul }}')">
+                                Pinjam Buku
+                            </button>
+                        @else
+                            <button type="button" class="btn-pinjam disabled" disabled>
+                                Sedang Dipinjam
+                            </button>
+                        @endif
+                    </div>
                 </div>
             </div>
         @empty
             <p style="grid-column: 1 / -1; text-align: center; padding: 20px;">Tidak ada buku yang tersedia</p>
         @endforelse
     </div>
-
-    </main>
-</div>
 
 <!-- MODAL -->
 <div class="modal" id="modalPinjam">

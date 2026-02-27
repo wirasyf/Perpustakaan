@@ -11,19 +11,17 @@
 @section('content')
 
             <!-- HEADER -->
-            <div class="header-card">
-
-                <div class="header-left">
-                    <div class="header-icon">
-                        <i class="fa fa-book"></i>
+            <div class="header-card" style="display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div style="width: 65px; height: 65px; background: rgba(255, 255, 255, 0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; backdrop-filter: blur(4px);">
+                        <i class="fa fa-book-open"></i>
                     </div>
-                    <div class="header-text">
-                        <h3>Laporan Kehilangan Buku</h3>
-                        <p>Kehilangan buku</p>
+                    <div>
+                        <h5 style="font-size: 22px; font-weight: 700; margin-bottom: 4px; letter-spacing: 0.5px;">Laporan Kehilangan Buku</h5>
+                        <p style="font-size: 14px; opacity: 0.9; margin: 0;">Catatan kehilangan buku</p>
                     </div>
                 </div>
-
-                <img src="{{ asset('img/book.png') }}" class="header-image">
+                <img src="{{ asset('img/ikon-buku.png') }}" class="header-image" alt="Ilustrasi Buku" style="width: 65px;">
             </div>
 
             <!-- FILTER -->

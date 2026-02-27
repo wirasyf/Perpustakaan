@@ -20,7 +20,7 @@
             <h1 class="hero-greeting">Hola, {{ $firstName }}!</h1>
             <p class="hero-subtext">Selamat Datang Di Edutech Library</p>
         </div>
-        <img src="{{ asset('img/hero.png') }}" alt="Welcome Illustration" class="hero-img">
+        <img src="{{ asset('img/hero-s.png') }}" alt="Welcome Illustration" class="hero-img">
     </div>
 
     <!-- STATS (5 CARDS) -->
@@ -93,8 +93,9 @@
                             <td>
                                 @php
                                     $statusClass = 'status-warning';
-                                    if(strtolower($trx->status) == 'sudah dikembalikan' || strtolower($trx->status) == 'dikembalikan') $statusClass = 'status-success';
-                                    if(strtolower($trx->status) == 'belum dikembalikan' || strtolower($trx->status) == 'dipinjam') $statusClass = 'status-danger';
+                                    $normalizedStatus = strtolower(str_replace('_', ' ', $trx->status));
+                                    if($normalizedStatus == 'sudah dikembalikan' || $normalizedStatus == 'dikembalikan') $statusClass = 'status-success';
+                                    if($normalizedStatus == 'belum dikembalikan' || $normalizedStatus == 'buku hilang' || $normalizedStatus == 'dipinjam') $statusClass = 'status-danger';
                                 @endphp
                                 <span class="status-badge {{ $statusClass }}">
                                     {{ ucfirst(str_replace('_', ' ', $trx->status)) }}
@@ -119,7 +120,7 @@
             <!-- ABSEN CARD -->
             <div class="action-card">
                 <h4>Lakukan Absensi Kunjungan Perpustakaan</h4>
-                <img src="{{ asset('img/hero.png') }}" alt="Absen" class="action-img">
+                <img src="{{ asset('img/absen.png') }}" alt="Absen" class="action-img">
                 <button class="btn-action" id="btnHadir" {{ ($kunjunganHariIni ?? false) ? 'disabled' : '' }}>
                     @if($kunjunganHariIni ?? false)
                         Sudah Hadir
@@ -132,7 +133,7 @@
             <!-- CETAK KARTU CARD -->
             <div class="action-card">
                 <h4>Cetak Kartu Anggota</h4>
-                <img src="{{ asset('img/hero.png') }}" alt="Cetak Kartu" class="action-img">
+                <img src="{{ asset('img/cetak.png') }}" alt="Cetak Kartu" class="action-img">
                 <button type="button" class="btn-action" id="btnCetakKartu" onclick="downloadKartuSiswa()">
                     Cetak Kartu Anggota
                 </button>
