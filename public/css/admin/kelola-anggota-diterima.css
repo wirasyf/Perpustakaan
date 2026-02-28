@@ -1,27 +1,48 @@
 /* HEADER CARD */
 .header-card {
-    background: linear-gradient(90deg, #0d47a1, #1e88e5);
-    color: #fff;
-    padding: 22px;
+    background: #244b8a;
     border-radius: 12px;
+    padding: 20px 26px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    color: #fff;
     margin-bottom: 20px;
 }
 
 .header-left {
     display: flex;
-    gap: 15px;
+    align-items: center;
+    gap: 16px;
 }
 
 .header-icon {
-    width: 45px;
-    height: 45px;
-    background: rgba(255, 255, 255, .3);
-    border-radius: 10px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 22px;
+}
+
+.header-left h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.header-left p {
+    margin: 0;
+    font-size: 13px;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+.header-card img {
+    height: 70px;
+    object-fit: contain;
 }
 
 /* TAB */
@@ -43,7 +64,7 @@
 
 .tab-item.active,
 .tab-item:hover {
-    background: #1e88e5;
+    background: #244b8a;
     color: #fff;
 }
 
@@ -54,110 +75,100 @@
     border-radius: 12px;
 }
 
-/* CONTAINER FILTER UTAMA */
-.filter {
+/* ================= TABLE HEADER & FILTER ================= */
+.table-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 15px;
+    align-items: flex-start;
     margin-bottom: 20px;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
-.filter-left {
+.filter-group {
     display: flex;
-    gap: 15px;
+    gap: 10px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
-/* TOMBOL EXPORT EXCEL */
-.btn-export-excel {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: linear-gradient(135deg, #1b8a2e, #27ae60);
-    color: #fff;
-    padding: 10px 22px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(39, 174, 96, 0.25);
-}
-
-.btn-export-excel:hover {
-    background: linear-gradient(135deg, #15692a, #1e8449);
-    box-shadow: 0 4px 14px rgba(39, 174, 96, 0.4);
-    transform: translateY(-1px);
-}
-
-.btn-export-excel i {
-    font-size: 15px;
-}
-
-/* PEMBUNGKUS SEARCH DAN DATE */
-.search,
-.date {
+.search-box {
     display: flex;
-    align-items: center;
     background: #fff;
-    /* Latar belakang putih */
-    border: 1.5px solid #ccc;
-    /* Garis tepi abu-abu */
-    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
     overflow: hidden;
-    /* Agar sudut ikon ikut melengkung */
-    height: 45px;
-    min-width: 250px;
+    height: 40px;
 }
 
-/* KOTAK IKON BIRU (Kiri) */
-.search i,
-.date i {
-    background-color: #2196f3;
-    /* Warna biru sesuai app.css */
+.search-box i {
+    background: #244b8a;
     color: #fff;
-    height: 100%;
-    width: 45px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    width: 44px;
+    font-size: 16px;
 }
 
-/* AREA INPUT TEKS */
-.search input,
-.date input {
+.search-box input {
     border: none;
-    background: transparent;
     outline: none;
-    padding: 0 15px;
-    width: 100%;
+    padding: 0 14px;
     font-size: 14px;
+    min-width: 250px;
     color: #333;
 }
 
-/* TOMBOL FILTER (IKON SETTING) */
+.search-box input::placeholder {
+    color: #9ca3af;
+}
+
 .btn-filter {
-    background-color: #2196f3;
+    background: #244b8a;
     color: #fff;
     border: none;
-    width: 45px;
-    height: 45px;
-    border-radius: 10px;
+    height: 40px;
+    width: 44px;
+    border-radius: 8px;
     cursor: pointer;
+    font-size: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
-    transition: background 0.3s;
+    transition: 0.2s;
 }
 
 .btn-filter:hover {
-    background-color: #1976d2;
+    background: #1c3d73;
+}
+
+/* ================= BUTTONS ================= */
+.btn-group-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-darkblue {
+    background: #244b8a;
+    color: #fff;
+    border: none;
+    padding: 0 18px;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+
+.btn-darkblue:hover {
+    background: #1c3d73;
 }
 
 .table-wrapper {
@@ -171,7 +182,7 @@ table {
 }
 
 thead {
-    background: #1e88e5;
+    background: #244b8a;
 }
 
 th,
@@ -239,7 +250,7 @@ tbody tr:hover {
 .aksi a {
     width: 32px;
     height: 32px;
-    border-radius: 6px;
+    border-radius: 8px;
     color: #fff;
     cursor: pointer;
     display: inline-flex;
@@ -247,19 +258,30 @@ tbody tr:hover {
     justify-content: center;
     text-decoration: none;
     border: none;
+    transition: 0.2s transform, 0.2s opacity;
+}
+
+.aksi button:hover,
+.aksi a:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
 }
 
 .edit {
-    background: #f1c40f;
+    background: #eab308;
 }
 
+/* yellow */
 .view {
-    background: #3498db;
+    background: #244b8a;
 }
 
+/* dark blue */
 .delete {
-    background: #e74c3c;
+    background: #ef4444;
 }
+
+/* red */
 
 
 .modal {

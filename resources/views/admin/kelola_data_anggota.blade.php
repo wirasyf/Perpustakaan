@@ -11,7 +11,7 @@
     @else
         <link rel="stylesheet" href="{{ asset('css/admin/kelola-anggota-ditolak.css') }}">
     @endif
-    
+    <link rel="stylesheet" href="{{ asset('css/components/modal-cetak.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 @endpush
 
@@ -20,19 +20,19 @@
         <div class="header-card">
             <div class="header-left">
                 <div class="header-icon">
-                    <i class="fa fa-user-check"></i>
+                    <i class="fa-solid fa-users"></i>
                 </div>
                 <div>
                     <h3>Kelola Anggota</h3>
                     <p>
-                        @if($tab == 'verifikasi') Daftar anggota menunggu verifikasi
+                        @if($tab == 'verifikasi') Terima Registrasi Siswa
                         @elseif($tab == 'diterima') Daftar anggota yang telah diterima
                         @else Daftar anggota ditolak / non-aktif
                         @endif
                     </p>
                 </div>
             </div>
-            <img src="{{ asset('img/book.png') }}" alt="book">
+            <img src="{{ asset('img/ikon-buku.png') }}" alt="book">
         </div>
 
         <!-- TAB -->
@@ -47,23 +47,28 @@
             <form method="GET" action="{{ route('admin.anggota.index') }}">
                 <input type="hidden" name="tab" value="{{ $tab }}">
 
-                <div class="filter">
-                    <div class="filter-left">
-                        <div class="search">
+                <div class="table-header">
+                    <div class="filter-group">
+                        <div class="search-box">
                             <i class="fa fa-search"></i>
-                            <input type="text" name="search" value="{{ $search }}" placeholder="Cari sesuatu...">
+                            <input type="text" name="search" value="{{ $search }}" placeholder="Cari Sesuatu...">
                         </div>
                         @if($tab == 'verifikasi')
-                        <div class="date">
+                        <div class="search-box">
                             <i class="fa fa-calendar"></i>
-                            <input type="date" name="date" value="{{ $date }}">
+                            <input type="date" name="date" value="{{ $date }}" onchange="this.form.submit()">
                         </div>
                         @endif
+                        <button type="button" class="btn-filter" onclick="this.form.submit()">
+                            <i class="fa fa-sliders"></i>
+                        </button>
                     </div>
                     @if($tab == 'diterima')
-                    <a href="{{ route('admin.anggota.exportExcel') }}" class="btn-export-excel">
-                        <i class="fa fa-file-excel"></i> Export Excel
-                    </a>
+                    <div class="btn-group-actions">
+                        <button type="button" class="btn-darkblue" onclick="document.getElementById('modalCetakAnggota').classList.add('show')">
+                            <i class="fa-solid fa-print"></i> Cetak
+                        </button>
+                    </div>
                     @endif
                 </div>
             </form>
@@ -345,5 +350,27 @@
     @method('DELETE')
 </form>
 <script src="{{ asset('js/kelola_anggota.js') }}"></script>
+
+@include('components.modal-cetak', [
+    'modalId'   => 'modalCetakAnggota',
+    'title'     => 'Filter Data Export Anggota',
+    'filters'   => [
+        [
+            'id'          => 'kelas',
+            'label'       => 'Kelas',
+            'placeholder' => 'Pilih Kelas',
+            'allOption'   => true,
+            'options'     => [
+                ['value' => 'X', 'label' => 'Kelas X'],
+                ['value' => 'XI', 'label' => 'Kelas XI'],
+                ['value' => 'XII', 'label' => 'Kelas XII'],
+            ],
+        ],
+    ],
+    'routes' => [
+        'excel' => route('admin.anggota.exportExcel'),
+    ],
+    'formats' => ['excel'],
+])
 
 @endsection

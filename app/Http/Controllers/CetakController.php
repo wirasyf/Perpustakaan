@@ -20,137 +20,177 @@ use App\Exports\BukuExport;
 
 class CetakController extends Controller
 {
-     public function __construct()
+    public function __construct()
     {
         $this->middleware('auth');
     }
 
     // =====================================================
-    // 🔹 TRANSAKSI - CETAK PER ID
+    // 🔹 FILTER - halaman preview dengan data
+    // =====================================================
+    public function filterTransaksi(Request $request)
+    {
+        $start = $request->get('start_date');
+        $end   = $request->get('end_date');
+        
+        $transactions = Transaction::with('user', 'book')
+            ->when($start && $end, fn($q) => $q->whereBetween('tanggal_peminjaman', [$start, $end]))
+            ->when($request->type, fn($q) => $q->where('type', $request->type))
+            ->orderBy('tanggal_peminjaman', 'desc')
+            ->get();
+
+        return view('cetak.laporan.cetak-transaksi', compact('transactions'));
+    }
+
+    public function filterKehilangan(Request $request)
+    {
+        $start = $request->get('start_date');
+        $end   = $request->get('end_date');
+        
+        $reports = Report::with(['user', 'transaction.book'])
+            ->when($start && $end, fn($q) => $q->whereBetween('created_at', [$start, $end]))
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('cetak.laporan.cetak-kehilangan', compact('reports'));
+    }
+
+    public function filterKunjungan(Request $request)
+    {
+        $start = $request->get('start_date');
+        $end   = $request->get('end_date');
+        
+        $visits = Visit::with('user', 'transaction')
+            ->when($start && $end, fn($q) => $q->whereBetween('tanggal_datang', [$start, $end]))
+            ->orderBy('tanggal_datang', 'desc')
+            ->get();
+
+        return view('cetak.laporan.cetak-daftar-pengunjung', compact('visits'));
+    }
+
+    // =====================================================
+    // 🔹 TRANSAKSI - CETAK PER ID (nota)
     // =====================================================
 
-    public function transactionPrint($id)
+    public function cetakNotaPdf($id, $jenis = 'peminjaman')
     {
         $transaction = Transaction::with('user', 'book')->findOrFail($id);
-        return view('print.transaction-id', compact('transaction'));
-    }
 
-    public function transactionPdf($id)
-    {
-        $transaction = Transaction::with('user', 'book')->findOrFail($id);
-
-        return Pdf::loadView('pdf.transaction-id', compact('transaction'))
-            ->setPaper('A5')
-            ->stream("transaksi-$id.pdf");
+        return Pdf::loadView('cetak.nota.cetak-transaksi', [
+            'transaction' => $transaction,
+            'jenis'       => $jenis
+        ])
+        ->setPaper('A5', 'portrait')
+        ->stream("nota-{$jenis}-{$id}.pdf");
     }
 
     // =====================================================
-    // 🔹 TRANSAKSI - LAPORAN KESELURUHAN
+    // 🔹 LAPORAN KESELURUHAN + EXPORT
     // =====================================================
 
-    public function transactionReport(Request $request)
+    public function transaksiExportPdf(Request $request)
     {
-        $transactions = Transaction::with('user', 'book')
-            ->when($request->type, fn ($q) =>
-                $q->where('type', $request->type)
-            )->get();
-
-        return view('print.transaction-report', compact('transactions'));
-    }
-
-    public function transactionReportPdf(Request $request)
-    {
-        $transactions = Transaction::with('user', 'book')
-            ->when($request->type, fn ($q) =>
-                $q->where('type', $request->type)
-            )->get();
-
-        return Pdf::loadView('pdf.transaction-report', compact('transactions'))
-            ->setPaper('A4', 'landscape')
-            ->download('laporan-transaksi.pdf');
+        $transactions = $this->getTransactions($request);
+        $pdf = Pdf::loadView('cetak.pdf.transaction-report', compact('transactions'))
+                  ->setPaper('A4', 'landscape');
+        return $pdf->download('laporan_transaksi.pdf');
     }
 
     // ✅ EXCEL TRANSAKSI (maatwebsite/excel v3)
-    public function transaksiExcel()
+    public function transaksiExportExcel(Request $request)
     {
-        return Excel::download(new TransaksiExport, 'laporan-transaksi.xlsx');
+        return Excel::download(new TransaksiExport($request->get('status')), 'laporan-transaksi.xlsx');
+    }
+
+    private function getTransactions(Request $request)
+    {
+        $start  = $request->get('start_date');
+        $end    = $request->get('end_date');
+        $status = $request->get('status');
+
+        return Transaction::with('user', 'book')
+            ->when($start && $end, fn($q) => $q->whereBetween('tanggal_peminjaman', [$start, $end]))
+            ->when($status, fn($q) => $q->where('status', $status))
+            ->orderBy('tanggal_peminjaman', 'desc')
+            ->get();
     }
 
     // =====================================================
-    // 🔹 KEHILANGAN BUKU
+    // 🔹 KEHILANGAN
     // =====================================================
 
-    public function reportPrintById($id)
-    {
-        $report = Report::with(['user', 'transaction.book'])->findOrFail($id);
-        return view('print.report-id', compact('report'));
-    }
-
-    public function reportPdfById($id)
+    public function pengembalianHilangPdf($id)
     {
         $report = Report::with(['user', 'transaction.book'])->findOrFail($id);
 
-        return Pdf::loadView('pdf.report-id', compact('report'))
-            ->setPaper('A5')
-            ->stream("kehilangan-$id.pdf");
+        return Pdf::loadView('cetak.nota.cetak-buku-hilang', compact('report'))
+                  ->setPaper('A5', 'portrait')
+                  ->stream("pengembalian-buku-hilang-{$id}.pdf");
     }
 
-    public function reportPrint()
+    public function kehilanganExportPdf(Request $request)
     {
-        $reports = Report::with(['user', 'transaction.book'])->get();
-        return view('print.report', compact('reports'));
-    }
-
-    public function reportPdf()
-    {
-        $reports = Report::with(['user', 'transaction.book'])->get();
-
-        return Pdf::loadView('pdf.report', compact('reports'))
-            ->download('laporan-kehilangan.pdf');
+        $reports = $this->getReports($request);
+        $pdf = Pdf::loadView('cetak.pdf.report', compact('reports'))
+                  ->setPaper('A4', 'landscape');
+        return $pdf->download('laporan_kehilangan.pdf');
     }
 
     // ✅ EXCEL KEHILANGAN (maatwebsite/excel v3)
-    public function reportExcel()
+    public function kehilanganExportExcel()
     {
         return Excel::download(new KehilanganExport, 'laporan-kehilangan.xlsx');
+    }
+
+    private function getReports(Request $request)
+    {
+        $start = $request->get('start_date');
+        $end   = $request->get('end_date');
+        return Report::with(['user', 'transaction.book'])
+            ->when($start && $end, fn($q) => $q->whereBetween('created_at', [$start, $end]))
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
     // =====================================================
     // 🔹 KUNJUNGAN
     // =====================================================
 
-    public function visitPrint()
+    public function kunjunganExportPdf(Request $request)
     {
-        $visits = Visit::with('user')->get();
-        return view('print.visit', compact('visits'));
-    }
-
-    public function visitPdf()
-    {
-        $visits = Visit::with('user')->get();
-
-        return Pdf::loadView('pdf.visit', compact('visits'))
-            ->download('laporan-kunjungan.pdf');
+        $visits = $this->getVisits($request);
+        $pdf = Pdf::loadView('cetak.pdf.visit', compact('visits'))
+                  ->setPaper('A4', 'landscape');
+        return $pdf->download('laporan_kunjungan.pdf');
     }
 
     // ✅ EXCEL KUNJUNGAN (maatwebsite/excel v3)
-    public function visitExcel()
+    public function kunjunganExportExcel()
     {
         return Excel::download(new KunjunganExport, 'laporan-kunjungan.xlsx');
     }
 
+    private function getVisits(Request $request)
+    {
+        $start = $request->get('start_date');
+        $end   = $request->get('end_date');
+        return Visit::with('user', 'transaction')
+            ->when($start && $end, fn($q) => $q->whereBetween('tanggal_datang', [$start, $end]))
+            ->orderBy('tanggal_datang', 'desc')
+            ->get();
+    }
+
     // =====================================================
-    // 🔹 ROUTE ALIASES (match route definitions)
+    // 🔹 ROUTE ALIASES (SUDAH DIBENARKAN!)
     // =====================================================
-    
-    public function transaksiPrint() { return $this->transactionReport(request()); }
-    public function transaksiPdf() { return $this->transactionReportPdf(request()); }
-    public function kehilanganPrint() { return $this->reportPrint(); }
-    public function kehilanganPdf() { return $this->reportPdf(); }
-    public function kehilanganExcel() { return $this->reportExcel(); }
-    public function kunjunganPrint() { return $this->visitPrint(); }
-    public function kunjunganPdf() { return $this->visitPdf(); }
-    public function kunjunganExcel() { return $this->visitExcel(); }
+    public function transaksiPrint()     { return $this->transactionReport(request()); }
+    public function transaksiPdf()       { return $this->transaksiExportPdf(request()); }
+    public function kehilanganPrint()    { return $this->reportPrint(); }
+    public function kehilanganPdf()      { return $this->kehilanganExportPdf(request()); }
+    public function kehilanganExcel()    { return $this->kehilanganExportExcel(request()); }
+    public function kunjunganPrint()     { return $this->visitPrint(); }
+    public function kunjunganPdf()       { return $this->kunjunganExportPdf(request()); }
+    public function kunjunganExcel()     { return $this->kunjunganExportExcel(request()); }
 
     public function kartuSiswa()
     {

@@ -29,15 +29,29 @@ class TransactionController extends Controller
 
         $mode = $request->get('mode', 'peminjaman');
 
-        $transactions = Transaction::with(['user', 'book'])
+        $query = Transaction::with(['user', 'book'])
             ->when($mode === 'peminjaman', function($q) {
                 $q->whereIn('status', ['buku_hilang', 'belum_dikembalikan', 'terlambat', 'sudah_dikembalikan', 'menunggu_konfirmasi']);
             })
             ->when($mode === 'pengembalian', function($q) {
                 $q->whereIn('status', ['menunggu_konfirmasi', 'sudah_dikembalikan']);
-            })
-            ->latest()
-            ->paginate(10);
+            });
+
+        // Search: nama anggota atau judul buku
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->whereHas('user', fn($qq) => $qq->where('name', 'like', "%{$search}%"))
+                  ->orWhereHas('book', fn($qq) => $qq->where('judul', 'like', "%{$search}%"));
+            });
+        }
+
+        // Filter tanggal peminjaman
+        if ($request->filled('tanggal')) {
+            $query->whereDate('tanggal_peminjaman', $request->tanggal);
+        }
+
+        $transactions = $query->latest()->paginate(10);
 
         return view('admin.transaksi', compact('transactions', 'mode'));
     }

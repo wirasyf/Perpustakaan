@@ -9,10 +9,9 @@
 
 /* HEADER CARD */
 .header-card {
-    background: linear-gradient(90deg, #0d47a1, #1e88e5);
+    background: #244b8a;
     border-radius: 12px;
-    height: 90px;
-    padding: 0 22px;
+    padding: 20px 26px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -23,28 +22,31 @@
 .header-left {
     display: flex;
     align-items: center;
-    gap: 14px;
-}
-
-.header-left h3 {
-    font-size: 16px;
-    margin: 0;
-}
-
-.header-left p {
-    font-size: 13px;
-    margin: 0;
-    opacity: .9;
+    gap: 16px;
 }
 
 .header-icon {
-    width: 44px;
-    height: 44px;
-    background: rgba(255,255,255,.3);
-    border-radius: 10px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 22px;
+}
+
+.header-left h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.header-left p {
+    margin: 0;
+    font-size: 13px;
+    opacity: 0.9;
+    font-weight: 300;
 }
 
 .header-card img {
@@ -71,7 +73,7 @@
 
 .tab-item.active,
 .tab-item:hover {
-    background: #1e88e5;
+    background: #244b8a;
     color: #fff;
 }
 
@@ -82,79 +84,100 @@
     border-radius: 12px;
 }
 
-/* FILTER */
-.filter {
-    background: #fff;
-    padding: 14px;
-    border-radius: 14px;
+/* ================= TABLE HEADER & FILTER ================= */
+.table-header {
     display: flex;
-    gap: 15px;
-    align-items: center;
-    margin: 20px 0;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    gap: 12px;
     flex-wrap: wrap;
 }
 
-/* PEMBUNGKUS SEARCH DAN DATE */
-.search, .date {
+.filter-group {
     display: flex;
+    gap: 10px;
     align-items: center;
-    background: #fff; /* Latar belakang putih */
-    border: 1.5px solid #ccc; /* Garis tepi abu-abu */
-    border-radius: 10px;
-    overflow: hidden; /* Agar sudut ikon ikut melengkung */
-    height: 45px;
-    min-width: 250px;
+    flex-wrap: wrap;
 }
 
-/* KOTAK IKON BIRU (Kiri) */
-.search i, .date i {
-    background-color: #2196f3; /* Warna biru sesuai app.css */
+.search-box {
+    display: flex;
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 40px;
+}
+
+.search-box i {
+    background: #244b8a;
     color: #fff;
-    height: 100%;
-    width: 45px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    width: 44px;
+    font-size: 16px;
 }
 
-/* AREA INPUT TEKS */
-.search input, .date input {
+.search-box input {
     border: none;
-    background: transparent;
     outline: none;
-    padding: 0 15px;
-    width: 100%;
+    padding: 0 14px;
     font-size: 14px;
+    min-width: 250px;
     color: #333;
 }
 
-/* TOMBOL FILTER (IKON SETTING) */
+.search-box input::placeholder {
+    color: #9ca3af;
+}
+
 .btn-filter {
-    background-color: #2196f3;
+    background: #244b8a;
     color: #fff;
     border: none;
-    width: 45px;
-    height: 45px;
-    border-radius: 10px;
+    height: 40px;
+    width: 44px;
+    border-radius: 8px;
     cursor: pointer;
+    font-size: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
-    transition: background 0.3s;
+    transition: 0.2s;
 }
 
-.btn-print {
-    background: #1e88e5;
+.btn-filter:hover {
+    background: #1c3d73;
+}
+
+/* ================= BUTTONS ================= */
+.btn-group-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-darkblue {
+    background: #244b8a;
     color: #fff;
     border: none;
-    padding: 9px 18px;
-    height: 42px;
-    border-radius: 10px;
+    padding: 0 18px;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     cursor: pointer;
-    font-size: 13px;
-    margin-left: auto; /* ⬅️ dorong ke kanan */
+    transition: 0.2s;
+    white-space: nowrap;
+}
+
+.btn-darkblue:hover {
+    background: #1c3d73;
 }
 
 
@@ -172,11 +195,12 @@ table {
 }
 
 thead {
-    background: #1e90e5;
+    background: #244b8a;
     color: #fff;
 }
 
-th, td {
+th,
+td {
     padding: 14px;
     font-size: 13px;
     text-align: center;
@@ -195,9 +219,20 @@ td {
     white-space: nowrap;
 }
 
-.success { background: #22c55e; color: #fff; }
-.warning { background: #facc15; color: #000; }
-.danger  { background: #ef4444; color: #fff; }
+.success {
+    background: #22c55e;
+    color: #fff;
+}
+
+.warning {
+    background: #facc15;
+    color: #000;
+}
+
+.danger {
+    background: #ef4444;
+    color: #fff;
+}
 
 /* AKSI */
 .aksi {
@@ -219,8 +254,13 @@ td {
     cursor: pointer;
 }
 
-.btn-green { background: #22c55e; }
-.btn-red   { background: #ef4444; }
+.btn-green {
+    background: #22c55e;
+}
+
+.btn-red {
+    background: #ef4444;
+}
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
@@ -247,33 +287,33 @@ td {
         padding-top: 80px;
     }
 
-  
-/* HEADER CARD */
-.header-card {
-    background: linear-gradient(90deg, #0d47a1, #1e88e5);
-    border-radius: 12px;
-    padding: 22px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #fff;
-    margin-bottom: 20px;
-}
 
-.header-left {
-    display: flex;
-    gap: 15px;
-}
+    /* HEADER CARD */
+    .header-card {
+        background: linear-gradient(90deg, #0d47a1, #1e88e5);
+        border-radius: 12px;
+        padding: 22px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #fff;
+        margin-bottom: 20px;
+    }
 
-.header-icon {
-    width: 45px;
-    height: 45px;
-    background: rgba(255,255,255,.3);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+    .header-left {
+        display: flex;
+        gap: 15px;
+    }
+
+    .header-icon {
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 255, 255, .3);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
 
     .tabs {
@@ -294,108 +334,7 @@ td {
     }
 }
 
-/* ===== TOP ACTION (TAB + FILTER SATU BARIS) ===== */
-.top-action {
-    background: #fff;
-    padding: 14px 16px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    margin-bottom: 0; /* NEMPEL KE TABEL */
-}
 
-/* ===== TAB ===== */
-.tabs {
-    display: flex;
-    gap: 8px;
-}
-
-.tab {
-    padding: 8px 18px;
-    border-radius: 10px;
-    font-size: 13px;
-    text-decoration: none;
-    color: #000;
-    background: #f1f5f9;
-}
-
-.tab.active {
-    background: #2196f3;
-    color: #fff;
-}
-
-/* ===== FILTER ===== */
-.filter {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-/* INPUT ICON */
-.input-group {
-    position: relative;
-}
-
-.input-group input {
-    height: 38px;
-    padding: 0 12px 0 36px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    font-size: 13px;
-    outline: none;
-    width: 180px;
-}
-
-.input-group .icon {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 14px;
-    opacity: 0.6;
-}
-
-/* BUTTON FILTER */
-.btn-filter {
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
-    border: none;
-    background: #2196f3;
-    color: #fff;
-    cursor: pointer;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-    .top-action {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .tabs {
-        justify-content: space-between;
-    }
-
-    .filter {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .input-group input {
-        width: 100%;
-    }
-
-    .btn-filter {
-        width: 100%;
-    }
-}
 
 .btn-green,
 .btn-red {
@@ -411,8 +350,13 @@ td {
     transition: 0.2s;
 }
 
-.btn-green { background: #22c55e; }
-.btn-red   { background: #ef4444; }
+.btn-green {
+    background: #22c55e;
+}
+
+.btn-red {
+    background: #ef4444;
+}
 
 .btn-green:hover,
 .btn-red:hover {
@@ -433,7 +377,8 @@ td {
 .page-info {
     font-size: 14px;
     color: #6b7280;
-    white-space: nowrap; /* cegah turun */
+    white-space: nowrap;
+    /* cegah turun */
 }
 
 /* container pagination kanan */
@@ -441,7 +386,8 @@ td {
     display: flex;
     align-items: center;
     gap: 6px;
-    margin-left: auto; /* 🔥 paksa ke kanan */
+    margin-left: auto;
+    /* 🔥 paksa ke kanan */
 }
 
 /* tombol page */
@@ -490,6 +436,3 @@ table tfoot,
 table tfoot td {
     border-top: none !important;
 }
-
-
-

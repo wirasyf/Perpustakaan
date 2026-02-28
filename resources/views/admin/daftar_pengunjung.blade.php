@@ -4,6 +4,7 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/admin/daftar_pengunjung.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/components/modal-cetak.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 @endpush
 
@@ -12,53 +13,46 @@
     <div class="header-card">
         <div class="header-left">
             <div class="header-icon">
-                <i class="fa fa-user"></i>
+                <i class="fa-solid fa-address-book"></i>
             </div>
             <div>
                 <h3>Daftar Pengunjung</h3>
                 <p>Mencatat data pengunjung perpustakaan</p>
             </div>
         </div>
-        <img src="{{ asset('img/book.png') }}" class="header-img">
+        <img src="{{ asset('img/ikon-buku.png') }}" class="header-img">
     </div>
 
     <!-- TABLE CARD -->
     <div class="table-card">
 
-        <div class="table-header">
-    <form method="GET" action="{{ route('visits.index') }}">
-        <div class="filter">
-            <div class="search">
-                <i class="fa fa-search"></i>
-                <input 
-                    type="text" 
-                    name="search" 
-                    value="{{ request('search') }}"
-                    placeholder="Cari nama pengunjung..."
-                >
-            </div>
+        <form method="GET" action="{{ route('visits.index') }}">
+            <div class="table-header">
+                <div class="filter-group">
+                    <div class="search-box">
+                        <i class="fa fa-search"></i>
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Sesuatu...">
+                    </div>
 
-            <div class="date">
-                <i class="fa fa-calendar"></i>
-                <input 
-                    type="date" 
-                    name="date"
-                    value="{{ request('date') }}"
-                >
-            </div>
+                    <div class="search-box">
+                        <i class="fa fa-calendar"></i>
+                        <input type="date" name="date" value="{{ request('date') }}" onchange="this.form.submit()">
+                    </div>
 
-            <button type="submit" class="btn-filter">
-                <i class="fa fa-sliders"></i>
-            </button>
-            @auth
-                <a href="" class="btn-print">
-                    <i class="fa-solid fa-print"></i>
-                    Cetak Laporan
-                </a>
+                    <button type="button" class="btn-filter" onclick="this.form.submit()">
+                        <i class="fa fa-sliders"></i>
+                    </button>
+                </div>
+
+                @auth
+                <div class="btn-group-actions">
+                    <button type="button" class="btn-darkblue" onclick="document.getElementById('modalCetakPengunjung').classList.add('show')">
+                        <i class="fa-solid fa-print"></i> Cetak
+                    </button>
+                </div>
                 @endauth
-        </div>
-        </div>
-    </form>
+            </div>
+        </form>
 
 
 
@@ -147,4 +141,15 @@ document.addEventListener('DOMContentLoaded', function () {
 @endpush
 
     </div>
+
+@include('components.modal-cetak', [
+    'modalId'   => 'modalCetakPengunjung',
+    'title'     => 'Filter Data Cetak Pengunjung',
+    'filters'   => [],
+    'routes' => [
+        'pdf'   => route('cetak.kunjungan.pdf'),
+        'excel' => route('cetak.kunjungan.excel'),
+    ],
+])
+
 @endsection

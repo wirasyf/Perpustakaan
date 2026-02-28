@@ -5,6 +5,7 @@
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/admin/transaksi.css') }}">
 <link rel="stylesheet" href="{{ asset('css/admin/card.css') }}">
+<link rel="stylesheet" href="{{ asset('css/components/modal-cetak.css') }}">
 @endpush
 @section('content')
 
@@ -12,54 +13,58 @@
 <div class="header-card">
     <div class="header-left">
         <div class="header-icon">
-            <i class="fa fa-user"></i>
+            <i class="fa-solid fa-book-bookmark"></i>
         </div>
         <div>
             <h3>Transaksi</h3>
-            <p>Pengembalian dan Peminjaman Buku</p>
+            <p>Peminjaman dan pengembalian buku</p>
         </div>
     </div>
-    <img src="{{ asset('img/book.png') }}" class="header-img">
+    <img src="{{ asset('img/ikon-buku.png') }}" class="header-img">
 </div>
 
 <!-- TAB -->
-<div class="top-action">
-    <div class="tabs">
-        <a href="?mode=peminjaman"
-           class="tab {{ ($mode ?? 'peminjaman') == 'peminjaman' ? 'active' : '' }}">
-            Peminjaman
-        </a>
+<div class="tab-wrapper">
+    <a href="?mode=peminjaman"
+       class="tab-item {{ ($mode ?? 'peminjaman') == 'peminjaman' ? 'active' : '' }}">
+        Peminjaman
+    </a>
 
-        <a href="?mode=pengembalian"
-           class="tab {{ ($mode ?? '') == 'pengembalian' ? 'active' : '' }}">
-            Pengembalian
-        </a>
-    </div>
+    <a href="?mode=pengembalian"
+       class="tab-item {{ ($mode ?? '') == 'pengembalian' ? 'active' : '' }}">
+        Pengembalian
+    </a>
 </div>
 
 <!-- FILTER -->
-<div class="filter">
-    <div class="search">
-        <i class="icon fa fa-search"></i>
-        <input type="text" placeholder="Cari Sesuatu...">
+<form method="GET" action="{{ route('transactions.index') }}">
+    <input type="hidden" name="mode" value="{{ $mode ?? 'peminjaman' }}">
+    <div class="table-header">
+        <div class="filter-group">
+            <div class="search-box">
+                <i class="fa fa-search"></i>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Sesuatu...">
+            </div>
+
+            <div class="search-box">
+                <i class="fa fa-calendar"></i>
+                <input type="date" name="tanggal" value="{{ request('tanggal') }}" onchange="this.form.submit()">
+            </div>
+
+            <button type="button" class="btn-filter" onclick="this.form.submit()">
+                <i class="fa fa-sliders"></i>
+            </button>
+        </div>
+
+        @auth
+        <div class="btn-group-actions">
+            <button type="button" class="btn-darkblue" onclick="document.getElementById('modalCetakLaporan').classList.add('show')">
+                <i class="fa-solid fa-print"></i> Cetak
+            </button>
+        </div>
+        @endauth
     </div>
-
-    <div class="date">
-        <i class="icon fa fa-calendar"></i>
-        <input type="date">
-    </div>
-
-    <button class="btn-filter">
-        <i class="fa fa-sliders"></i>
-    </button>
-
-    @auth
-    <a href="" class="btn-print">
-        <i class="fa-solid fa-print"></i>
-        Cetak Laporan
-    </a>
-    @endauth
-</div>
+</form>
 
 {{-- ================= PEMINJAMAN ================= --}}
 @if(($mode ?? 'peminjaman') == 'peminjaman')
@@ -102,10 +107,13 @@
     @endif
     </td>
 <td class="aksi">
-@if($trx->status == 'buku_hilang')
+@if($trx->status == 'belum_dikembalikan')
+<span class="btn-filter btn-nota"
+      onclick="window.open('{{ route('cetak.nota', [$trx->id, 'peminjaman']) }}', '_blank')">
+    <i class="fa-solid fa-print"></i>
+</span>
+@elseif(in_array($trx->status, ['terlambat', 'buku_hilang']))
     <span>-</span>
-@elseif(in_array($trx->status, ['belum_dikembalikan', 'terlambat', 'sudah_dikembalikan']))
-    <span class="btn-filter btn-nota" data-nama="{{ $trx->user->name }}"><i class="fa-solid fa-print"></i></span>
 @endif
 </td>
 </tr>
@@ -173,7 +181,10 @@
         <button type="submit" class="btn-red" title="Tolak" style="border:none; border-radius:4px; padding: 2px 8px; cursor:pointer;">✖</button>
     </form>
 @elseif($trx->status == 'sudah_dikembalikan')
-    <span class="btn-filter btn-nota" data-nama="{{ $trx->user->name }}"><i class="fa-solid fa-print"></i></span>
+<span class="btn-filter btn-nota"
+      onclick="window.open('{{ route('cetak.nota', [$trx->id, 'pengembalian']) }}', '_blank')">
+    <i class="fa-solid fa-print"></i>
+</span>
 @endif
 </td>
 </tr>
@@ -193,5 +204,24 @@
 </table>
 </div>
 @endif
+@include('components.modal-cetak', [
+    'modalId'   => 'modalCetakLaporan',
+    'title'     => 'Filter Data Cetak Laporan',
+    'filters'   => [
+        [
+            'id'          => 'status',
+            'label'       => 'Status',
+            'placeholder' => 'Pilih Status',
+            'allOption'   => true,
+            'options'     => [
+                ['value' => 'belum_dikembalikan', 'label' => 'Belum Dikembalikan'],
+                ['value' => 'sudah_dikembalikan', 'label' => 'Sudah Dikembalikan'],
+            ],
+        ],
+    ],
+    'routes' => [
+        'pdf'   => route('cetak.transaksi.pdf'),
+        'excel' => route('cetak.transaksi.excel'),
+    ],
+])
 @endsection
-

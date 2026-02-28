@@ -14,6 +14,7 @@ use App\Http\Controllers\LaporanKehilanganController;
 use App\Http\Controllers\SiswaDashboardController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\CetakController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -120,30 +121,36 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/visits/user/{user}', [VisitController::class, 'getByUser'])->name('visits.by-user');
         Route::get('/visits/date/search', [VisitController::class, 'getByDate'])->name('visits.by-date');
 
-        // Cetak / Exports
+        // Cetak / Exports (SUDAH BERSIH + SEMUA ROUTE NAME DITAMBAHKAN)
         Route::prefix('cetak')->group(function () {
-            // Transaksi
+            // Halaman Preview (dengan data otomatis)
+            Route::get('/cetak-transaksi', [CetakController::class, 'filterTransaksi'])->name('cetak.cetak-transaksi');
+            Route::get('/cetak-kehilangan', [CetakController::class, 'filterKehilangan'])->name('cetak.cetak-kehilangan');
+            Route::get('/cetak-daftar-pengunjung', [CetakController::class, 'filterKunjungan'])->name('cetak.cetak-daftar-pengunjung');
+
+            // Filter (untuk submit tanggal)
+            Route::get('/filter-transaksi', [CetakController::class, 'filterTransaksi'])->name('cetak.filter-transaksi');
+            Route::get('/filter-kehilangan', [CetakController::class, 'filterKehilangan'])->name('cetak.filter-kehilangan');
+            Route::get('/filter-daftar-kunjungan', [CetakController::class, 'filterKunjungan'])->name('cetak.filter-daftar-kunjungan');
+
+            // Export (dengan route name yang benar)
             Route::get('/transaksi/print', [CetakController::class, 'transaksiPrint']);
-            Route::get('/transaksi/pdf', [CetakController::class, 'transaksiPdf']);
-            Route::get('/transaksi/excel', [CetakController::class, 'transaksiExcel']);
-            Route::get('/filter-transaksi', function () { return view('cetak.laporan.cetak-transaksi'); })->name('cetak.filter-transaksi');
+            Route::get('/transaksi/pdf', [CetakController::class, 'transaksiPdf'])->name('cetak.transaksi.pdf');
+            Route::get('/transaksi/excel', [CetakController::class, 'transaksiExportExcel'])->name('cetak.transaksi.excel');
 
-            // Kehilangan
             Route::get('/kehilangan/print', [CetakController::class, 'kehilanganPrint']);
-            Route::get('/kehilangan/pdf', [CetakController::class, 'kehilanganPdf']);
-            Route::get('/kehilangan/excel', [CetakController::class, 'kehilanganExcel']);
-            Route::get('/filter-kehilangan', function () { return view('cetak.laporan.cetak-kehilangan'); })->name('cetak.filter-kehilangan');
+            Route::get('/kehilangan/pdf', [CetakController::class, 'kehilanganPdf'])->name('cetak.kehilangan.pdf');
+            Route::get('/kehilangan/excel', [CetakController::class, 'kehilanganExcel'])->name('cetak.kehilangan.excel');
 
-            // Kunjungan
             Route::get('/kunjungan/print', [CetakController::class, 'kunjunganPrint']);
-            Route::get('/kunjungan/pdf', [CetakController::class, 'kunjunganPdf']);
-            Route::get('/kunjungan/excel', [CetakController::class, 'kunjunganExcel']);
-            Route::get('/filter-daftar-kunjungan', function () { return view('cetak.laporan.cetak-daftar-pengunjung'); })->name('cetak.filter-daftar-kunjungan');
-        });
 
-        // External/Legacy Export
-        Route::get('/laporan_data_kehilangan', function () {
-            return view('admin.laporan_data_kehilangan');
+            Route::prefix('profile/notif')->group(function () {
+                Route::post('read-all', [NotificationController::class, 'readAll'])->name('notif.readAll');
+                Route::get('read/{id}', [NotificationController::class, 'read'])->name('notif.read');
+            });
+
+            Route::get('/kunjungan/pdf', [CetakController::class, 'kunjunganPdf'])->name('cetak.kunjungan.pdf');
+            Route::get('/kunjungan/excel', [CetakController::class, 'kunjunganExcel'])->name('cetak.kunjungan.excel');
         });
 
         // Admin Dashboard (Legacy URL)
@@ -160,17 +167,6 @@ Route::middleware(['auth'])->group(function () {
         });
         Route::get('/edit-password', function () {
             return view('admin.edit-password');
-        });
-
-        // Cetak View Pages
-        Route::get('/cetak-transaksi', function () {
-            return view('cetak.cetak-transaksi');
-        });
-        Route::get('/cetak-daftar-pengunjung', function () {
-            return view('cetak.cetak-daftar-pengunjung');
-        });
-        Route::get('/cetak-kehilangan', function () {
-            return view('cetak.cetak-kehilangan');
         });
     });
 
@@ -242,6 +238,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/edit-foto-profil', function () {
             return view('siswa.edit-foto-profil');
         });
+
+    Route::get('/cetak/nota/{id}/{jenis?}', [CetakController::class, 'cetakNotaPdf'])
+     ->name('cetak.nota');
+
+    Route::get('/cetak/pengembalian-hilang/{id}', [CetakController::class, 'pengembalianHilangPdf'])
+     ->name('cetak.pengembalian.hilang');
     });
 
 });

@@ -42,7 +42,14 @@ class ReportController extends Controller
         });
     }
 
-    $reports = $query->latest()->paginate();
+    // Filter tanggal
+    if ($request->filled('date')) {
+        $query->whereHas('transaction', function($q) use ($request) {
+            $q->whereDate('tanggal_peminjaman', $request->date);
+        });
+    }
+
+    $reports = $query->latest()->paginate(10);
     $statuses = ['pending', 'belum_dikembalikan', 'sudah_dikembalikan'];
 
     return view('admin.laporan_data_kehilangan', compact('reports', 'statuses'));

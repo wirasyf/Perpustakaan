@@ -1,8 +1,8 @@
 /* HEADER CARD */
 .header-card {
-    background: linear-gradient(90deg, #0d47a1, #1e88e5);
+    background: #244b8a;
     border-radius: 12px;
-    padding: 22px;
+    padding: 20px 26px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -12,17 +12,37 @@
 
 .header-left {
     display: flex;
-    gap: 15px;
+    align-items: center;
+    gap: 16px;
 }
 
 .header-icon {
-    width: 45px;
-    height: 45px;
-    background: rgba(255,255,255,.3);
-    border-radius: 10px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 22px;
+}
+
+.header-left h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.header-left p {
+    margin: 0;
+    font-size: 13px;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+.header-card img {
+    height: 70px;
+    object-fit: contain;
 }
 
 /* TABLE */
@@ -39,33 +59,123 @@
     flex-wrap: wrap;
 }
 
-/* FILTER */
-.filter {
-    background: #fff;
-    padding: 14px;
-    border-radius: 14px;
+/* ================= TABLE HEADER & FILTER ================= */
+.table-header {
     display: flex;
-    gap: 15px;
-    align-items: center;
-    margin: 20px 0;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    gap: 12px;
     flex-wrap: wrap;
 }
 
-/* PEMBUNGKUS SEARCH DAN DATE */
-.search, .date {
+.filter-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    display: flex;
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 40px;
+}
+
+.search-box i {
+    background: #244b8a;
+    color: #fff;
     display: flex;
     align-items: center;
-    background: #fff; /* Latar belakang putih */
-    border: 1.5px solid #ccc; /* Garis tepi abu-abu */
+    justify-content: center;
+    width: 44px;
+    font-size: 16px;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    padding: 0 14px;
+    font-size: 14px;
+    min-width: 250px;
+    color: #333;
+}
+
+.search-box input::placeholder {
+    color: #9ca3af;
+}
+
+.btn-filter {
+    background: #244b8a;
+    color: #fff;
+    border: none;
+    height: 40px;
+    width: 44px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.btn-filter:hover {
+    background: #1c3d73;
+}
+
+/* ================= BUTTONS ================= */
+.btn-group-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-darkblue {
+    background: #244b8a;
+    color: #fff;
+    border: none;
+    padding: 0 18px;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+
+.btn-darkblue:hover {
+    background: #1c3d73;
+}
+
+/* PEMBUNGKUS SEARCH DAN DATE */
+.search,
+.date {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    /* Latar belakang putih */
+    border: 1.5px solid #ccc;
+    /* Garis tepi abu-abu */
     border-radius: 10px;
-    overflow: hidden; /* Agar sudut ikon ikut melengkung */
+    overflow: hidden;
+    /* Agar sudut ikon ikut melengkung */
     height: 45px;
     min-width: 250px;
 }
 
 /* KOTAK IKON BIRU (Kiri) */
-.search i, .date i {
-    background-color: #2196f3; /* Warna biru sesuai app.css */
+.search i,
+.date i {
+    background-color: #2196f3;
+    /* Warna biru sesuai app.css */
     color: #fff;
     height: 100%;
     width: 45px;
@@ -76,7 +186,8 @@
 }
 
 /* AREA INPUT TEKS */
-.search input, .date input {
+.search input,
+.date input {
     border: none;
     background: transparent;
     outline: none;
@@ -116,7 +227,8 @@
     border-radius: 10px;
     cursor: pointer;
     font-size: 13px;
-    margin-left: auto; /* ⬅️ dorong ke kanan */
+    margin-left: auto;
+    /* ⬅️ dorong ke kanan */
 }
 
 .table-wrapper {
@@ -130,11 +242,12 @@ table {
 }
 
 thead {
-    background: #1e88e5;
+    background: #244b8a;
     color: #fff;
 }
 
-th, td {
+th,
+td {
     padding: 12px;
     font-size: 14px;
     text-align: center;
@@ -145,13 +258,24 @@ tbody tr {
 }
 
 /* BUTTON */
-.btn-delete {
-    background: #e53935;
-    color: #fff;
+.aksi button {
     border: none;
-    padding: 6px 10px;
-    border-radius: 6px;
+    background: #ef4444;
+    /* red */
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    color: #fff;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s transform, 0.2s opacity;
+}
+
+.aksi button:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
 }
 
 /* RESPONSIVE */
@@ -181,7 +305,8 @@ tbody tr {
 .page-info {
     font-size: 14px;
     color: #6b7280;
-    white-space: nowrap; /* cegah turun */
+    white-space: nowrap;
+    /* cegah turun */
 }
 
 /* container pagination kanan */
@@ -189,7 +314,8 @@ tbody tr {
     display: flex;
     align-items: center;
     gap: 6px;
-    margin-left: auto; /* 🔥 paksa ke kanan */
+    margin-left: auto;
+    /* 🔥 paksa ke kanan */
 }
 
 /* tombol page */
@@ -238,4 +364,3 @@ table tfoot,
 table tfoot td {
     border-top: none !important;
 }
-

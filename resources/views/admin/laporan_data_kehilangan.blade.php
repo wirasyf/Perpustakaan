@@ -4,6 +4,7 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/admin/laporan_data_kehilangan.css') }}">
+<link rel="stylesheet" href="{{ asset('css/components/modal-cetak.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 @endpush
 
@@ -12,45 +13,45 @@
 <div class="header-card">
     <div class="header-left">
         <div class="header-icon">
-            <i class="fa fa-file"></i>
+            <i class="fa-solid fa-file-circle-xmark"></i>
         </div>
-        <div class="header-text">
+        <div>
             <h3>Laporan Kehilangan Buku</h3>
-            <p>Peminjman dan pengembalian buku</p>
+            <p>Laporan Buku Yang Hilang</p>
         </div>
     </div>
 
-    <img src="{{ asset('img/book.png') }}" class="header-image">
+    <img src="{{ asset('img/ikon-buku.png') }}" class="header-image">
 </div>
 
 {{-- FILTER --}}
-<div class="filter">
+<form method="GET" action="{{ route('reports.index') }}">
+    <div class="table-header">
+        <div class="filter-group">
+            <div class="search-box">
+                <i class="fa fa-search"></i>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Sesuatu...">
+            </div>
 
-    {{-- SEARCH --}}
-    <form method="GET" style="display:flex; gap:10px; align-items:center;">
-        <div class="search">
-            <i class="fa fa-search"></i>
-            <input 
-                type="text" 
-                name="search"
-                value="{{ request('search') }}"
-                placeholder="Cari sesuatu...">
+            <div class="search-box">
+                <i class="fa fa-calendar"></i>
+                <input type="date" name="date" value="{{ request('date') }}" onchange="this.form.submit()">
+            </div>
+
+            <button type="button" class="btn-filter" onclick="this.form.submit()">
+                <i class="fa fa-sliders"></i>
+            </button>
         </div>
 
-        <div class="date">
-            <i class="fa fa-calendar"></i>
-            <input type="date" name="date" value="{{ request('date') }}">
+        @auth
+        <div class="btn-group-actions">
+            <button type="button" class="btn-darkblue" onclick="document.getElementById('modalCetakKehilangan').classList.add('show')">
+                <i class="fa-solid fa-print"></i> Cetak
+            </button>
         </div>
-
-        <button type="submit" style="display:none;"></button>
-    </form>
-
-    <a href="" class="btn-print">
-        <i class="fa-solid fa-print"></i>
-        Cetak Laporan
-    </a>
-
-</div>
+        @endauth
+    </div>
+</form>
 
 {{-- TABLE --}}
 <div class="table-card">
@@ -86,6 +87,18 @@
             case 'sudah_dikembalikan':
                 $status = 'Sudah Dikembalikan';
                 $statusClass = 'status-green';
+                break;
+            case 'buku_hilang':
+                $status = 'Belum Dikembalikan';
+                $statusClass = 'status-red';
+                break;
+            case 'approved':
+                $status = 'Disetujui';
+                $statusClass = 'status-green';
+                break;
+            case 'rejected':
+                $status = 'Ditolak';
+                $statusClass = 'status-red';
                 break;
 
             default:
@@ -135,7 +148,10 @@
                         </button>
                     </form>
                 @elseif($report->status === 'sudah_dikembalikan')
-                    <span class="btn-filter btn-nota" data-nama="{{ $report->transaction->user->name }}"><i class="fa-solid fa-print"></i></span>
+<span class="btn-filter btn-nota"
+      onclick="window.open('{{ route('cetak.pengembalian.hilang', $report->id) }}', '_blank')">
+    <i class="fa-solid fa-print"></i>
+</span>
                 @else
                     <span class="no-action">-</span>
                 @endif
@@ -155,6 +171,27 @@
     @include('components.pagination', ['paginator' => $reports])
 </div>
 </div>
+
+@include('components.modal-cetak', [
+    'modalId'   => 'modalCetakKehilangan',
+    'title'     => 'Filter Data Cetak Kehilangan',
+    'filters'   => [
+        [
+            'id'          => 'status',
+            'label'       => 'Status',
+            'placeholder' => 'Pilih Status',
+            'allOption'   => true,
+            'options'     => [
+                ['value' => 'belum_dikembalikan', 'label' => 'Belum Diganti'],
+                ['value' => 'sudah_dikembalikan', 'label' => 'Sudah Diganti'],
+            ],
+        ],
+    ],
+    'routes' => [
+        'pdf'   => route('cetak.kehilangan.pdf'),
+        'excel' => route('cetak.kehilangan.excel'),
+    ],
+])
 
 @endsection
 
