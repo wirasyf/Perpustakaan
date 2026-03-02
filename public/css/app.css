@@ -78,7 +78,7 @@
 
 .user:hover .avatar,
 .user:hover .avatar-default {
-    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2);
 }
 
 
@@ -292,13 +292,14 @@
     display: block;
     width: 100%;
     padding: 12px;
-    background: #2196f3;
+    background: #214785;
     color: #fff;
     border-radius: 10px;
     text-align: center;
     font-weight: 500;
     text-decoration: none;
     margin-bottom: 10px;
+    transition: background 0.2s;
 }
 
 .btn-profile i {
@@ -306,7 +307,7 @@
 }
 
 .btn-profile:hover {
-    background: #1976d2;
+    background: #0d47a1;
 }
 
 /* LOGOUT BUTTON */
