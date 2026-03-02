@@ -1,0 +1,136 @@
+/* ===== MODAL KONFIRMASI (shared) ===== */
+.modal-konfirmasi-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  /* Higher than other modals */
+}
+
+.modal-konfirmasi-overlay.show {
+  display: flex;
+}
+
+.modal-konfirmasi {
+  background: #fff;
+  border-radius: 16px;
+  width: 400px;
+  max-width: 90vw;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, .2);
+  overflow: hidden;
+  text-align: center;
+  animation: modalKonfirmasiSlide .2s ease-out;
+}
+
+@keyframes modalKonfirmasiSlide {
+  from {
+    transform: scale(.95);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-konfirmasi-body {
+  padding: 30px 24px 10px;
+}
+
+.icon-wrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 4px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  font-size: 28px;
+}
+
+.icon-wrapper.danger {
+  border-color: #fee2e2;
+  color: #ef4444;
+}
+
+.icon-wrapper.warning {
+  border-color: #fef3c7;
+  color: #f59e0b;
+}
+
+.icon-wrapper.success {
+  border-color: #d1fae5;
+  color: #10b981;
+}
+
+.modal-konfirmasi-body h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.modal-konfirmasi-body p {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.modal-konfirmasi-footer {
+  padding: 24px;
+  display: flex;
+  gap: 12px;
+}
+
+.modal-konfirmasi-footer button {
+  flex: 1;
+  height: 44px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: .2s;
+}
+
+.btn-cancel {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.btn-cancel:hover {
+  background: #e5e7eb;
+}
+
+.btn-confirm.danger {
+  background: #ef4444;
+  color: #fff;
+}
+
+.btn-confirm.danger:hover {
+  background: #dc2626;
+}
+
+.btn-confirm.warning {
+  background: #f59e0b;
+  color: #fff;
+}
+
+.btn-confirm.warning:hover {
+  background: #d97706;
+}
+
+.btn-confirm.success {
+  background: #10b981;
+  color: #fff;
+}
+
+.btn-confirm.success:hover {
+  background: #059669;
+}

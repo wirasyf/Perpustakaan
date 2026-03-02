@@ -5,6 +5,7 @@
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/admin/daftar_pengunjung.css') }}">
     <link rel="stylesheet" href="{{ asset('css/components/modal-cetak.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/components/modal-konfirmasi.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 @endpush
 
@@ -39,17 +40,8 @@
                         <input type="date" name="date" value="{{ request('date') }}" onchange="this.form.submit()">
                     </div>
 
-                    <div class="search-box">
-                            <i class="fa fa-graduation-cap"></i>
-                            <select name="kelas" onchange="this.form.submit()" style="border:none; outline:none; background:transparent;">
-                                <option value=""> Semua Kelas </option>
-                                @foreach($kelasList as $k)
-                                    <option value="{{ $k }}" {{ $kelas == $k ? 'selected' : '' }}>
-                                        {{ $k }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div> 
+                    <button type="submit" class="btn-filter">
+                        <i class="fa fa-sliders"></i>
                     </button>
                 </div>
 
@@ -84,8 +76,8 @@
                         <td>{{ $visit->user->kelas ?? '-' }}</td>
                         <td>{{ \Carbon\Carbon::parse($visit->tanggal_datang)->format('d/m/Y') }}</td>
                         <td>
-                            <button class="btn-delete" data-id="{{ $visit->id }}">
-                                <i class="fa fa-trash"></i>
+                            <button class="btn-delete" data-id="{{ $visit->id }}" title="Hapus">
+                                <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </td>
 </tr>
@@ -110,11 +102,28 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.btn-delete').forEach(btn => {
-        btn.addEventListener('click', function () {
-            if (!confirm('Yakin ingin menghapus data kunjungan ini?')) return;
+    let deleteId = null;
+    const modalDelete = document.getElementById('modalDeleteVisit');
+    const confirmBtn = document.getElementById('btnConfirm_modalDeleteVisit');
 
-            fetch(`{{ route('visits.destroy', ':id') }}`.replace(':id', this.dataset.id), {
+    // Use event delegation for better reliability
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.btn-delete');
+        if (btn) {
+            deleteId = btn.dataset.id;
+            modalDelete.classList.add('show');
+        }
+    });
+
+    if (confirmBtn) {
+        confirmBtn.addEventListener('click', function() {
+            if (!deleteId) return;
+            
+            confirmBtn.disabled = true;
+            const originalHTML = confirmBtn.innerHTML;
+            confirmBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+
+            fetch(`{{ route('visits.destroy', ':id') }}`.replace(':id', deleteId), {
                 method: 'DELETE',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -126,9 +135,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 return res.json();
             })
             .then(() => location.reload())
-            .catch(err => alert(err.message));
+            .catch(err => {
+                alert(err.message);
+                confirmBtn.disabled = false;
+                confirmBtn.innerHTML = originalHTML;
+                modalDelete.classList.remove('show');
+            });
         });
-    });
+    }
 });
 </script>
 @endpush
@@ -143,6 +157,15 @@ document.addEventListener('DOMContentLoaded', function () {
         'pdf'   => route('cetak.kunjungan.pdf'),
         'excel' => route('cetak.kunjungan.excel'),
     ],
+])
+
+@include('components.modal-konfirmasi', [
+    'modalId' => 'modalDeleteVisit',
+    'title'   => 'Hapus Data?',
+    'message' => 'Apakah Anda yakin ingin menghapus data kunjungan ini?',
+    'type'    => 'danger',
+    'confirmBtnText' => 'Hapus',
+    'cancelBtnText'  => 'Batal'
 ])
 
 @endsection
