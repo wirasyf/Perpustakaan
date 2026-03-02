@@ -95,7 +95,7 @@
     <td>{{ optional($trx->tanggal_jatuh_tempo)->format('d/m/Y') }}</td>
     <td>
     @if($trx->status == 'belum_dikembalikan')
-        <span class="status danger">Belum Dikembalikan</span>
+        <span class="status danger">Sedang dipinjam</span>
     @elseif($trx->status == 'buku_hilang')
         <span class="status warning">Buku Hilang</span>
     @elseif($trx->status == 'sudah_dikembalikan')

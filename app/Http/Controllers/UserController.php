@@ -25,6 +25,7 @@ class UserController extends Controller
         $date = $request->get('date');
         $kelas = $request->get('kelas');
         $tab = $request->get('tab', 'verifikasi'); // Default tab ke verifikasi
+        $status = $request->get('status');
 
         $query = User::where('role', 'anggota');
 
@@ -55,11 +56,25 @@ if ($tab == 'verifikasi') {
             $query->whereDate('tanggal_pengajuan', $date);
         }
 
+        // Filter Kelas
+        if ($kelas) {
+            $query->where('kelas', $kelas);
+        }
+
+        if ($tab == 'diterima' && $status) {
+            $query->where('status', $status);
+        }
 
         $users = $query->latest()->paginate(10);
 
-    return view('admin.kelola_data_anggota', compact('users', 'tab', 'search', 'kelas', 'date'
-));
+        $kelasList = User::where('role', 'anggota')
+                        ->whereNotNull('kelas')
+                        ->select('kelas')
+                        ->distinct()
+                        ->orderBy('kelas')
+                        ->pluck('kelas');
+
+    return view('admin.kelola_data_anggota', compact('users', 'tab', 'search', 'kelas', 'date', 'kelasList', 'status'));
 
     }
 

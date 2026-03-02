@@ -39,8 +39,17 @@
                         <input type="date" name="date" value="{{ request('date') }}" onchange="this.form.submit()">
                     </div>
 
-                    <button type="button" class="btn-filter" onclick="this.form.submit()">
-                        <i class="fa fa-sliders"></i>
+                    <div class="search-box">
+                            <i class="fa fa-graduation-cap"></i>
+                            <select name="kelas" onchange="this.form.submit()" style="border:none; outline:none; background:transparent;">
+                                <option value=""> Semua Kelas </option>
+                                @foreach($kelasList as $k)
+                                    <option value="{{ $k }}" {{ $kelas == $k ? 'selected' : '' }}>
+                                        {{ $k }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div> 
                     </button>
                 </div>
 
@@ -53,8 +62,6 @@
                 @endauth
             </div>
         </form>
-
-
 
         <div class="table-wrapper">
             <table>
@@ -69,32 +76,18 @@
                     </tr>
                 </thead>
                 <tbody>
-@forelse ($visits as $visit)
-<tr>
-    <td>{{ $visits->firstItem() + $loop->index }}</td>
-
-    <td>{{ $visit->user->name }}</td>
-
-    <td>
-        {{ $visit->transaction->jenis_transaksi ?? 'Tidak ada transaksi' }}
-    </td>
-
-    <td>
-        {{ $visit->user->kelas ?? '-' }}
-    </td>
-
-    <td>
-        {{ \Carbon\Carbon::parse($visit->tanggal_datang)->format('d/m/Y') }}
-    </td>
-
-    <td>
-        <button 
-            class="btn-delete" 
-            data-id="{{ $visit->id }}"
-        >
-            <i class="fa fa-trash"></i>
-        </button>
-    </td>
+                    @forelse ($visits as $visit)
+                    <tr>
+                        <td>{{ $visits->firstItem() + $loop->index }}</td>
+                        <td>{{ $visit->user->name }}</td>
+                        <td>{{ $visit->transaction->jenis_transaksi ?? 'Tidak ada transaksi' }}</td>
+                        <td>{{ $visit->user->kelas ?? '-' }}</td>
+                        <td>{{ \Carbon\Carbon::parse($visit->tanggal_datang)->format('d/m/Y') }}</td>
+                        <td>
+                            <button class="btn-delete" data-id="{{ $visit->id }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
 </tr>
 @empty
 <tr>

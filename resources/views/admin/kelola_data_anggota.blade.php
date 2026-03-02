@@ -59,9 +59,28 @@
                             <input type="date" name="date" value="{{ $date }}" onchange="this.form.submit()">
                         </div>
                         @endif
-                        <button type="button" class="btn-filter" onclick="this.form.submit()">
-                            <i class="fa fa-sliders"></i>
-                        </button>
+                        <div class="search-box">
+                            <i class="fa fa-graduation-cap"></i>
+                            <select name="kelas" onchange="this.form.submit()" style="border:none; outline:none; background:transparent;">
+                                <option value=""> Semua Kelas </option>
+                                @foreach($kelasList as $k)
+                                    <option value="{{ $k }}" {{ $kelas == $k ? 'selected' : '' }}>
+                                        {{ $k }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>  
+                        
+                        @if($tab == 'diterima')
+                        <div class="search-box">
+                            <i class="fa fa-circle"></i>
+                            <select name="status" onchange="this.form.submit()" style="border:none; outline:none; backround:transparent">
+                                <option value="">Semua status</option>
+                                <option value="aktif" {{ ($status ?? '') == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                                <option value="nonaktif" {{ ($status ?? '') == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+                            </select>
+                        </div>
+                        @endif
                     </div>
                     @if($tab == 'diterima')
                     <div class="btn-group-actions">

@@ -33,9 +33,25 @@ class VisitController extends Controller
         $query->whereDate('tanggal_datang', $request->date);
     }
 
+    $kelas = $request->get('kelas');
+
+    if ($kelas) {
+        $query->whereHas('user', function ($q) use ($kelas) {
+            $q->where('kelas', $kelas);
+        });
+    }
+
+    $kelasList = User::where('role', 'anggota')
+                 ->whereNotNull('kelas')
+                 ->select('kelas')
+                 ->distinct()
+                 ->orderBy('kelas')
+                 ->pluck('kelas');
+
+
     $visits = $query->orderBy('tanggal_datang', 'desc')->paginate(10);
 
-    return view('admin.daftar_pengunjung', compact('visits'));
+    return view('admin.daftar_pengunjung', compact('visits', 'kelasList', 'kelas'));
 }
 
     public function destroy(Visit $visit)

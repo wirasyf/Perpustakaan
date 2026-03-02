@@ -1,7 +1,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Dashboard Anggota')
+@section('title', 'Kelola Data Buku')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/kelola_data_buku.css') }}">
