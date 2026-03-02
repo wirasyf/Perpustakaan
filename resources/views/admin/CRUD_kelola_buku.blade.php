@@ -9,238 +9,157 @@
 
 @section('content')
 
-<div class="header-card">
-    <div>
-        <h2>{{ $book ? 'Edit Data Buku' : 'Tambah Data Buku' }}</h2>
-        <p>Mengelola data buku perpustakaan</p>
+    <!-- HEADER CARD -->
+    <div class="header-card">
+        <div class="header-left">
+            <div class="header-icon">
+                <i class="fa-solid fa-book-medical"></i>
+            </div>
+            <div>
+                <h3>{{ $book ? 'Edit Data Buku' : 'Kelola Data Buku' }}</h3>
+                <p>Mengelola data buku perpustakaan</p>
+            </div>
+        </div>
+        <img src="{{ asset('img/ikon-buku.png') }}" class="header-img">
     </div>
-    📚
-</div>
 
-<div class="card">
+    <div class="card">
+        <form 
+            action="{{ $book ? route('books.update',$book->id) : route('books.store') }}"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+        @csrf
+        @if($book)
+            @method('PUT')
+        @endif
 
-<form 
-    action="{{ $book ? route('books.update',$book->id) : route('books.store') }}"
-    method="POST"
-    enctype="multipart/form-data"
->
-@csrf
-@if($book)
-@method('PUT')
-@endif
+        <div class="form-grid">
+            <!-- Judul Buku -->
+            <div class="form-group span-4">
+                <label>Judul Buku</label>
+                <input type="text" name="judul" value="{{ old('judul', $book->judul ?? '') }}" placeholder="Masukkan Judul Buku">
+                @error('judul')
+                    <div class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</div>
+                @enderror
+            </div>
 
-<div class="form-grid">
+            <!-- Kategori Buku -->
+            <div class="form-group span-4">
+                <label>Kategori Buku</label>
+                <select name="kategori_buku">
+                    <option value="">Pilih Kategori Buku</option>
+                    <option value="fiksi" {{ old('kategori_buku', $book->kategori_buku ?? '') == 'fiksi' ? 'selected' : '' }}>Fiksi</option>
+                    <option value="nonfiksi" {{ old('kategori_buku', $book->kategori_buku ?? '') == 'nonfiksi' ? 'selected' : '' }}>Non Fiksi</option>
+                </select>
+                @error('kategori_buku')
+                    <div class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</div>
+                @enderror
+            </div>
 
-<!-- Judul Buku -->
-<div class="form-group col-1">
-    <label>Judul Buku</label>
-    <input type="text" name="judul"
-    value="{{ old('judul', $book->judul ?? '') }}"
-    placeholder="Masukkan Judul Buku">
+            <!-- Pengarang Buku -->
+            <div class="form-group span-4">
+                <label>Pengarang Buku</label>
+                <input type="text" name="pengarang" value="{{ old('pengarang', $book->pengarang ?? '') }}" placeholder="Masukkan Pengarang Buku">
+                @error('pengarang')
+                    <div class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</div>
+                @enderror
+            </div>
 
-    @error('judul')
-    <small class="error">Judul wajib diisi</small>
-    @enderror
-</div>
+            <!-- Nomor Rak -->
+            <div class="form-group span-3">
+                <label>Nomor Rak</label>
+                <input type="text" name="nomor_rak" value="{{ old('nomor_rak', $book->row->bookshelf->no_rak ?? '') }}" placeholder="Masukkan Nomor Rak">
+                @error('nomor_rak')
+                    <div class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</div>
+                @enderror
+            </div>
 
-<!-- Kategori Buku -->
-<div class="form-group col-2">
-    <label>Kategori Buku</label>
-    <select name="kategori_buku">
-        <option value="">Pilih Kategori Buku</option>
-        <option value="fiksi" {{ old('kategori_buku', $book->kategori_buku ?? '') == 'fiksi' ? 'selected' : '' }}>Fiksi</option>
-        <option value="nonfiksi" {{ old('kategori_buku', $book->kategori_buku ?? '') == 'nonfiksi' ? 'selected' : '' }}>Non Fiksi</option>
-    </select>
+            <!-- Baris ke -->
+            <div class="form-group span-3">
+                <label>Baris ke</label>
+                <input type="text" name="baris_ke" value="{{ old('baris_ke', $book->row->baris_ke ?? '') }}" placeholder="Masukkan Baris Rak ke-">
+                @error('baris_ke')
+                    <div class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</div>
+                @enderror
+            </div>
 
-    @error('kategori_buku')
-    <small class="error">Kategori wajib diisi</small>
-    @enderror
-</div>
+            <!-- Tahun Terbit -->
+            <div class="form-group span-3">
+                <label>Tahun Terbit</label>
+                <input type="text" name="tahun_terbit" value="{{ old('tahun_terbit', $book->tahun_terbit ?? '') }}" placeholder="Masukkan Tahun Terbit">
+                @error('tahun_terbit')
+                    <div class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</div>
+                @enderror
+            </div>
 
-<!-- Pengarang Buku -->
-<div class="form-group col-1">
-    <label>Pengarang Buku</label>
-    <input type="text" name="pengarang"
-    value="{{ old('pengarang', $book->pengarang ?? '') }}"
-    placeholder="Masukkan Pengarang Buku">
+            <!-- Kode Buku -->
+            <div class="form-group span-3">
+                <label>Kode Buku</label>
+                <input type="text" name="kode_buku" value="{{ old('kode_buku', $book->kode_buku ?? '') }}" placeholder="Masukkan Kode Buku">
+                @error('kode_buku')
+                    <div class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</div>
+                @enderror
+            </div>
 
-    @error('pengarang')
-    <small class="error">Pengarang wajib diisi</small>
-    @enderror
-</div>
-
-
-<!-- Baris ke (Dropdown) -->
-<div class="form-group col-1">
-    <label>Baris ke
-    @if(!$book)
-    <button type="button" class="btn-baris" onclick="openCreateRackModal()" title="Buat Rak/Baris Baru" style="font-size:12px; padding:2px 6px; margin-left:5px;">+</button>
-    @endif
-    </label>
-    <select name="id_baris">
-        <option value="">Pilih Baris Rak</option>
-        @foreach($rows as $row)
-        <option value="{{ $row->id }}" {{ (string)old('id_baris', $book->id_baris ?? '') === (string)$row->id ? 'selected' : '' }}>
-            Rak {{ $row->bookshelf?->no_rak ?? 'N/A' }} - Baris {{ $row->baris_ke }}
-        </option>
-        @endforeach
-    </select>
-
-    @error('id_baris')
-    <small class="error">Baris rak wajib diisi</small>
-    @enderror
-</div>
-
-<!-- Hidden inputs untuk create rak/baris via modal -->
-<input type="hidden" name="new_bookshelf_no" id="newBookshelfNo" value="">
-<input type="hidden" name="new_bookshelf_keterangan" id="newBookshelfKeterangan" value="">
-<input type="hidden" name="new_row_baris" id="newRowBaris" value="">
-<input type="hidden" name="new_row_keterangan" id="newRowKeterangan" value="">
-
-<!-- Tahun Terbit -->
-<div class="form-group col-1">
-    <label>Tahun Terbit</label>
-    <select name="tahun_terbit">
-        @php $currentYear = date('Y'); @endphp
-        @for($y = $currentYear; $y >= 1900; $y--)
-            <option value="{{ $y }}" {{ (string)old('tahun_terbit', $book->tahun_terbit ?? '') === (string)$y ? 'selected' : '' }}>{{ $y }}</option>
-        @endfor
-    </select>
-
-    @error('tahun_terbit')
-    <small class="error">Tahun terbit wajib diisi</small>
-    @enderror
-</div>
-
-<!-- Kode Buku -->
-<div class="form-group col-1">
-    <label>Kode Buku</label>
-    <input type="text" name="kode_buku"
-    value="{{ old('kode_buku', $book->kode_buku ?? '') }}"
-    placeholder="Masukkan Kode Buku">
-
-    @error('kode_buku')
-    <small class="error">Kode buku wajib diisi</small>
-    @enderror
-</div>
-
-</div>
-
-<!-- COVER -->
-<div class="form-group" style="margin-top:20px">
-<label>Cover Buku</label>
-
-<div style="margin-bottom:10px">
-    <img id="coverPreview" src="{{ $book && $book->cover ? asset('storage/'.$book->cover) : '' }}" width="120" style="display: {{ $book && $book->cover ? 'inline-block' : 'none' }};" />
-</div>
-
-<div class="upload-box">
-    <input type="file" name="cover" id="coverInput" style="border:none">
-</div>
-
-@error('cover')
-<span class="error">Cover wajib diisi</span>
-@enderror
-</div>
-
-<!-- SINOPSIS -->
-<div class="form-group" style="margin-top:20px">
-<label>Sinopsis Buku</label>
-
-<textarea name="deskripsi" class="editor">
-{{ old('deskripsi', $book->deskripsi ?? $book->sinopsis ?? '') }}
-</textarea>
-
-@error('deskripsi')
-<span class="error">Sinopsis wajib diisi</span>
-@enderror
-</div>
-
-<button class="btn">
-{{ $book ? 'Update Buku' : 'Simpan Buku' }}
-</button>
-
-</form>
-
-</div>
-
-<!-- Modal untuk create rak/baris -->
-<div id="modalCreateRack" class="modal-overlay" style="display:none;">
-    <div class="modal-box" style="max-width:500px;">
-        <div class="modal-header">
-            <h3>Buat Rak dan Baris Baru</h3>
+            @error('id_baris')
+                <div class="error-msg span-12" style="margin-top: -10px; margin-bottom: 10px;">
+                    <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
+                </div>
+            @enderror
         </div>
-        <div class="modal-body">
-            <div style="margin-bottom:15px;">
-                <label><strong>Nomor Rak</strong></label>
-                <input type="text" id="modalRackNo" placeholder="Mis. R1" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;">
+
+        <!-- COVER -->
+        <div class="form-group span-12" style="margin-top: 20px;">
+            <label>Cover Buku <span style="color:red">*</span></label>
+            <div class="upload-box" onclick="document.getElementById('coverInput').click()">
+                <div id="previewContainer" style="{{ $book && $book->cover ? '' : 'display:none' }}">
+                    <img id="coverPreview" src="{{ $book && $book->cover ? asset('storage/'.$book->cover) : '' }}" />
+                </div>
+                <div id="uploadPlaceholder" style="{{ $book && $book->cover ? 'display:none' : '' }}">
+                    <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                    <p class="upload-text">Klik untuk <br> unggah foto atau dokumen pendukung (PNG, JPG, JPEG, PDF)</p>
+                </div>
+                <input type="file" name="cover" id="coverInput" accept="image/*" hidden>
             </div>
-            <div style="margin-bottom:15px;">
-                <label><strong>Keterangan Rak</strong></label>
-                <input type="text" id="modalRackDesc" placeholder="Keterangan (opsional)" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;">
-            </div>
-            <div style="margin-bottom:15px;">
-                <label><strong>Baris ke</strong></label>
-                <input type="number" id="modalRowNum" placeholder="Nomor baris" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;">
-            </div>
-            <div style="margin-bottom:15px;">
-                <label><strong>Keterangan Baris</strong></label>
-                <input type="text" id="modalRowDesc" placeholder="Keterangan (opsional)" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;">
-            </div>
+            @error('cover')
+                <div class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</div>
+            @enderror
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn-modal batal" onclick="closeCreateRackModal()">Batal</button>
-            <button type="button" class="btn-modal yakin" onclick="saveRackData()">Simpan</button>
+
+        <!-- SINOPSIS -->
+        <div class="form-group span-12" style="margin-top: 30px;">
+            <label>Sinopsis Buku</label>
+            <textarea name="deskripsi" id="deskripsi" class="editor" placeholder="Masukkan Deskripsi Produk">{{ old('deskripsi', $book->deskripsi ?? '') }}</textarea>
+            @error('deskripsi')
+                <div class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</div>
+            @enderror
         </div>
+
+        <div class="form-footer">
+            <button type="submit" class="btn-simpan">Simpan</button>
+        </div>
+        </form>
     </div>
-</div>
 
 <script>
-    // Cover preview handler - maintain existing image if no new file selected
+    // Cover preview handler
     document.addEventListener('DOMContentLoaded', function() {
         const input = document.getElementById('coverInput');
         const preview = document.getElementById('coverPreview');
+        const placeholder = document.getElementById('uploadPlaceholder');
+        const container = document.getElementById('previewContainer');
+        
         if (!input || !preview) return;
 
         input.addEventListener('change', function () {
             const file = this.files && this.files[0];
             if (file) {
                 preview.src = URL.createObjectURL(file);
-                preview.style.display = 'inline-block';
+                container.style.display = 'block';
+                placeholder.style.display = 'none';
             }
         });
-    });
-
-    // Modal create rack handlers
-    function openCreateRackModal() {
-        document.getElementById('modalCreateRack').style.display = 'flex';
-    }
-
-    function closeCreateRackModal() {
-        document.getElementById('modalCreateRack').style.display = 'none';
-    }
-
-    function saveRackData() {
-        const rackNo = document.getElementById('modalRackNo').value.trim();
-        const rackDesc = document.getElementById('modalRackDesc').value.trim();
-        const rowNum = document.getElementById('modalRowNum').value.trim();
-        const rowDesc = document.getElementById('modalRowDesc').value.trim();
-
-        if (!rackNo || !rowNum) {
-            alert('Nomor Rak dan Baris ke harus diisi');
-            return;
-        }
-
-        document.getElementById('newBookshelfNo').value = rackNo;
-        document.getElementById('newBookshelfKeterangan').value = rackDesc;
-        document.getElementById('newRowBaris').value = rowNum;
-        document.getElementById('newRowKeterangan').value = rowDesc;
-
-        closeCreateRackModal();
-    }
-
-    document.getElementById('modalCreateRack').addEventListener('click', function(e) {
-        if (e.target === this) closeCreateRackModal();
     });
 </script>
 
