@@ -51,9 +51,30 @@ class TransactionController extends Controller
             $query->whereDate('tanggal_peminjaman', $request->tanggal);
         }
 
+        $kelas = $request->get('kelas');
+        $status = $request->get('status');
+
+        // Filter Kelas
+        if ($kelas) {
+            $query->whereHas('user', function($q) use ($kelas) {
+                $q->where('kelas', $kelas);
+            });
+        }
+    
+            $kelasList = User::where('role', 'anggota')
+                 ->whereNotNull('kelas')
+                 ->select('kelas')
+                 ->distinct()
+                 ->orderBy('kelas')
+                 ->pluck('kelas');
+
+        if ($mode == 'peminjaman' && $status) {
+            $query->where('status', $status);
+        }
+
         $transactions = $query->latest()->paginate(10);
 
-        return view('admin.transaksi', compact('transactions', 'mode'));
+        return view('admin.transaksi', compact('transactions', 'mode', 'kelasList', 'kelas', 'status'));
     }
 
     /**

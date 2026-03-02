@@ -23,6 +23,9 @@ class ReportController extends Controller
 
     $query = Report::with(['transaction.user', 'transaction.book', 'user']);
 
+    $kelas  = $request->get('kelas');
+    $status = $request->get('status');
+
     // Filter status
     if ($request->status !== null && $request->status !== '') {
         $query->where('status', $request->status);
@@ -49,10 +52,19 @@ class ReportController extends Controller
         });
     }
 
+    // Kelas list
+    $kelasList = \App\Models\User::where('role', 'anggota')
+        ->whereNotNull('kelas')
+        ->select('kelas')
+        ->distinct()
+        ->orderBy('kelas')
+        ->pluck('kelas');
+
+    $reports = $request->get('status');
     $reports = $query->latest()->paginate(10);
     $statuses = ['pending', 'belum_dikembalikan', 'sudah_dikembalikan'];
 
-    return view('admin.laporan_data_kehilangan', compact('reports', 'statuses'));
+    return view('admin.laporan_data_kehilangan', compact('reports', 'statuses', 'kelasList', 'kelas', 'status'));
 }
 
     /**

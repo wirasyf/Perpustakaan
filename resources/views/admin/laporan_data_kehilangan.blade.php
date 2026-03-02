@@ -37,11 +37,30 @@
                 <i class="fa fa-calendar"></i>
                 <input type="date" name="date" value="{{ request('date') }}" onchange="this.form.submit()">
             </div>
+{{-- Filter Kelas --}}
+<div class="search-box">
+    <i class="fa fa-graduation-cap"></i>
+    <select name="kelas" onchange="this.form.submit()" style="border:none; outline:none; background:transparent;">
+        <option value="">Semua Kelas</option>
+        @foreach($kelasList as $k)
+            <option value="{{ $k }}" {{ ($kelas ?? '') == $k ? 'selected' : '' }}>
+                {{ $k }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
-            <button type="button" class="btn-filter" onclick="this.form.submit()">
-                <i class="fa fa-sliders"></i>
-            </button>
-        </div>
+{{-- Filter Status --}}
+<div class="search-box">
+    <i class="fa fa-circle"></i>
+    <select name="status" onchange="this.form.submit()" style="border:none; outline:none; background:transparent;">
+        <option value="">Semua Status</option>
+        <option value="belum_dikembalikan" {{ ($status ?? '') == 'belum_dikembalikan' ? 'selected' : '' }}>Belum Dikembalikan</option>
+        <option value="sudah_dikembalikan" {{ ($status ?? '') == 'sudah_dikembalikan' ? 'selected' : '' }}>Sudah Dikembalikan</option>
+        <option value="pending"            {{ ($status ?? '') == 'pending'            ? 'selected' : '' }}>Pending</option>
+    </select>
+</div>
+</div>
 
         @auth
         <div class="btn-group-actions">

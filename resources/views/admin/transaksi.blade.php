@@ -51,9 +51,33 @@
                 <input type="date" name="tanggal" value="{{ request('tanggal') }}" onchange="this.form.submit()">
             </div>
 
-            <button type="button" class="btn-filter" onclick="this.form.submit()">
-                <i class="fa fa-sliders"></i>
-            </button>
+                                    <div class="search-box">
+                            <i class="fa fa-graduation-cap"></i>
+                            <select name="kelas" onchange="this.form.submit()" style="border:none; outline:none; background:transparent;">
+                                <option value=""> Semua Kelas </option>
+                                @foreach($kelasList as $k)
+                                    <option value="{{ $k }}" {{ $kelas == $k ? 'selected' : '' }}>
+                                        {{ $k }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+
+            @if($mode == 'peminjaman')
+            <div class="search-box">
+                <i class="fa fa-circle"></i>
+                <select name="status" onchange="this.form.submit()" style="border:none; outline:none; background:transparent;">
+                    <option value="">Semua Status</option>
+                    <option value="belum_dikembalikan"    {{ ($status ?? '') == 'belum_dikembalikan'    ? 'selected' : '' }}>Belum Dikembalikan</option>
+                    <option value="sudah_dikembalikan"    {{ ($status ?? '') == 'sudah_dikembalikan'    ? 'selected' : '' }}>Sudah Dikembalikan</option>
+                    <option value="terlambat"             {{ ($status ?? '') == 'terlambat'             ? 'selected' : '' }}>Terlambat</option>
+                    <option value="buku_hilang"           {{ ($status ?? '') == 'buku_hilang'           ? 'selected' : '' }}>Buku Hilang</option>
+                    <option value="menunggu_konfirmasi"   {{ ($status ?? '') == 'menunggu_konfirmasi'   ? 'selected' : '' }}>Menunggu Konfirmasi</option>
+                </select>
+            </div>
+            @endif
+
         </div>
 
         @auth
