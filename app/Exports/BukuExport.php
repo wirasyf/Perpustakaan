@@ -2,52 +2,37 @@
 
 namespace App\Exports;
 
-use App\Models\Book;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use App\Exports\BukuSheetExport;  
+use App\Exports\BukuSummarySheet;
 
-class BukuExport implements FromCollection, WithHeadings, WithMapping
+class BukuExport implements WithMultipleSheets
 {
-    private int $rowNumber = 0;
+    protected string $kategori;
 
-    public function collection()
+    public function __construct(string $kategori = 'semua')
     {
-        return Book::with('row.bookshelf')->get();
+        $this->kategori = $kategori;
     }
 
-    public function headings(): array
+    public function sheets(): array
     {
-        return [
-            'No',
-            'Kode Buku',
-            'Judul',
-            'Pengarang',
-            'Tahun Terbit',
-            'Kategori',
-            'Status',
-            'Rak',
-        ];
-    }
+        $sheets = [];
 
-    public function map($book): array
-    {
-        $this->rowNumber++;
-
-        $rak = '-';
-        if ($book->row && $book->row->bookshelf) {
-            $rak = $book->row->bookshelf->no_rak . ' - ' . $book->row->baris_ke;
+        if ($this->kategori === 'semua' || $this->kategori === 'fiksi') {
+            $sheets[] = new BukuSheetExport('fiksi');
         }
 
-        return [
-            $this->rowNumber,
-            $book->kode_buku ?? '-',
-            $book->judul,
-            $book->pengarang,
-            $book->tahun_terbit,
-            $book->kategori_buku == 'fiksi' ? 'Fiksi' : 'Non Fiksi',
-            ucfirst($book->status ?? '-'),
-            $rak,
-        ];
+        if ($this->kategori === 'semua' || $this->kategori === 'nonfiksi') {
+            $sheets[] = new BukuSheetExport('nonfiksi');
+        }
+
+        if ($this->kategori === 'semua') {
+            $sheets[] = new BukuSheetExport('semua');
+        }
+
+        $sheets[] = new BukuSummarySheet($this->kategori);
+
+        return $sheets;
     }
 }

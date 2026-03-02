@@ -8,6 +8,8 @@ use App\Models\Bookshelf;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\BukuExport; 
+use Maatwebsite\Excel\Facades\Excel;
 
 class BookController extends Controller
 {
@@ -16,6 +18,19 @@ class BookController extends Controller
         $this->middleware('auth');
     }
 
+    public function exportExcel(Request $request)
+    {
+        $kategori = $request->input('kategori', 'semua'); // semua | Fiksi | Non Fiksi
+
+        $namaFile = match($kategori) {
+            'fiksi'     => 'data-buku-fiksi.xlsx',
+            'nonfiksi' => 'data-buku-non-fiksi.xlsx',
+            default     => 'data-buku-semua.xlsx',
+        };
+
+        return Excel::download(new BukuExport($kategori), $namaFile);
+    }
+    
     public function index(Request $request)
 {
     if (Auth::user()?->role !== 'admin') abort(403);

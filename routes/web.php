@@ -100,7 +100,7 @@ Route::middleware(['auth'])->group(function () {
         // Resources (CRUD)
         Route::resource('bookshelves', BookshelfController::class);
         Route::resource('rows', RowController::class);
-        Route::get('/books/export-excel', [CetakController::class, 'bukuExcel'])->name('books.exportExcel');
+        Route::get('/books/export-excel', [BookController::class, 'exportExcel'])->name('books.exportExcel');
         Route::resource('books', BookController::class);
         Route::get('/books/search/results', [BookController::class, 'search'])->name('books.search');
         Route::get('/crud_kelola_buku', function () { return view('admin.CRUD_kelola_buku'); });
