@@ -59,7 +59,7 @@
         @forelse($books as $book)
             <div class="card" data-title="{{ strtolower($book->judul) }}">
                 <div class="card-image">
-                    <img src="{{ asset('img/buku.png') }}" alt="{{ $book->judul }}">
+                    <img src="{{ $book->cover_url }}" alt="{{ $book->judul }}">
                 </div>
 
                 <div class="card-content">

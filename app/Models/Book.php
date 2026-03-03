@@ -33,4 +33,16 @@ class Book extends Model
     {
         return $this->hasMany(Transaction::class, 'buku_id');
     }
+
+    /**
+     * Get the book cover URL.
+     */
+    public function getCoverUrlAttribute()
+    {
+        if (!$this->cover) {
+            return asset('img/buku.png');
+        }
+
+        return asset('storage/' . $this->cover);
+    }
 }

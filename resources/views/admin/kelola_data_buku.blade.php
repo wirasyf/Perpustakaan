@@ -119,7 +119,7 @@
     data-penulis="{{ $book->pengarang }}"
     data-kategori="{{ $book->kategori_buku == 'fiksi' ? 'Fiksi' : 'Non Fiksi' }}"
     data-deskripsi="{{ $book->deskripsi }}"
-    data-gambar="{{ $book->cover ? asset('storage/' . $book->cover) : asset('img/buku.png') }}"
+    data-gambar="{{ $book->cover_url }}"
 >
     <i class="fa-solid fa-eye"></i>
 </button>
