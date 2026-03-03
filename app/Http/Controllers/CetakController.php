@@ -226,12 +226,17 @@ class CetakController extends Controller
     // 🔹 EXPORT EXCEL DATA ANGGOTA DITERIMA
     // =====================================================
 
-    public function anggotaDiterimaExcel()
+    public function anggotaDiterimaExcel(Request $request)
     {
-        if (\Illuminate\Support\Facades\Auth::user()?->role !== 'admin') abort(403);
+        
+    $kelas = $request->input('kelas', 'semua');
 
-        return Excel::download(new AnggotaDiterimaExport, 'data-anggota-diterima.xlsx');
-    }
+    $namaFile = $kelas === 'semua'
+        ? 'data-anggota-diterima.xlsx'
+        : 'data-anggota-' . str_replace(' ', '-', strtolower($kelas)) . '.xlsx';
+
+    return Excel::download(new AnggotaDiterimaExport($kelas), $namaFile);
+}
 
     // =====================================================
     // 🔹 EXPORT EXCEL DATA BUKU
