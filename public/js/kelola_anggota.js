@@ -8,8 +8,23 @@ function openDetailModal(user) {
 
     // Foto profil
     const photoEl = document.getElementById('detail_photo');
-    if (photoEl) {
-        photoEl.src = user.profile_photo || '/img/profile.png';
+    const photoIconEl = document.getElementById('detail_photo_icon');
+
+    if (photoEl && photoIconEl) {
+        if (user.profile_photo) {
+            photoEl.src = user.profile_photo;
+            photoEl.style.display = 'inline-block';
+            photoIconEl.style.display = 'none';
+
+            photoEl.onerror = function () {
+                this.style.display = 'none';
+                photoIconEl.style.display = 'flex';
+                this.onerror = null;
+            };
+        } else {
+            photoEl.style.display = 'none';
+            photoIconEl.style.display = 'flex';
+        }
     }
 
     document.getElementById('detail_name').textContent = user.name ?? '-';

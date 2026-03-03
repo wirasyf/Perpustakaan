@@ -115,10 +115,10 @@
                             <tr>
                                 <td>{{ $users->firstItem() + $index }}</td>
                                 <td class="user-cell">
-                                    @if($user->profile_photo && file_exists(public_path($user->profile_photo)))
-                                        <img src="{{ asset($user->profile_photo) }}" class="avatar" alt="{{ $user->name }}">
+                                    @if($user->profile_photo_url)
+                                        <img src="{{ $user->profile_photo_url }}" class="avatar" alt="{{ $user->name }}">
                                     @else
-                                        <div class="avatar avatar-default">
+                                        <div class="avatar-icon">
                                             <i class="fa fa-user"></i>
                                         </div>
                                     @endif
@@ -162,7 +162,7 @@
                                                 kelas: '{{ $user->kelas ?? '-' }}',
                                                 status: '{{ $user->status }}',
                                                 alamat: '{{ addslashes($user->alamat ?? '-') }}',
-                                                profile_photo: '{{ $user->profile_photo ? asset($user->profile_photo) : '' }}',
+                                                profile_photo: '{{ $user->profile_photo_url }}',
                                                 created_at: '{{ $user->created_at }}'
                                             })">
                                             <i class="fa fa-eye"></i>
@@ -320,7 +320,10 @@
 
         <!-- Foto Profil Bulat -->
         <div class="detail-photo-wrapper">
-            <img id="detail_photo" src="{{ asset('img/profile.png') }}" alt="Foto Profil" class="detail-photo">
+            <img id="detail_photo" src="" alt="Foto Profil" class="detail-photo" style="display: none;">
+            <div id="detail_photo_icon" class="detail-photo-icon">
+                <i class="fa fa-user"></i>
+            </div>
         </div>
 
         <!-- Data 2 Kolom -->

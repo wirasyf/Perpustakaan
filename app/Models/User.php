@@ -9,7 +9,6 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
@@ -66,5 +65,25 @@ class User extends Authenticatable
     public function visits()
     {
         return $this->hasMany(Visit::class);
+    }
+
+    /**
+     * Get the profile photo URL.
+     */
+    public function getProfilePhotoUrlAttribute()
+    {
+        if (!$this->profile_photo) {
+            return null;
+        }
+
+        // Handle legacy paths (public/uploads/profile/...)
+        if (strpos($this->profile_photo, 'uploads/') === 0) {
+            if (file_exists(public_path($this->profile_photo))) {
+                return asset($this->profile_photo);
+            }
+        }
+
+        // Handle storage paths (profile_photos/...)
+        return asset('storage/' . $this->profile_photo);
     }
 }

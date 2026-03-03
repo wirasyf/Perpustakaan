@@ -84,7 +84,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-submit">Masuk</button>
+                    <button type="submit" class="btn-submit">Daftar</button>
 
                     <div class="auth-footer">
                         Sudah Memiliki Akun? <a href="{{ route('login.show') }}">Login</a>
