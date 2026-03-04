@@ -37,11 +37,11 @@
 
     @if(isset($filter['type']) && $filter['type'] === 'date')
         {{-- Input tanggal --}}
-        <input type="date" name="{{ $filter['id'] }}"
+        <input type="date" name="{{ $filter['id'] }}" data-param="{{ $filter['id'] }}"
                class="filter-input-date">
     @else
         {{-- Dropdown seperti sebelumnya --}}
-        <select name="{{ $filter['id'] }}">
+        <select name="{{ $filter['id'] }}" data-param="{{ $filter['id'] }}">
             <option value="" disabled selected>{{ $filter['placeholder'] ?? 'Pilih' }}</option>
             @if($filter['allOption'] ?? false)
                 <option value="semua">Semua</option>

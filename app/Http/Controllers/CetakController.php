@@ -99,7 +99,11 @@ class CetakController extends Controller
     // ✅ EXCEL TRANSAKSI (maatwebsite/excel v3)
     public function transaksiExportExcel(Request $request)
     {
-        return Excel::download(new TransaksiExport($request->get('status')), 'laporan-transaksi.xlsx');
+        return Excel::download(new TransaksiExport(
+            $request->get('status'),
+            $request->get('start_date'),
+            $request->get('end_date')
+        ), 'laporan-transaksi.xlsx');
     }
 
     private function getTransactions(Request $request)
@@ -137,9 +141,12 @@ class CetakController extends Controller
     }
 
     // ✅ EXCEL KEHILANGAN (maatwebsite/excel v3)
-    public function kehilanganExportExcel()
+    public function kehilanganExportExcel(Request $request)
     {
-        return Excel::download(new KehilanganExport, 'laporan-kehilangan.xlsx');
+        return Excel::download(new KehilanganExport(
+            $request->get('start_date'),
+            $request->get('end_date')
+        ), 'laporan-kehilangan.xlsx');
     }
 
     private function getReports(Request $request)
@@ -173,9 +180,12 @@ public function kunjunganExportPdf(Request $request)
 }
 
     // EXCEL
-    public function kunjunganExportExcel()
+    public function kunjunganExportExcel(Request $request)
     {
-        return Excel::download(new KunjunganExport, 'laporan-kunjungan.xlsx');
+        return Excel::download(new KunjunganExport(
+            $request->get('start_date'),
+            $request->get('end_date')
+        ), 'laporan-kunjungan.xlsx');
     }
 
     private function getVisits(Request $request)

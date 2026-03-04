@@ -9,11 +9,24 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 
 class KehilanganExport implements FromCollection, WithHeadings, WithMapping
 {
+    protected ?string $startDate;
+    protected ?string $endDate;
     private int $rowNumber = 0;
+
+    public function __construct(?string $startDate = null, ?string $endDate = null)
+    {
+        $this->startDate = $startDate;
+        $this->endDate   = $endDate;
+    }
 
     public function collection()
     {
-        return Report::with(['user', 'transaction.book'])->get();
+        return Report::with(['user', 'transaction.book'])
+            ->when($this->startDate && $this->endDate, function ($q) {
+                $q->whereBetween('created_at', [$this->startDate, $this->endDate]);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
     public function headings(): array
@@ -23,7 +36,7 @@ class KehilanganExport implements FromCollection, WithHeadings, WithMapping
             'Nama User',
             'Judul Buku',
             'Keterangan',
-            'Tanggal',
+            'Tanggal Laporan',
         ];
     }
 
@@ -36,7 +49,9 @@ class KehilanganExport implements FromCollection, WithHeadings, WithMapping
             $report->user->name ?? '-',
             $report->transaction->book->title ?? '-',
             $report->description,
-            $report->created_at,
+            $report->created_at 
+                ? \Carbon\Carbon::parse($report->created_at)->format('d/m/Y')
+                : '-',
         ];
     }
 }
