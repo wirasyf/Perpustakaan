@@ -54,7 +54,7 @@
                     <td>{{ $v->tanggal_datang??'-' }}</td>
                 </tr>
                             @empty
-                <tr><td colspan="6" style="text-align:center;">Tidak ada data kunjungan</td></tr>
+                <tr><td colspan="4" style="text-align:center;">Tidak ada data kunjungan</td></tr>
                 @endforelse
             </tbody>
         </table>

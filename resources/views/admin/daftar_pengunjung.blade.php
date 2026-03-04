@@ -69,7 +69,6 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Pengunjung</th>
-                        <th>Transaksi</th>
                         <th>Kelas</th>
                         <th>Tanggal Datang</th>
                         <th>Aksi</th>
@@ -80,7 +79,6 @@
                     <tr>
                         <td>{{ $visits->firstItem() + $loop->index }}</td>
                         <td>{{ $visit->user->name }}</td>
-                        <td>{{ $visit->transaction->jenis_transaksi ?? 'Tidak ada transaksi' }}</td>
                         <td>{{ $visit->user->kelas ?? '-' }}</td>
                         <td>{{ \Carbon\Carbon::parse($visit->tanggal_datang)->format('d/m/Y') }}</td>
                         <td>
@@ -91,7 +89,7 @@
 </tr>
 @empty
 <tr>
-    <td colspan="6" style="text-align:center;">
+    <td colspan="5" style="text-align:center;">
         Tidak ada data kunjungan
     </td>
 </tr>
@@ -99,7 +97,7 @@
 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="6">
+                        <td colspan="5">
                             @include('components.pagination', ['paginator' => $visits])
                         </td>
                     </tr>

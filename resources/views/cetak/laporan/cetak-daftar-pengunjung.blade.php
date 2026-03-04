@@ -83,8 +83,6 @@
                     <th>No</th>
                     <th>Nama Anggota</th>
                     <th>Kelas</th>
-                    <th>Judul Buku</th>
-                    <th>Transaksi</th>
                     <th>Tanggal Datang</th>
             
                 </tr>
@@ -95,12 +93,10 @@
         <td>{{ $index + 1 }}</td>
         <td>{{ $v->user->name ?? '-' }}</td>
         <td>{{ $v->user->kelas ?? '-' }}</td>
-        <td>{{ $v->transaction->book->judul ?? '-' }}</td>
-        <td>{{ $v->transaction->jenis_transaksi ?? '-' }}</td>
         <td>{{ $v->tanggal_datang}}</td>
     </tr>
     @empty
-    <tr><td colspan="6" style="text-align:center;">Tidak ada data kunjungan</td></tr>
+    <tr><td colspan="4" style="text-align:center;">Tidak ada data kunjungan</td></tr>
     @endforelse
 </tbody>
         </table>
