@@ -149,7 +149,11 @@ table {
 }
 
 thead {
+<<<<<<< HEAD
     background: #244b8a;
+=======
+    background: #0e446b;
+>>>>>>> 1e6c523361bc071c422fa167536f992f6ac9ff3a
     color: #fff;
 }
 
