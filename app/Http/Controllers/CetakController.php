@@ -99,11 +99,20 @@ class CetakController extends Controller
     // ✅ EXCEL TRANSAKSI (maatwebsite/excel v3)
     public function transaksiExportExcel(Request $request)
     {
-        return Excel::download(new TransaksiExport(
-            $request->get('status'),
-            $request->get('start_date'),
-            $request->get('end_date')
-        ), 'laporan-transaksi.xlsx');
+        $status    = $request->get('status');
+        $startDate = $request->get('start_date');
+        $endDate   = $request->get('end_date');
+
+        $namaFile = match($status) {
+            'belum_dikembalikan' => 'transaksi-belum-dikembalikan.xlsx',
+            'sudah_dikembalikan' => 'transaksi-sudah-dikembalikan.xlsx',
+            default              => 'laporan-transaksi.xlsx',
+        };
+
+        return Excel::download(
+            new TransaksiExport($status, $startDate, $endDate),
+            $namaFile
+        );
     }
 
     private function getTransactions(Request $request)

@@ -229,9 +229,9 @@
 </div>
 @endif
 @include('components.modal-cetak', [
-    'modalId'   => 'modalCetakLaporan',
-    'title'     => 'Filter Data Cetak Laporan',
-    'filters'   => [
+    'modalId' => 'modalCetakLaporan',
+    'title'   => 'Filter Data Cetak Laporan',
+    'filters' => [
         [
             'id'          => 'status',
             'label'       => 'Status',
@@ -240,6 +240,9 @@
             'options'     => [
                 ['value' => 'belum_dikembalikan', 'label' => 'Belum Dikembalikan'],
                 ['value' => 'sudah_dikembalikan', 'label' => 'Sudah Dikembalikan'],
+                ['value' => 'terlambat',          'label' => 'Terlambat'],
+                ['value' => 'buku_hilang',        'label' => 'Buku Hilang'],
+                ['value' => 'menunggu_konfirmasi','label' => 'Menunggu Konfirmasi'],
             ],
         ],
     ],
@@ -247,5 +250,6 @@
         'pdf'   => route('cetak.transaksi.pdf'),
         'excel' => route('cetak.transaksi.excel'),
     ],
+    'formats' => ['excel', 'pdf'],
 ])
 @endsection

@@ -56,14 +56,14 @@
         <div class="kop">
             <img src="{{ asset('img/logo_smk4.png') }}" class="logo">
             <div class="kop-text">
-                <h2>SMK NEGERI 4 BOJONEGORO</h2>
-                <h3>PERPUSTAKAAN</h3>
+        <h2>SMK NEGERI 4 BOJONEGORO</h2>
+        <h3>PERPUSTAKAAN</h3>
                 <p>
                     JL. RAYA SURABAYA BOJONEGORO, Sukowati, Kec. Kapas, Kab. Bojonegoro, Jawa Timur<br>
                     Telp. (0353) 892418 | Email : smkn4bojonegoro@yahoo.co.id
                 </p>
             </div>
-        </div>
+    </div>
 
         <hr>
 
