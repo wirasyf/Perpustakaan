@@ -39,40 +39,40 @@
                     <th>Nama Anggota</th>
                     <th>Kelas</th>
                     <th>Judul Buku</th>
-                    <th>Transaksi</th>
+                    <th>Keterangan</th>
                     <th>Tanggal Datang</th>
                     <th>Setatus</th>
-            
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>1</td>
-                    <td> Putri Himawan</td>
-                    <td>X PH1</td>
-                    <td>Tahu Bulat Ena</td>
-                      <td>pengembalian</td>
-                    <td>20/01/2026</td>
-                    <td class="status pending">Belum Diganti</td>
-                </tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ $r->user->name ?? $r->transaction->user->name ?? '-' }}</td>
+                <td>{{ $r->user->kelas ?? $r->transaction->user->kelas ?? '-' }}</td>
+                <td>{{ $r->transaction->book->judul ?? '-' }}</td>
+                <td>{{ $r->keterangan ?? $r->description ?? '-' }}</td> {{-- ← keterangan --}}
+                <td>{{ optional($r->created_at)->format('d/m/Y') }}</td>
+                <td>
+                    @if($r->status == 'sudah_dikembalikan')
+                        <span class="badge-done">Sudah Diganti</span>
+                    @else
+                        <span class="badge-pending">Belum Diganti</span>
+                    @endif
+                </td>
                 <tr>
-                    <td>2</td>
-                    <td>Naila Sobyan</td>
-                    <td>XII RPL 2</td>
-                    <td>Penggembala Kambing</td>
-                    <td>peminjaman</td>
-                    <td>20/01/2026</td>
-                    <td class="status pending">Belum Diganti</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Sahrulman</td>
-                    <td>X ATR 2</td>
-                    <td>kancil buaya</td>
-                    <td>pengembalian</td>
-                    <td>20/01/2026</td>
-                    <td class="status done">Sudah Diganti</td>
-
+                <td>{{ $index + 1 }}</td>
+                <td>{{ $r->user->name ?? $r->transaction->user->name ?? '-' }}</td>
+                <td>{{ $r->user->kelas ?? $r->transaction->user->kelas ?? '-' }}</td>
+                <td>{{ $r->transaction->book->judul ?? '-' }}</td>
+                <td>{{ $r->keterangan ?? $r->description ?? '-' }}</td> {{-- ← keterangan --}}
+                <td>{{ optional($r->created_at)->format('d/m/Y') }}</td>
+                <td>
+                    @if($r->status == 'sudah_dikembalikan')
+                        <span class="badge-done">Sudah Diganti</span>
+                    @else
+                        <span class="badge-pending">Belum Diganti</span>
+                    @endif
+                </td>
                 </tr>
             </tbody>
         </table>

@@ -144,30 +144,44 @@ class CetakController extends Controller
     public function kehilanganExportPdf(Request $request)
     {
         $reports = $this->getReports($request);
+
         $pdf = Pdf::loadView('cetak.pdf.report', compact('reports'))
-                  ->setPaper('A4', 'landscape');
-        return $pdf->download('laporan_kehilangan.pdf');
+                ->setPaper('A4', 'landscape');
+
+        return $pdf->download('laporan-kehilangan.pdf');
     }
 
     // ✅ EXCEL KEHILANGAN (maatwebsite/excel v3)
     public function kehilanganExportExcel(Request $request)
     {
-        return Excel::download(new KehilanganExport(
-            $request->get('start_date'),
-            $request->get('end_date')
-        ), 'laporan-kehilangan.xlsx');
+        $status    = $request->get('status');
+        $startDate = $request->get('start_date');
+        $endDate   = $request->get('end_date');
+
+        $namaFile = match($status) {
+            'belum_dikembalikan' => 'kehilangan-belum-diganti.xlsx',
+            'sudah_dikembalikan' => 'kehilangan-sudah-diganti.xlsx',
+            default              => 'laporan-kehilangan.xlsx',
+        };
+
+        return Excel::download(
+            new KehilanganExport($status, $startDate, $endDate),
+            $namaFile
+        );
     }
 
     private function getReports(Request $request)
     {
-        $start = $request->get('start_date');
-        $end   = $request->get('end_date');
+        $start  = $request->get('start_date');
+        $end    = $request->get('end_date');
+        $status = $request->get('status');
+
         return Report::with(['user', 'transaction.book'])
+            ->when($status && $status !== 'semua', fn($q) => $q->where('status', $status))
             ->when($start && $end, fn($q) => $q->whereBetween('created_at', [$start, $end]))
             ->orderBy('created_at', 'desc')
             ->get();
     }
-
     // =====================================================
     // 🔹 KUNJUNGAN
     // =====================================================
