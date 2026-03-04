@@ -7,92 +7,171 @@
 
 @section('content')
 <div class="main-content">
-    <div class="profile-header">
-        <h2>Edit Profile</h2>
+    <div class="profile-banner">
+        @if(auth()->user()->profile_photo)
+            <img src="{{ asset('storage/'.auth()->user()->profile_photo) }}" alt="Avatar" class="banner-avatar">
+        @else
+            <div class="banner-avatar default-avatar">
+                <i class="fa fa-user"></i>
+            </div>
+        @endif
+        <div class="banner-info">
+            <h2>{{ auth()->user()->name }}</h2>
+            <p>{{ auth()->user()->email ?? auth()->user()->username }}</p>
+        </div>
     </div>
 
-    <div class="edit-card">
-        @if(auth()->user()->role == 'admin')
-        <div class="tab-nav">
-            <button class="tab-btn active" id="btnProfil" onclick="showTab('profil')">Profil</button>
-            <button class="tab-btn" id="btnPassword" onclick="showTab('password')">Reset Password</button>
-        </div>
-        @endif
+    <div class="profile-tabs">
+        <a href="{{ route('profile.show') }}?tab=profil" class="tab-link {{ request('tab') != 'password' ? 'active' : '' }}">
+            <i class="fa fa-user"></i> Profil
+        </a>
+        <a href="{{ route('profile.show') }}?tab=password" class="tab-link {{ request('tab') == 'password' ? 'active' : '' }}">
+            <i class="fa fa-lock"></i> Reset Password
+        </a>
+    </div>
 
-        <!-- TAB PROFIL (untuk semua user) -->
-        <div id="profilTab" class="tab-content">
-            <form action="{{ route('profile.update') }}" method="POST">
-                @csrf @method('PUT')
-                <div class="form-group">
-                    <label>Nama</label>
-                    <input type="text" name="name" value="{{ auth()->user()->name }}" required>
+    <div class="content-card">
+        <!-- EDIT PROFIL TAB -->
+        <div id="profilTab" class="{{ request('tab') == 'password' ? 'hidden' : '' }}">
+            <h3 class="card-title">Profil {{ auth()->user()->role == 'admin' ? 'Admin' : 'Siswa' }}</h3>
+            
+            <div class="profile-main-avatar-container">
+                <div class="avatar-wrapper" onclick="openPhotoModal()">
+                    @if(auth()->user()->profile_photo)
+                        <img src="{{ asset('storage/'.auth()->user()->profile_photo) }}" alt="Avatar" class="profile-main-avatar">
+                    @else
+                        <div class="profile-main-avatar default-avatar">
+                            <i class="fa fa-user"></i>
+                        </div>
+                    @endif
+                    <div class="edit-avatar-trigger">
+                        <i class="fa fa-camera"></i>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" name="username" value="{{ auth()->user()->username }}" required>
+            </div>
+
+            <form action="{{ route('profile.update') }}" method="POST" class="form-section">
+                @csrf
+                @method('PUT')
+                
+                <div class="field-group">
+                    <label>Nama :</label>
+                    <input type="text" name="name" value="{{ old('name', auth()->user()->name) }}" class="input-field @error('name') is-invalid @enderror" required>
+                    @error('name') <span class="error-message">{{ $message }}</span> @enderror
                 </div>
-                <div class="form-group">
-                    <label>No Telepon</label>
-                    <input type="text" name="telephone" value="{{ auth()->user()->telephone }}">
+                
+                <div class="field-group">
+                    <label>Username :</label>
+                    <input type="text" name="username" value="{{ old('username', auth()->user()->username) }}" class="input-field @error('username') is-invalid @enderror" required>
+                    @error('username') <span class="error-message">{{ $message }}</span> @enderror
                 </div>
-                <div class="form-group">
-                    <label>Alamat</label>
-                    <input type="text" name="alamat" value="{{ auth()->user()->alamat }}">
+                
+                <div class="field-group">
+                    <label>No. Telp :</label>
+                    <input type="text" name="telephone" value="{{ old('telephone', auth()->user()->telephone) }}" class="input-field @error('telephone') is-invalid @enderror">
+                    @error('telephone') <span class="error-message">{{ $message }}</span> @enderror
                 </div>
 
                 @if(auth()->user()->role == 'anggota')
-                <div class="form-group">
-                    <label>NISN</label>
-                    <input type="text" name="nis_nisn" value="{{ auth()->user()->nis_nisn }}">
+                <div class="field-group">
+                    <label>Kelas :</label>
+                    <input type="text" name="kelas" value="{{ old('kelas', auth()->user()->kelas) }}" class="input-field @error('kelas') is-invalid @enderror">
                 </div>
-                <div class="form-group">
-                    <label>Kelas</label>
-                    <input type="text" name="kelas" value="{{ auth()->user()->kelas }}">
+                <div class="field-group">
+                    <label>NISN :</label>
+                    <input type="text" name="nis_nisn" value="{{ old('nis_nisn', auth()->user()->nis_nisn) }}" class="input-field @error('nis_nisn') is-invalid @enderror">
                 </div>
                 @endif
 
-                <button type="submit" class="btn-save">Simpan Perubahan</button>
+                <div class="btn-group">
+                    <a href="{{ route('profile.show') }}" class="btn-action btn-danger">Batal</a>
+                    <button type="submit" class="btn-action btn-primary">Simpan</button>
+                </div>
             </form>
         </div>
 
-        <!-- TAB PASSWORD (khusus admin) -->
-        <div id="passwordTab" class="tab-content" style="display:none;">
-            <form action="{{ route('profile.updatePassword') }}" method="POST">
-                @csrf @method('PUT')
-                <div class="form-group">
-                    <label>Password Baru</label>
-                    <input type="password" name="password" required>
+        <!-- RESET PASSWORD TAB -->
+        <div id="passwordTab" class="{{ request('tab') == 'password' ? '' : 'hidden' }}">
+            <h3 class="card-title">Ganti Password</h3>
+            
+            <form action="{{ route('profile.updatePassword') }}" method="POST" class="form-section">
+                @csrf
+                @method('PUT')
+                
+                <div class="field-group">
+                    <label>Password Lama :</label>
+                    <input type="password" name="old_password" class="input-field @error('old_password') is-invalid @enderror" required>
+                    @error('old_password') <span class="error-message">{{ $message }}</span> @enderror
                 </div>
-                <div class="form-group">
-                    <label>Konfirmasi Password</label>
-                    <input type="password" name="password_confirmation" required>
+                
+                <div class="field-group">
+                    <label>Password Baru :</label>
+                    <input type="password" name="password" class="input-field @error('password') is-invalid @enderror" required>
+                    @error('password') <span class="error-message">{{ $message }}</span> @enderror
                 </div>
-                <button type="submit" class="btn-save">Reset Password</button>
+                
+                <div class="field-group">
+                    <label>Konfirmasi Password Baru :</label>
+                    <input type="password" name="password_confirmation" class="input-field" required>
+                </div>
+
+                <div class="btn-group">
+                    <a href="{{ route('profile.show') }}" class="btn-action btn-danger">Batal</a>
+                    <button type="submit" class="btn-action btn-primary">Simpan</button>
+                </div>
             </form>
         </div>
     </div>
 </div>
 
-@if(auth()->user()->role == 'admin')
+<!-- Modal for Photo Update -->
+<div id="photoModal" class="hidden" style="position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:white; padding:30px; border-radius:12px; max-width:400px; width:90%;">
+        <h4 style="margin-top:0;">Update Foto Profil</h4>
+        <form action="{{ route('profile.updatePhoto') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <input type="file" name="profile_photo" accept="image/*" class="input-field" style="margin:20px 0;">
+            <div style="display:flex; justify-content:flex-end; gap:10px;">
+                <button type="button" onclick="closePhotoModal()" class="btn-action btn-danger" style="padding:8px 20px; font-size:14px; min-width:auto;">Batal</button>
+                <button type="submit" class="btn-action btn-primary" style="padding:8px 20px; font-size:14px; min-width:auto;">Upload</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
     function showTab(tab) {
-        const profil = document.getElementById('profilTab');
-        const password = document.getElementById('passwordTab');
-        const btnProfil = document.getElementById('btnProfil');
-        const btnPassword = document.getElementById('btnPassword');
+        const profilTab = document.getElementById('profilTab');
+        const passwordTab = document.getElementById('passwordTab');
+        const tabLinks = document.querySelectorAll('.tab-link');
 
         if (tab === 'profil') {
-            profil.style.display = 'block';
-            password.style.display = 'none';
-            btnProfil.classList.add('active');
-            btnPassword.classList.remove('active');
+            profilTab.classList.remove('hidden');
+            passwordTab.classList.add('hidden');
+            tabLinks[0].classList.add('active');
+            tabLinks[1].classList.remove('active');
         } else {
-            profil.style.display = 'none';
-            password.style.display = 'block';
-            btnPassword.classList.add('active');
-            btnProfil.classList.remove('active');
+            profilTab.classList.add('hidden');
+            passwordTab.classList.remove('hidden');
+            tabLinks[1].classList.add('active');
+            tabLinks[0].classList.remove('active');
         }
     }
+
+    function openPhotoModal() {
+        document.getElementById('photoModal').classList.remove('hidden');
+        document.getElementById('photoModal').style.display = 'flex';
+    }
+
+    function closePhotoModal() {
+        document.getElementById('photoModal').classList.add('hidden');
+        document.getElementById('photoModal').style.display = 'none';
+    }
+
+    // Handle initial state from errors
+    @if($errors->has('old_password') || $errors->has('password') || request('tab') == 'password')
+        showTab('password');
+    @endif
 </script>
-@endif
 @endsection

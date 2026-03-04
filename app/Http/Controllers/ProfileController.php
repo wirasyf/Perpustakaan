@@ -84,19 +84,30 @@ class ProfileController extends Controller
 
     // UPDATE PASSWORD (form terpisah)
     public function updatePassword(Request $request)
-{
-    $user = Auth::user();
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
 
-    $request->validate([
-        'password' => 'required|min:6|confirmed'
-    ]);
+        $request->validate([
+            'old_password' => 'required',
+            'password' => 'required|min:8|confirmed',
+        ], [
+            'old_password.required' => 'Password lama wajib diisi.',
+            'password.required' => 'Password baru wajib diisi.',
+            'password.min' => 'Password minimal 8 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+        ]);
 
-    $user->update([
-        'password' => Hash::make($request->password)
-    ]);
+        if (!Hash::check($request->old_password, $user->password)) {
+            return redirect()->back()->withErrors(['old_password' => 'Password lama tidak sesuai.']);
+        }
 
-    return redirect()->back()->with('success', 'Password berhasil diperbarui.');
-}
+        $user->update([
+            'password' => Hash::make($request->password)
+        ]);
+
+        return redirect()->back()->with('success', 'Password berhasil diperbarui.');
+    }
 
 
     // HAPUS FOTO PROFIL

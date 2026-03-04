@@ -6,98 +6,131 @@
 @endpush
 
 @section('content')
-<div class="main-content"> <!-- jika layout belum menyediakan, tambahkan sendiri -->
-    <div class="profile-header" style="background: linear-gradient(135deg, #0d47a1, #1e88e5); color: white; padding: 1.5rem 2rem; border-radius: 12px; margin-bottom: 2rem;">
-        <h2 style="margin:0;">Profile Saya</h2>
-    </div>
-
-    <div class="profile-grid" style="display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem; align-items: start;">
-        <!-- Kartu kiri: foto & nama -->
-        <div class="card" style="text-align: center; padding: 2rem;">
-            <div class="avatar1" onclick="openModal()" style="position: relative; width: 120px; height: 120px; margin: 0 auto 1rem; cursor: pointer;">
-                <img src="{{ auth()->user()->profile_photo ? asset('storage/'.auth()->user()->profile_photo) : asset('img/avatar.png') }}" 
-                     alt="Avatar1" style="width:100%; height:100%; object-fit:cover; border-radius:50%; border:4px solid #1e88e5;">
-                <span class="edit-icon" style="position:absolute; bottom:5px; right:5px; background:#1e88e5; color:white; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid white;">
-                    <i class="fa fa-pen"></i>
-                </span>
+<div class="main-content">
+    <div class="profile-banner">
+        @if(auth()->user()->profile_photo)
+            <img src="{{ asset('storage/'.auth()->user()->profile_photo) }}" alt="Avatar" class="banner-avatar">
+        @else
+            <div class="banner-avatar default-avatar">
+                <i class="fa fa-user"></i>
             </div>
-            <h3>{{ auth()->user()->name }}</h3>
-            <span class="role" style="display:inline-block; background:#e3f2fd; color:#1e88e5; font-weight:600; padding:0.3rem 1rem; border-radius:20px;">{{ ucfirst(auth()->user()->role) }}</span>
-        </div>
-
-        <!-- Kartu kanan: data diri -->
-        <div class="card" style="position:relative; padding:1.5rem;">
-            <h4 style="font-size:1.25rem; margin-bottom:1.5rem; border-bottom:2px solid #1e88e5; padding-bottom:0.5rem; display:inline-block;">Data Diri</h4>
-            <div style="margin-bottom:0.75rem; display:flex;">
-                <strong style="min-width:120px; color:#6c757d;">Nama</strong>
-                <span>: {{ auth()->user()->name }}</span>
-            </div>
-            <div style="margin-bottom:0.75rem; display:flex;">
-                <strong style="min-width:120px; color:#6c757d;">Username</strong>
-                <span>: {{ auth()->user()->username }}</span>
-            </div>
-            <div style="margin-bottom:0.75rem; display:flex;">
-                <strong style="min-width:120px; color:#6c757d;">No. Telepon</strong>
-                <span>: {{ auth()->user()->telephone ?? '-' }}</span>
-            </div>
-            <div style="margin-bottom:0.75rem; display:flex;">
-                <strong style="min-width:120px; color:#6c757d;">Alamat</strong>
-                <span>: {{ auth()->user()->alamat ?? '-' }}</span>
-            </div>
-            @if(auth()->user()->role == 'anggota')
-                <div style="margin-bottom:0.75rem; display:flex;">
-                    <strong style="min-width:120px; color:#6c757d;">Kelas</strong>
-                    <span>: {{ auth()->user()->kelas ?? '-' }}</span>
-                </div>
-                <div style="margin-bottom:0.75rem; display:flex;">
-                    <strong style="min-width:120px; color:#6c757d;">NISN</strong>
-                    <span>: {{ auth()->user()->nis_nisn ?? '-' }}</span>
-                </div>
-            @endif
-            <a href="{{ route('profile.edit') }}" class="btn-edit" style="position:absolute; top:1.5rem; right:1.5rem; background:#1e88e5; color:white; padding:0.5rem 1.2rem; border-radius:30px; text-decoration:none; display:inline-flex; align-items:center; gap:0.5rem;">
-                <i class="fa fa-pen"></i> Edit Profil
-            </a>
+        @endif
+        <div class="banner-info">
+            <h2>{{ auth()->user()->name }}</h2>
+            <p>{{ auth()->user()->username }}</p>
         </div>
     </div>
 
-    @if(auth()->user()->role == 'anggota')
-    <div class="card" style="margin-top:1.5rem; padding:1.5rem; overflow-x:auto;">
-        <h4 style="margin-bottom:1.2rem;">Riwayat Kunjungan Saya</h4>
-        <table style="width:100%; border-collapse:collapse; min-width:500px;">
-            <thead>
-                <tr style="background:#1e88e5; color:white;">
-                    <th style="padding:0.75rem 1rem; text-align:left;">Aktivitas</th>
-                    <th style="padding:0.75rem 1rem; text-align:left;">Nama Buku</th>
-                    <th style="padding:0.75rem 1rem; text-align:left;">Tanggal</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($riwayat as $item)
-                <tr style="border-bottom:1px solid #e9ecef;">
-                    <td style="padding:0.75rem 1rem;">{{ $item->transaction->jenis_transaksi ?? '-' }}</td>
-                    <td style="padding:0.75rem 1rem;">{{ $item->transaction->book->judul ?? '-' }}</td>
-                    <td style="padding:0.75rem 1rem;">{{ \Carbon\Carbon::parse($item->tanggal_datang)->format('d M Y') }}</td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="3" style="padding:1rem; text-align:center;">Belum ada riwayat kunjungan</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+    <div class="profile-tabs">
+        <button type="button" class="tab-link active" onclick="showTab('profil')">
+            <i class="fa fa-user"></i> Profil
+        </button>
+        <button type="button" class="tab-link" onclick="showTab('password')">
+            <i class="fa fa-lock"></i> Reset Password
+        </button>
     </div>
-    @endif
+
+    <div class="content-card">
+        <!-- PROFIL TAB -->
+        <div id="profilTab">
+            <h3 class="card-title">Profil {{ auth()->user()->role == 'admin' ? 'Admin' : 'Siswa' }}</h3>
+            
+            <div class="profile-main-avatar-container">
+                @if(auth()->user()->profile_photo)
+                    <img src="{{ asset('storage/'.auth()->user()->profile_photo) }}" alt="Avatar" class="profile-main-avatar">
+                @else
+                    <div class="profile-main-avatar default-avatar">
+                        <i class="fa fa-user"></i>
+                    </div>
+                @endif
+            </div>
+
+            <div class="form-section">
+                <div class="field-group">
+                    <label>Nama :</label>
+                    <div class="display-field">{{ auth()->user()->name }}</div>
+                </div>
+                
+                <div class="field-group">
+                    <label>Username :</label>
+                    <div class="display-field">{{ auth()->user()->username }}</div>
+                </div>
+                
+                <div class="field-group">
+                    <label>No. Telp :</label>
+                    <div class="display-field">{{ auth()->user()->telephone ?? '-' }}</div>
+                </div>
+
+                @if(auth()->user()->role == 'anggota')
+                <div class="field-group">
+                    <label>Kelas :</label>
+                    <div class="display-field">{{ auth()->user()->kelas ?? '-' }}</div>
+                </div>
+                <div class="field-group">
+                    <label>NISN :</label>
+                    <div class="display-field">{{ auth()->user()->nis_nisn ?? '-' }}</div>
+                </div>
+                @endif
+
+                <div class="btn-group">
+                    <a href="{{ route('profile.edit') }}" class="btn-action btn-secondary">
+                        <i class="fa fa-pen"></i> Ubah Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- PASSWORD TAB (VIEW MODE) -->
+        <div id="passwordTab" class="hidden">
+            <h3 class="card-title">Ganti Password</h3>
+            
+            <div class="form-section">
+                <div class="field-group">
+                    <label>Password Lama :</label>
+                    <div class="display-field">********</div>
+                </div>
+                
+                <div class="field-group">
+                    <label>Password Baru :</label>
+                    <div class="display-field">********</div>
+                </div>
+
+                <div class="btn-group">
+                    <a href="{{ route('profile.edit') }}?tab=password" class="btn-action btn-secondary">
+                        <i class="fa fa-pen"></i> Ubah Password
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- MODAL EDIT FOTO -->
-@include('auth.profile.edit-foto-modal')
-
 <script>
-    function openModal() {
-        document.getElementById('modalOverlay').style.display = 'flex';
+    function showTab(tab) {
+        const profilTab = document.getElementById('profilTab');
+        const passwordTab = document.getElementById('passwordTab');
+        const tabLinks = document.querySelectorAll('.tab-link');
+
+        if (tab === 'profil') {
+            profilTab.classList.remove('hidden');
+            passwordTab.classList.add('hidden');
+            tabLinks[0].classList.add('active');
+            tabLinks[1].classList.remove('active');
+        } else {
+            profilTab.classList.add('hidden');
+            passwordTab.classList.remove('hidden');
+            tabLinks[1].classList.add('active');
+            tabLinks[0].classList.remove('active');
+        }
     }
-    function closeModal() {
-        document.getElementById('modalOverlay').style.display = 'none';
-    }
+
+    // Handle initial tab from query param
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const tab = urlParams.get('tab');
+        if (tab === 'password') {
+            showTab('password');
+        }
+    });
 </script>
 @endsection
