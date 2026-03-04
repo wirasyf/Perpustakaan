@@ -156,15 +156,23 @@ class CetakController extends Controller
     // 🔹 KUNJUNGAN
     // =====================================================
 
-    public function kunjunganExportPdf(Request $request)
-    {
-        $visits = $this->getVisits($request);
-        $pdf = Pdf::loadView('cetak.pdf.visit', compact('visits'))
-                  ->setPaper('A4', 'landscape');
-        return $pdf->download('laporan_kunjungan.pdf');
-    }
+public function kunjunganExportPdf(Request $request)
+{
+    $start  = $request->get('start_date');
+    $end    = $request->get('end_date');
 
-    // ✅ EXCEL KUNJUNGAN (maatwebsite/excel v3)
+    $visits = Visit::with('user')
+        ->when($start && $end, fn($q) => $q->whereBetween('tanggal_datang', [$start, $end]))
+        ->orderBy('tanggal_datang', 'desc')
+        ->get();
+
+    $pdf = Pdf::loadView('cetak.pdf.visit', compact('visits', 'start', 'end'))
+              ->setPaper('A4', 'landscape');
+
+    return $pdf->download('laporan-kunjungan.pdf');
+}
+
+    // EXCEL
     public function kunjunganExportExcel()
     {
         return Excel::download(new KunjunganExport, 'laporan-kunjungan.xlsx');

@@ -9,13 +9,13 @@
                 ['value' => 'fiksi', 'label' => 'Fiksi'],
                 ['value' => 'nonfiksi', 'label' => 'Non Fiksi'],
             ]],
-        ],
+    ],
         'routes' => [                               // export routes
             'pdf'   => route('cetak.buku.pdf'),
             'excel' => route('cetak.buku.excel'),
-        ],
+    ],
         'formats' => ['pdf', 'excel'],              // available formats (default: both)
-    ])
+])
 --}}
 
 @php
@@ -31,18 +31,28 @@
         <div class="modal-cetak-header">{{ $title }}</div>
         <div class="modal-cetak-body">
             <hr>
-            @foreach($filters as $filter)
-            <label>{{ $filter['label'] }}</label>
-            <select id="{{ $modalId }}_{{ $filter['id'] }}" data-param="{{ $filter['id'] }}">
-                <option value="" selected>{{ $filter['placeholder'] }}</option>
-                @if(isset($filter['allOption']) && $filter['allOption'])
-                    <option value="semua">Semua</option>
-                @endif
-                @foreach($filter['options'] as $opt)
-                    <option value="{{ $opt['value'] }}">{{ $opt['label'] }}</option>
-                @endforeach
-            </select>
+@foreach($filters as $filter)
+<div class="filter-item">
+    <label>{{ $filter['label'] }}</label>
+
+    @if(isset($filter['type']) && $filter['type'] === 'date')
+        {{-- Input tanggal --}}
+        <input type="date" name="{{ $filter['id'] }}"
+               class="filter-input-date">
+    @else
+        {{-- Dropdown seperti sebelumnya --}}
+        <select name="{{ $filter['id'] }}">
+            <option value="" disabled selected>{{ $filter['placeholder'] ?? 'Pilih' }}</option>
+            @if($filter['allOption'] ?? false)
+                <option value="semua">Semua</option>
+            @endif
+            @foreach($filter['options'] ?? [] as $opt)
+                <option value="{{ $opt['value'] }}">{{ $opt['label'] }}</option>
             @endforeach
+        </select>
+    @endif
+</div>
+@endforeach
 
             <label>Format</label>
             <select id="{{ $modalId }}_format" data-param="format">
@@ -92,12 +102,20 @@
         if(!format){ alert('Pilih format terlebih dahulu'); return; }
 
         let params = new URLSearchParams();
-        selects.forEach(function(sel){
-            const param = sel.dataset.param;
-            if(param === 'format') return;
-            const val = sel.value;
-            if(val && val !== 'semua') params.set(param, val);
-        });
+// Ambil value dari select
+selects.forEach(function(sel){
+    const param = sel.dataset.param;
+    if(param === 'format') return;
+    const val = sel.value;
+    if(val && val !== 'semua') params.set(param, val);
+});
+
+// Ambil value dari input date
+overlay.querySelectorAll('input[type="date"]').forEach(function(input){
+    const param = input.dataset.param;
+    const val = input.value;
+    if(val) params.set(param, val);
+});
 
         const btn = this;
         let url = '';

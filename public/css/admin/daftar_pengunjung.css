@@ -306,3 +306,21 @@ table tfoot,
 table tfoot td {
     border-top: none !important;
 }
+
+.filter-input-date {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #374151;
+    background-color: #fff;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.filter-input-date:focus {
+    outline: none;
+    border-color: #1F4E79;
+    box-shadow: 0 0 0 3px rgba(31, 78, 121, 0.1);
+}

@@ -158,13 +158,25 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
 
 @include('components.modal-cetak', [
-    'modalId'   => 'modalCetakPengunjung',
-    'title'     => 'Filter Data Cetak Pengunjung',
-    'filters'   => [],
+    'modalId' => 'modalCetakPengunjung',
+    'title'   => 'Filter Data Cetak Pengunjung',
+    'filters' => [
+        [
+            'id'    => 'start_date',
+            'label' => 'Tanggal Mulai',
+            'type'  => 'date',
+        ],
+        [
+            'id'    => 'end_date',
+            'label' => 'Tanggal Akhir',
+            'type'  => 'date',
+        ],
+    ],
     'routes' => [
         'pdf'   => route('cetak.kunjungan.pdf'),
         'excel' => route('cetak.kunjungan.excel'),
     ],
+    'formats' => ['excel', 'pdf'],
 ])
 
 @include('components.modal-konfirmasi', [

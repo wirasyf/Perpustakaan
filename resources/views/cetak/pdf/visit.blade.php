@@ -7,15 +7,21 @@
 </head>
 <body>
     <div class="paper">
-        <div class="kop">
-            <img src="{{ public_path('img/logo_smk4.png') }}" class="logo">
-            <div class="kop-text">
-                <h2>SMK NEGERI 4 BOJONEGORO</h2>
-                <h3>PERPUSTAKAAN</h3>
-                <p>JL. RAYA SURABAYA BOJONEGORO, Sukowati, Kec. Kapas, Kab. Bojonegoro, Jawa Timur<br>
-                Telp. (0353) 892418 | Email : smkn4bojonegoro@yahoo.co.id</p>
-            </div>
-        </div>
+        <table width="100%" style="border:0;">
+            <tr>
+                <td width="15%" style="border:0;">
+                    <img src="{{ public_path('img/logo_smk4.png') }}" width="80">
+                </td>
+                <td width="85%" style="border:0; text-align:center;">
+                    <h2 style="margin:0;">SMK NEGERI 4 BOJONEGORO</h2>
+                    <h3 style="margin:0;">PERPUSTAKAAN</h3>
+                    <p style="margin:2px 0;">
+                        JL. RAYA SURABAYA BOJONEGORO, Sukowati, Kec. Kapas, Kab. Bojonegoro, Jawa Timur<br>
+                        Telp. (0353) 892418 | Email : smkn4bojonegoro@yahoo.co.id
+                    </p>
+                </td>
+            </tr>
+        </table>
         <hr>
         <div class="info">
             <p><strong>Hal : Laporan Daftar Pengunjung Perpustakaan</strong></p>
@@ -32,8 +38,6 @@
                     <th>No</th>
                     <th>Nama Anggota</th>
                     <th>Kelas</th>
-                    <th>Judul Buku</th>
-                    <th>Transaksi</th>
                     <th>Tanggal Datang</th>
                 </tr>
             </thead>
@@ -43,11 +47,9 @@
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $v->user->name ?? '-' }}</td>
                     <td>{{ $v->user->kelas ?? '-' }}</td>
-                    <td>{{ $v->transaction->book->judul ?? '-' }}</td>
-                    <td>{{ $v->transaction->jenis_transaksi ?? '-' }}</td>
                     <td>{{ $v->tanggal_datang??'-' }}</td>
                 </tr>
-                @empty
+                            @empty
                 <tr><td colspan="6" style="text-align:center;">Tidak ada data kunjungan</td></tr>
                 @endforelse
             </tbody>
