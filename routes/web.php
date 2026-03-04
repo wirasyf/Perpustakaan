@@ -153,21 +153,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/kunjungan/excel', [CetakController::class, 'kunjunganExcel'])->name('cetak.kunjungan.excel');
         });
 
-        // Admin Dashboard (Legacy URL)
-        Route::get('/dashboard-admin', function () {
-            return view('admin.dashboard_admin');
-        });
-
-        // Admin Profile Editing
-        Route::get('/edit-foto-profile-admin', function () {
-            return view('admin.edit-foto-profile-admin');
-        });
-        Route::get('/edit-profil', function () {
-            return view('admin.edit-profil');
-        });
-        Route::get('/edit-password', function () {
-            return view('admin.edit-password');
-        });
     });
 
     /*
@@ -231,13 +216,6 @@ Route::middleware(['auth'])->group(function () {
             return view('cetak.cetak-kartu');
         })->name('kartu.siswa');
 
-        // Siswa Profile Editing
-        Route::get('/edit-profil-user', function () {
-            return view('siswa.edit-profil-user');
-        });
-        Route::get('/edit-foto-profil', function () {
-            return view('siswa.edit-foto-profil');
-        });
 
     Route::get('/cetak/nota/{id}/{jenis?}', [CetakController::class, 'cetakNotaPdf'])
      ->name('cetak.nota');
