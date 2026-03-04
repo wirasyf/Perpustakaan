@@ -44,11 +44,11 @@
                             <div class="filter-item">
                                 <select name="date" onchange="this.form.submit()">
                                     <option value="">Semua Tahun</option>
-                                    @for($year = date('Y'); $year >= 2000; $year--)
+                                    @foreach($years as $year)
                                         <option value="{{ $year }}" {{ request('date') == $year ? 'selected' : '' }}>
                                             {{ $year }}
                                         </option>
-                                    @endfor
+                                    @endforeach
                                 </select>
                             </div>
 

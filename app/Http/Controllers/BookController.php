@@ -32,46 +32,53 @@ class BookController extends Controller
     }
     
     public function index(Request $request)
-{
-    if (Auth::user()?->role !== 'admin') abort(403);
+    {
+        if (Auth::user()?->role !== 'admin') abort(403);
 
-    // Ambil filter dari request + default
-    $search = $request->input('search', '');
-    $date = $request->input('date', '');
-    $filter = $request->input('filter', '');
+        // Ambil filter dari request + default
+        $search = $request->input('search', '');
+        $date = $request->input('date', '');
+        $filter = $request->input('filter', '');
 
-    // Query Builder (BELUM get)
-    $query = Book::with('row.bookshelf');
+        // Query Builder (BELUM get)
+        $query = Book::with('row.bookshelf');
 
-    // Search
-    if ($search) {
-        $query->where(function($q) use ($search) {
-            $q->where('judul', 'like', "%{$search}%")
-              ->orWhere('pengarang', 'like', "%{$search}%")
-              ->orWhere('kode_buku', 'like', "%{$search}%");
-        });
+        // Search
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('judul', 'like', "%{$search}%")
+                  ->orWhere('pengarang', 'like', "%{$search}%")
+                  ->orWhere('kode_buku', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter Tahun Terbit
+        if ($date) {
+            $query->where('tahun_terbit', $date);
+        }
+
+        // Filter Kategori
+        if ($filter) {
+            $query->where('kategori_buku', $filter);
+        }
+
+        // Fetch unique years for filter
+        $years = Book::select('tahun_terbit')
+            ->distinct()
+            ->orderBy('tahun_terbit', 'desc')
+            ->pluck('tahun_terbit');
+
+        // Paginate results
+        $books = $query->paginate(10);
+
+        return view('admin.kelola_data_buku', compact(
+            'books',
+            'search',
+            'date',
+            'filter',
+            'years'
+        ));
     }
-
-    // Filter Tahun Terbit
-    if ($date) {
-        $query->whereYear('tahun_terbit', $date);
-    }
-
-    // Filter Kategori
-    if ($filter) {
-        $query->where('kategori_buku', $filter);
-    }
-
-    // Paginate results
-    $books = $query->paginate(10);
-
-    return view('admin.kelola_data_buku', compact(
-        'books',
-        'search',
-        'date',
-        'filter'
-    ));
-}
 
     public function create()
     {

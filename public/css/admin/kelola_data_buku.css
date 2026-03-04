@@ -307,7 +307,7 @@ tbody tr:hover {
 }
 
 .modal-header {
-    background: #2196f3;
+    background: #244b8a;
     color: #fff;
     padding: 14px;
     text-align: center;
@@ -386,7 +386,7 @@ tbody tr:hover {
 }
 
 .badge {
-    background: #2196f3;
+    background: #244b8a;
     color: #fff;
     padding: 4px 10px;
     border-radius: 6px;
@@ -406,7 +406,7 @@ tbody tr:hover {
 }
 
 .btn-tutup {
-    background: #2196f3;
+    background: #244b8a;
     color: #fff;
     border: none;
     padding: 8px 18px;

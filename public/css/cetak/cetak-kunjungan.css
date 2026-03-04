@@ -1,80 +1,99 @@
-.header-laporan {
-    background: linear-gradient(90deg, #1e40af, #0ea5e9);
-    color: white;
-    padding: 20px;
-    border-radius: 10px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.filter {
-    margin: 20px 0;
-    display: flex;
-    gap: 10px;
-    align-items: center;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .paper {
-    background: white;
+    width: 100%;
+    margin: 0 auto;
     padding: 30px;
-    width: 210mm;
-    margin: auto;
-    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    background: #fff;
+    border: 1px solid #244b8a;
 }
 
 .kop {
     display: flex;
     align-items: center;
+    gap: 20px;
+    border-bottom: 3px solid #244b8a;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .logo {
     width: 80px;
-    margin-right: 20px;
 }
 
 .kop-text {
+    flex: 1;
     text-align: center;
-    width: 100%;
+}
+
+.kop-text h2 {
+    font-size: 22px;
+    color: #244b8a;
+    margin-bottom: 2px;
+}
+
+.kop-text h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.kop-text p {
+    font-size: 11px;
+    color: #666;
+    line-height: 1.4;
+}
+
+.info {
+    margin-bottom: 20px;
+    border-left: 5px solid #244b8a;
+    padding-left: 15px;
+}
+
+.info p {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
-thead {
-    background: #0ea5e9;
-    color: white;
+th {
+    background-color: #244b8a;
+    color: #fff;
+    padding: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid #d1d5db;
 }
 
-th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
+td {
+    padding: 10px;
+    font-size: 13px;
+    border: 1px solid #d1d5db;
     text-align: center;
+    color: #444;
 }
 
-.footer {
-    margin-top: 40px;
-    font-size: 12px;
-    color: gray;
+tr:nth-child(even) {
+    background-color: #f9fafb;
 }
 
-.actions {
-    margin-top: 20px;
+.paper-footer {
+    margin-top: 30px;
     display: flex;
-    gap: 10px;
-}
-
-/* PRINT ONLY */
-@media print {
-    body * {
-        visibility: hidden;
-    }
-    #printArea, #printArea * {
-        visibility: visible;
-    }
-    .actions, .filter, .header-laporan {
-        display: none;
-    }
+    justify-content: space-between;
+    font-size: 11px;
+    color: #777;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
 }

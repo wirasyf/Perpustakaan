@@ -7,28 +7,32 @@
 </head>
 <body>
     <div class="paper">
-        <table width="100%" style="border:0;">
-            <tr>
-                <td width="15%" style="border:0;">
-                    <img src="{{ public_path('img/logo_smk4.png') }}" width="80">
-                </td>
-                <td width="85%" style="border:0; text-align:center;">
-                    <h2 style="margin:0;">SMK NEGERI 4 BOJONEGORO</h2>
-                    <h3 style="margin:0;">PERPUSTAKAAN</h3>
-                    <p style="margin:2px 0;">
-                        JL. RAYA SURABAYA BOJONEGORO, Sukowati, Kec. Kapas, Kab. Bojonegoro, Jawa Timur<br>
-                        Telp. (0353) 892418 | Email : smkn4bojonegoro@yahoo.co.id
-                    </p>
-                </td>
-            </tr>
-        </table>
-        <hr>
+        <div class="kop">
+            <img src="{{ public_path('img/logo_smk4.png') }}" class="logo">
+            <div class="kop-text">
+                <h2>SMK NEGERI 4 BOJONEGORO</h2>
+                <h3>PERPUSTAKAAN</h3>
+                <p>
+                    JL. RAYA SURABAYA BOJONEGORO, Sukowati, Kec. Kapas, Kab. Bojonegoro, Jawa Timur<br>
+                    Telp. (0353) 892418 | Email : smkn4bojonegoro@yahoo.co.id
+                </p>
+            </div>
+        </div>
         <div class="info">
             <p><strong>Hal : Laporan Daftar Pengunjung Perpustakaan</strong></p>
             <p>Periode : 
-                {{ request('start_date') ? \Carbon\Carbon::parse(request('start_date'))->format('d/m/Y') : 'Awal' }} 
-                s/d 
-                {{ request('end_date') ? \Carbon\Carbon::parse(request('end_date'))->format('d/m/Y') : 'Sekarang' }}
+                @if($hari)
+                    {{ \Carbon\Carbon::parse($hari)->format('d/m/Y') }}
+                @elseif($bulan || $tahun)
+                    @if($bulan)
+                        {{ \Carbon\Carbon::create()->month((int)$bulan)->translatedFormat('F') }}
+                    @endif
+                    @if($tahun)
+                        {{ $tahun }}
+                    @endif
+                @else
+                    Semua Data
+                @endif
             </p>
         </div>
 

@@ -81,11 +81,13 @@
         </div>
 
         @auth
+        @if($mode == 'peminjaman')
         <div class="btn-group-actions">
             <button type="button" class="btn-darkblue" onclick="document.getElementById('modalCetakLaporan').classList.add('show')">
                 <i class="fa-solid fa-print"></i> Cetak
             </button>
         </div>
+        @endif
         @endauth
     </div>
 </form>

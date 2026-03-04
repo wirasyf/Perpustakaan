@@ -108,8 +108,41 @@
 </div>
 @endif
 
+{{-- TOAST DYNAMIC CONTAINER --}}
+<div id="toast-container"></div>
+
 {{-- SCRIPT GLOBAL --}}
 <script>
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    let icon = 'fa-circle-check';
+    if(type === 'error') icon = 'fa-circle-xmark';
+    if(type === 'warning') icon = 'fa-triangle-exclamation';
+
+    toast.innerHTML = `
+        <i class="fa-solid ${icon}"></i>
+        <span>${message}</span>
+    `;
+    
+    container.appendChild(toast);
+
+    // Show toast
+    setTimeout(() => {
+        toast.classList.add("show");
+    }, 100);
+
+    // Hide and remove toast
+    setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => {
+            toast.remove();
+        }, 500);
+    }, 4000);
+}
+
 function toggleUserPopup(event) {
     event.stopPropagation();
     const popup = document.getElementById('userPopup');
@@ -121,7 +154,7 @@ document.addEventListener('click', function (e) {
     const popup = document.getElementById('userPopup');
     const userWrapper = document.querySelector('.user-wrapper');
 
-    if (!userWrapper.contains(e.target)) {
+    if (userWrapper && !userWrapper.contains(e.target)) {
         popup.classList.remove('show');
     }
 });

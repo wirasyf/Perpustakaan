@@ -52,6 +52,13 @@ class ReportController extends Controller
         });
     }
 
+    // Filter kelas
+    if ($request->filled('kelas')) {
+        $query->whereHas('transaction.user', function($q) use ($request) {
+            $q->where('kelas', $request->kelas);
+        });
+    }
+
     // Kelas list
     $kelasList = \App\Models\User::where('role', 'anggota')
         ->whereNotNull('kelas')

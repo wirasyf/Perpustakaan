@@ -142,9 +142,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (!res.ok) throw new Error('Gagal menghapus data');
                 return res.json();
             })
-            .then(() => location.reload())
+            .then(() => {
+                modalDelete.classList.remove('show');
+                setTimeout(() => {
+                    showToast('Data kunjungan berhasil dihapus', 'success');
+                }, 400);
+                setTimeout(() => location.reload(), 2000);
+            })
             .catch(err => {
-                alert(err.message);
+                showToast(err.message, 'error');
                 confirmBtn.disabled = false;
                 confirmBtn.innerHTML = originalHTML;
                 modalDelete.classList.remove('show');
@@ -162,14 +168,37 @@ document.addEventListener('DOMContentLoaded', function () {
     'title'   => 'Filter Data Cetak Pengunjung',
     'filters' => [
         [
-            'id'    => 'start_date',
-            'label' => 'Tanggal Mulai',
+            'id'    => 'hari',
+            'label' => 'Hari (Tanggal)',
             'type'  => 'date',
+            'placeholder' => '-',
         ],
         [
-            'id'    => 'end_date',
-            'label' => 'Tanggal Akhir',
-            'type'  => 'date',
+            'id'    => 'bulan',
+            'label' => 'Bulan',
+            'placeholder' => '-',
+            'allOption' => true,
+            'options' => [
+                ['value' => '01', 'label' => 'Januari'],
+                ['value' => '02', 'label' => 'Februari'],
+                ['value' => '03', 'label' => 'Maret'],
+                ['value' => '04', 'label' => 'April'],
+                ['value' => '05', 'label' => 'Mei'],
+                ['value' => '06', 'label' => 'Juni'],
+                ['value' => '07', 'label' => 'Juli'],
+                ['value' => '08', 'label' => 'Agustus'],
+                ['value' => '09', 'label' => 'September'],
+                ['value' => '10', 'label' => 'Oktober'],
+                ['value' => '11', 'label' => 'November'],
+                ['value' => '12', 'label' => 'Desember'],
+            ],
+        ],
+        [
+            'id'    => 'tahun',
+            'label' => 'Tahun',
+            'placeholder' => '-',
+            'allOption' => true,
+            'options' => $tahunList->map(fn($y) => ['value' => $y, 'label' => $y])->toArray(),
         ],
     ],
     'routes' => [

@@ -48,10 +48,15 @@ class VisitController extends Controller
                  ->orderBy('kelas')
                  ->pluck('kelas');
 
+    $tahunList = Visit::selectRaw('YEAR(tanggal_datang) as year')
+                 ->distinct()
+                 ->orderBy('year', 'desc')
+                 ->pluck('year');
+
 
     $visits = $query->orderBy('tanggal_datang', 'desc')->paginate(10);
 
-    return view('admin.daftar_pengunjung', compact('visits', 'kelasList', 'kelas'));
+    return view('admin.daftar_pengunjung', compact('visits', 'kelasList', 'kelas', 'tahunList'));
 }
 
     public function destroy(Visit $visit)

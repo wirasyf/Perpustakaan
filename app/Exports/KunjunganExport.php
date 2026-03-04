@@ -15,30 +15,31 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 
 class KunjunganExport implements FromCollection, WithHeadings, WithMapping, WithStyles, WithColumnWidths
 {
-    protected ?string $startDate;
-    protected ?string $endDate;
+    protected ?string $hari;
+    protected ?string $bulan;
+    protected ?string $tahun;
     private int $rowNumber = 0;
 
     /**
-     * Menerima filter tanggal dari controller.
-     * Kalau tidak ada filter, ambil semua data.
+     * Menerima filter dari controller.
      */
-    public function __construct(?string $startDate = null, ?string $endDate = null)
+    public function __construct(?string $hari = null, ?string $bulan = null, ?string $tahun = null)
     {
-        $this->startDate = $startDate;
-        $this->endDate   = $endDate;
+        $this->hari  = $hari;
+        $this->bulan = $bulan;
+        $this->tahun = $tahun;
     }
 
     /**
      * Ambil data kunjungan dari database,
-     * filter berdasarkan rentang tanggal jika ada.
+     * filter berdasarkan hari, bulan, atau tahun jika ada.
      */
     public function collection()
     {
         return Visit::with('user')
-            ->when($this->startDate && $this->endDate, function ($q) {
-                $q->whereBetween('tanggal_datang', [$this->startDate, $this->endDate]);
-            })
+            ->when($this->hari,  fn($q) => $q->whereDate('tanggal_datang', $this->hari))
+            ->when($this->bulan, fn($q) => $q->whereMonth('tanggal_datang', $this->bulan))
+            ->when($this->tahun, fn($q) => $q->whereYear('tanggal_datang', $this->tahun))
             ->orderBy('tanggal_datang', 'desc')
             ->get();
     }
