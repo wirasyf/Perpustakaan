@@ -60,12 +60,13 @@ class ReportController extends Controller
     }
 
     // Kelas list
-    $kelasList = \App\Models\User::where('role', 'anggota')
-        ->whereNotNull('kelas')
-        ->select('kelas')
+    $kelasList = Report::join('transactions', 'reports.transactions_id', '=', 'transactions.id')
+        ->join('users', 'transactions.user_id', '=', 'users.id')
+        ->whereNotNull('users.kelas')
+        ->select('users.kelas')
         ->distinct()
-        ->orderBy('kelas')
-        ->pluck('kelas');
+        ->orderBy('users.kelas')
+        ->pluck('users.kelas');
 
     $reports = $request->get('status');
     $reports = $query->latest()->paginate(10);

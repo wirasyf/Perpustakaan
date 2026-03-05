@@ -18,23 +18,28 @@ class KehilanganExport implements FromCollection, WithHeadings, WithMapping, Wit
     protected ?string $status;
     protected ?string $startDate;
     protected ?string $endDate;
+    protected ?string $kelas;
     private int $rowNumber = 0;
 
-    public function __construct(?string $status = null, ?string $startDate = null, ?string $endDate = null)
+    public function __construct(?string $status = null, ?string $startDate = null, ?string $endDate = null, ?string $kelas = null)
     {
         $this->status    = $status;
         $this->startDate = $startDate;
         $this->endDate   = $endDate;
+        $this->kelas     = $kelas;
     }
 
     public function collection()
     {
-        return Report::with(['user', 'transaction.book'])
+        return Report::with(['user', 'transaction.user', 'transaction.book'])
             ->when($this->status && $this->status !== 'semua', function ($q) {
                 $q->where('status', $this->status);
             })
             ->when($this->startDate && $this->endDate, function ($q) {
                 $q->whereBetween('created_at', [$this->startDate, $this->endDate]);
+            })
+            ->when($this->kelas && $this->kelas !== 'semua', function ($q) {
+                $q->whereHas('transaction.user', fn($uq) => $uq->where('kelas', $this->kelas));
             })
             ->orderBy('created_at', 'desc')
             ->get();

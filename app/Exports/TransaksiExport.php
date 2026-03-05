@@ -18,13 +18,15 @@ class TransaksiExport implements FromCollection, WithHeadings, WithMapping, With
     protected ?string $status;
     protected ?string $startDate;
     protected ?string $endDate;
+    protected ?string $kelas;
     private int $rowNumber = 0;
 
-    public function __construct(?string $status = null, ?string $startDate = null, ?string $endDate = null)
+    public function __construct(?string $status = null, ?string $startDate = null, ?string $endDate = null, ?string $kelas = null)
     {
         $this->status    = $status;
         $this->startDate = $startDate;
         $this->endDate   = $endDate;
+        $this->kelas     = $kelas;
     }
 
     public function collection()
@@ -35,6 +37,9 @@ class TransaksiExport implements FromCollection, WithHeadings, WithMapping, With
             })
             ->when($this->startDate && $this->endDate, function ($q) {
                 $q->whereBetween('tanggal_peminjaman', [$this->startDate, $this->endDate]);
+            })
+            ->when($this->kelas && $this->kelas !== 'semua', function ($q) {
+                $q->whereHas('user', fn($uq) => $uq->where('kelas', $this->kelas));
             })
             ->orderBy('tanggal_peminjaman', 'desc')
             ->get();

@@ -32,40 +32,74 @@ class CetakController extends Controller
     {
         $start = $request->get('start_date');
         $end   = $request->get('end_date');
+        $kelas = $request->get('kelas');
         
         $transactions = Transaction::with('user', 'book')
             ->when($start && $end, fn($q) => $q->whereBetween('tanggal_peminjaman', [$start, $end]))
+            ->when($kelas && $kelas !== 'semua', function($q) use ($kelas) {
+                $q->whereHas('user', fn($uq) => $uq->where('kelas', $kelas));
+            })
             ->when($request->type, fn($q) => $q->where('type', $request->type))
             ->orderBy('tanggal_peminjaman', 'desc')
             ->get();
 
-        return view('cetak.laporan.cetak-transaksi', compact('transactions'));
+        $kelasList = Transaction::join('users', 'transactions.user_id', '=', 'users.id')
+            ->whereNotNull('users.kelas')
+            ->select('users.kelas')
+            ->distinct()
+            ->orderBy('users.kelas')
+            ->pluck('users.kelas');
+
+        return view('cetak.laporan.cetak-transaksi', compact('transactions', 'kelasList'));
     }
 
     public function filterKehilangan(Request $request)
     {
         $start = $request->get('start_date');
         $end   = $request->get('end_date');
+        $kelas = $request->get('kelas');
         
         $reports = Report::with(['user', 'transaction.book'])
             ->when($start && $end, fn($q) => $q->whereBetween('created_at', [$start, $end]))
+            ->when($kelas && $kelas !== 'semua', function($q) use ($kelas) {
+                $q->whereHas('transaction.user', fn($uq) => $uq->where('kelas', $kelas));
+            })
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('cetak.laporan.cetak-kehilangan', compact('reports'));
+        $kelasList = Report::join('transactions', 'reports.transactions_id', '=', 'transactions.id')
+            ->join('users', 'transactions.user_id', '=', 'users.id')
+            ->whereNotNull('users.kelas')
+            ->select('users.kelas')
+            ->distinct()
+            ->orderBy('users.kelas')
+            ->pluck('users.kelas');
+
+        return view('cetak.laporan.cetak-kehilangan', compact('reports', 'kelasList'));
     }
 
     public function filterKunjungan(Request $request)
     {
         $start = $request->get('start_date');
         $end   = $request->get('end_date');
+        $kelas = $request->get('kelas');
         
         $visits = Visit::with('user', 'transaction')
             ->when($start && $end, fn($q) => $q->whereBetween('tanggal_datang', [$start, $end]))
+            ->when($kelas && $kelas !== 'semua', function($q) use ($kelas) {
+                $q->whereHas('user', fn($uq) => $uq->where('kelas', $kelas));
+            })
             ->orderBy('tanggal_datang', 'desc')
             ->get();
 
-        return view('cetak.laporan.cetak-daftar-pengunjung', compact('visits'));
+        $kelasList = Visit::join('users', 'visits.user_id', '=', 'users.id')
+            ->whereNotNull('users.kelas')
+            ->select('users.kelas')
+            ->distinct()
+            ->orderBy('users.kelas')
+            ->pluck('users.kelas');
+
+        return view('cetak.laporan.cetak-daftar-pengunjung', compact('visits', 'kelasList'));
     }
 
     // =====================================================
@@ -110,7 +144,7 @@ class CetakController extends Controller
         };
 
         return Excel::download(
-            new TransaksiExport($status, $startDate, $endDate),
+            new TransaksiExport($status, $startDate, $endDate, $request->get('kelas')),
             $namaFile
         );
     }
@@ -120,10 +154,14 @@ class CetakController extends Controller
         $start  = $request->get('start_date');
         $end    = $request->get('end_date');
         $status = $request->get('status');
+        $kelas  = $request->get('kelas');
 
         return Transaction::with('user', 'book')
             ->when($start && $end, fn($q) => $q->whereBetween('tanggal_peminjaman', [$start, $end]))
-            ->when($status, fn($q) => $q->where('status', $status))
+            ->when($status && $status !== 'semua', fn($q) => $q->where('status', $status))
+            ->when($kelas && $kelas !== 'semua', function($q) use ($kelas) {
+                $q->whereHas('user', fn($uq) => $uq->where('kelas', $kelas));
+            })
             ->orderBy('tanggal_peminjaman', 'desc')
             ->get();
     }
@@ -165,7 +203,7 @@ class CetakController extends Controller
         };
 
         return Excel::download(
-            new KehilanganExport($status, $startDate, $endDate),
+            new KehilanganExport($status, $startDate, $endDate, $request->get('kelas')),
             $namaFile
         );
     }
@@ -175,10 +213,14 @@ class CetakController extends Controller
         $start  = $request->get('start_date');
         $end    = $request->get('end_date');
         $status = $request->get('status');
+        $kelas  = $request->get('kelas');
 
-        return Report::with(['user', 'transaction.book'])
+        return Report::with(['user', 'transaction.user', 'transaction.book'])
             ->when($status && $status !== 'semua', fn($q) => $q->where('status', $status))
             ->when($start && $end, fn($q) => $q->whereBetween('created_at', [$start, $end]))
+            ->when($kelas && $kelas !== 'semua', function($q) use ($kelas) {
+                $q->whereHas('transaction.user', fn($uq) => $uq->where('kelas', $kelas));
+            })
             ->orderBy('created_at', 'desc')
             ->get();
     }
@@ -207,7 +249,9 @@ public function kunjunganExportPdf(Request $request)
     {
         return Excel::download(new KunjunganExport(
             $request->get('start_date'),
-            $request->get('end_date')
+            $request->get('end_date'),
+            null, // tahun placeholder if needed but original was (start, end) which is weird given constructor
+            $request->get('kelas')
         ), 'laporan-kunjungan.xlsx');
     }
 
@@ -215,8 +259,13 @@ public function kunjunganExportPdf(Request $request)
     {
         $start = $request->get('start_date');
         $end   = $request->get('end_date');
+        $kelas = $request->get('kelas');
+
         return Visit::with('user', 'transaction')
             ->when($start && $end, fn($q) => $q->whereBetween('tanggal_datang', [$start, $end]))
+            ->when($kelas && $kelas !== 'semua', function($q) use ($kelas) {
+                $q->whereHas('user', fn($uq) => $uq->where('kelas', $kelas));
+            })
             ->orderBy('tanggal_datang', 'desc')
             ->get();
     }

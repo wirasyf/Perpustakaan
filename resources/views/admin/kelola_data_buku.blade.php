@@ -34,32 +34,28 @@
                             <i class="fa fa-search"></i>
                             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Sesuatu...">
                         </div>
-                        <button type="button" class="btn-filter" onclick="toggleFilter()">
-                            <i class="fa fa-sliders"></i>
-                        </button>
                         
-                        <!-- FILTER CONTENT -->
-                        <div id="filterContent" class="filter-content" style="display: {{ request('date') || request('filter') ? 'flex' : 'none' }};">
-                            <!-- FILTER TAHUN -->
-                            <div class="filter-item">
-                                <select name="date" onchange="this.form.submit()">
-                                    <option value="">Semua Tahun</option>
-                                    @foreach($years as $year)
-                                        <option value="{{ $year }}" {{ request('date') == $year ? 'selected' : '' }}>
-                                            {{ $year }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
+                        <!-- FILTER TAHUN -->
+                        <div class="search-box">
+                            <i class="fa fa-calendar"></i>
+                            <select name="date" onchange="this.form.submit()">
+                                <option value="">Semua Tahun</option>
+                                @foreach($years as $year)
+                                    <option value="{{ $year }}" {{ request('date') == $year ? 'selected' : '' }}>
+                                        {{ $year }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                            <!-- DROPDOWN KATEGORI -->
-                            <div class="filter-item">
-                                <select name="filter" onchange="this.form.submit()">
-                                    <option value="">Semua Kategori</option>
-                                    <option value="fiksi" {{ request('filter') == 'fiksi' ? 'selected' : '' }}>Fiksi</option>
-                                    <option value="nonfiksi" {{ request('filter') == 'nonfiksi' ? 'selected' : '' }}>Non Fiksi</option>
-                                </select>
-                            </div>
+                        <!-- DROPDOWN KATEGORI -->
+                        <div class="search-box">
+                            <i class="fa fa-layer-group"></i>
+                            <select name="filter" onchange="this.form.submit()">
+                                <option value="">Semua Kategori</option>
+                                <option value="fiksi" {{ request('filter') == 'fiksi' ? 'selected' : '' }}>Fiksi</option>
+                                <option value="nonfiksi" {{ request('filter') == 'nonfiksi' ? 'selected' : '' }}>Non Fiksi</option>
+                            </select>
                         </div>
                     </div>
                 </form>
@@ -213,8 +209,7 @@
 <script>
 
 function toggleFilter(){
-    let el = document.getElementById("filterContent");
-    el.style.display = el.style.display === "none" ? "flex" : "none";
+    // Function removed - filter is now always visible
 }
 
     let selectedRow = null;

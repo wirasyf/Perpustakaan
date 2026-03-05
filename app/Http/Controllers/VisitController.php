@@ -41,12 +41,12 @@ class VisitController extends Controller
         });
     }
 
-    $kelasList = User::where('role', 'anggota')
-                 ->whereNotNull('kelas')
-                 ->select('kelas')
+    $kelasList = Visit::join('users', 'visits.user_id', '=', 'users.id')
+                 ->whereNotNull('users.kelas')
+                 ->select('users.kelas')
                  ->distinct()
-                 ->orderBy('kelas')
-                 ->pluck('kelas');
+                 ->orderBy('users.kelas')
+                 ->pluck('users.kelas');
 
     $tahunList = Visit::selectRaw('YEAR(tanggal_datang) as year')
                  ->distinct()

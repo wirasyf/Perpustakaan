@@ -198,6 +198,13 @@ document.addEventListener('DOMContentLoaded', function () {
             'allOption' => true,
             'options' => $tahunList->map(fn($y) => ['value' => $y, 'label' => $y])->toArray(),
         ],
+        [
+            'id'    => 'kelas',
+            'label' => 'Kelas',
+            'placeholder' => 'Pilih Kelas',
+            'allOption' => true,
+            'options' => $kelasList->map(fn($k) => ['value' => $k, 'label' => $k])->toArray(),
+        ],
     ],
     'routes' => [
         'pdf'   => route('cetak.kunjungan.pdf'),

@@ -18,16 +18,18 @@ class KunjunganExport implements FromCollection, WithHeadings, WithMapping, With
     protected ?string $hari;
     protected ?string $bulan;
     protected ?string $tahun;
+    protected ?string $kelas;
     private int $rowNumber = 0;
 
     /**
      * Menerima filter dari controller.
      */
-    public function __construct(?string $hari = null, ?string $bulan = null, ?string $tahun = null)
+    public function __construct(?string $hari = null, ?string $bulan = null, ?string $tahun = null, ?string $kelas = null)
     {
         $this->hari  = $hari;
         $this->bulan = $bulan;
         $this->tahun = $tahun;
+        $this->kelas = $kelas;
     }
 
     /**
@@ -40,6 +42,9 @@ class KunjunganExport implements FromCollection, WithHeadings, WithMapping, With
             ->when($this->hari,  fn($q) => $q->whereDate('tanggal_datang', $this->hari))
             ->when($this->bulan, fn($q) => $q->whereMonth('tanggal_datang', $this->bulan))
             ->when($this->tahun, fn($q) => $q->whereYear('tanggal_datang', $this->tahun))
+            ->when($this->kelas && $this->kelas !== 'semua', function($q) {
+                $q->whereHas('user', fn($uq) => $uq->where('kelas', $this->kelas));
+            })
             ->orderBy('tanggal_datang', 'desc')
             ->get();
     }

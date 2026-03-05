@@ -61,12 +61,12 @@ class TransactionController extends Controller
             });
         }
     
-            $kelasList = User::where('role', 'anggota')
-                 ->whereNotNull('kelas')
-                 ->select('kelas')
+            $kelasList = Transaction::join('users', 'transactions.user_id', '=', 'users.id')
+                 ->whereNotNull('users.kelas')
+                 ->select('users.kelas')
                  ->distinct()
-                 ->orderBy('kelas')
-                 ->pluck('kelas');
+                 ->orderBy('users.kelas')
+                 ->pluck('users.kelas');
 
         if ($mode == 'peminjaman' && $status) {
             $query->where('status', $status);

@@ -45,7 +45,18 @@
             <i class="fa-regular fa-calendar"></i>
             <input type="date" name="end_date" value="{{ request('end_date') }}">
         </div>
-        <button type="submit" class="btn-filter">Pilih Tanggal</button>
+
+        <div class="date-box" style="margin-left: 10px;">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <select name="kelas" style="border:none; outline:none; background:transparent; font-size: 13px; color: #4b5563; cursor: pointer;">
+                <option value="semua">Semua Kelas</option>
+                @foreach($kelasList as $k)
+                    <option value="{{ $k }}" {{ request('kelas') == $k ? 'selected' : '' }}>{{ $k }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <button type="submit" class="btn-filter">Filter</button>
     </div>
 </form>
 

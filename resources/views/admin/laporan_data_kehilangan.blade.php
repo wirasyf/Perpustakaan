@@ -205,6 +205,13 @@
                 ['value' => 'sudah_dikembalikan', 'label' => 'Sudah Diganti'],
             ],
         ],
+        [
+            'id'          => 'kelas',
+            'label'       => 'Kelas',
+            'placeholder' => 'Pilih Kelas',
+            'allOption'   => true,
+            'options'     => $kelasList->map(fn($k) => ['value' => $k, 'label' => $k])->toArray(),
+        ],
     ],
     'routes' => [
         'pdf'   => route('cetak.kehilangan.pdf'),

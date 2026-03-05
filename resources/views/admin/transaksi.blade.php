@@ -53,7 +53,7 @@
 
                                     <div class="search-box">
                             <i class="fa fa-graduation-cap"></i>
-                            <select name="kelas" onchange="this.form.submit()" style="border:none; outline:none; background:transparent;">
+                            <select name="kelas" onchange="this.form.submit()">
                                 <option value=""> Semua Kelas </option>
                                 @foreach($kelasList as $k)
                                     <option value="{{ $k }}" {{ $kelas == $k ? 'selected' : '' }}>
@@ -67,7 +67,7 @@
             @if($mode == 'peminjaman')
             <div class="search-box">
                 <i class="fa fa-circle"></i>
-                <select name="status" onchange="this.form.submit()" style="border:none; outline:none; background:transparent;">
+                <select name="status" onchange="this.form.submit()">
                     <option value="">Semua Status</option>
                     <option value="belum_dikembalikan"    {{ ($status ?? '') == 'belum_dikembalikan'    ? 'selected' : '' }}>Belum Dikembalikan</option>
                     <option value="sudah_dikembalikan"    {{ ($status ?? '') == 'sudah_dikembalikan'    ? 'selected' : '' }}>Sudah Dikembalikan</option>
@@ -246,6 +246,13 @@
                 ['value' => 'buku_hilang',        'label' => 'Buku Hilang'],
                 ['value' => 'menunggu_konfirmasi','label' => 'Menunggu Konfirmasi'],
             ],
+        ],
+        [
+            'id'          => 'kelas',
+            'label'       => 'Kelas',
+            'placeholder' => 'Pilih Kelas',
+            'allOption'   => true,
+            'options'     => $kelasList->map(fn($k) => ['value' => $k, 'label' => $k])->toArray(),
         ],
     ],
     'routes' => [
