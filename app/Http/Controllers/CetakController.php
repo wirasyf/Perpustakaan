@@ -92,7 +92,7 @@ class CetakController extends Controller
             ->orderBy('tanggal_datang', 'desc')
             ->get();
 
-        $kelasList = Visit::join('users', 'visits.user_id', '=', 'users.id')
+        $kelasList = Visit::join('users', 'visit.user_id', '=', 'users.id')
             ->whereNotNull('users.kelas')
             ->select('users.kelas')
             ->distinct()
