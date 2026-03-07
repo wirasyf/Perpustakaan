@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class TransactionController extends Controller
 {
@@ -194,28 +195,6 @@ class TransactionController extends Controller
         $transaction->book->update(['status' => 'tersedia']);
 
         return back()->with('success', 'Pengembalian buku berhasil diterima');
-    }
-
-    /**
-     * Admin menolak pengembalian buku
-     */
-    public function tolakPengembalian($id)
-    {
-        if (Auth::user()->role !== 'admin') {
-            abort(403);
-        }
-
-        $transaksi = Transaction::findOrFail($id);
-
-        if ($transaksi->status !== 'menunggu_konfirmasi') {
-            return back()->with('error', 'Status tidak valid');
-        }
-
-        $transaksi->update([
-            'status' => 'belum_dikembalikan'
-        ]);
-
-        return back()->with('success', 'Pengembalian buku ditolak, status kembali ke belum dikembalikan');
     }
 
     /**

@@ -121,10 +121,17 @@
                                         <i class="bi bi-chat-dots"></i>
                                     </button>
                                 @endif
-
-                                {{-- Tidak ada aksi jika sudah selesai --}}
+                                {{-- CETAK NOTA — otomatis muncul saat status = sudah_dikembalikan --}}
                                 @if($trx->status == 'sudah_dikembalikan')
-                                    <span style="color: #6b7280; font-size: 12px;">-</span>
+                                    <a href="{{ route('transactions.cetak-nota', $trx->id) }}"
+                                    target="_blank"
+                                    class="aksi-btn"
+                                    title="Cetak Nota Pengembalian"
+                                    style="background: linear-gradient(135deg, #f5a623, #e8832a);
+                                            color: white; text-decoration: none;
+                                            display: inline-flex; align-items: center; justify-content: center;">
+                                        <i class="bi bi-printer-fill"></i>
+                                    </a>
                                 @endif
                             </td>
                         </tr>
@@ -201,8 +208,13 @@
                                                 <input type="text" class="form-control" value="{{ $trx->book->judul }}" readonly>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label fw-semibold">Tanggal Kejadian</label>
-                                                <input type="date" class="form-control" name="tanggal_ganti" required>
+                                            <label class="form-label fw-semibold">
+                                                Tanggal Mengganti Buku
+                                                <small class="text-muted fw-normal">(minimal 5 hari dari sekarang)</small>
+                                                </label>
+                                                <input type="date" class="form-control" name="tanggal_ganti"
+                                                min="{{ now()->addDays(5)->format('Y-m-d') }}" required>
+                                                <small class="text-muted">Paling cepat: <strong>{{ now()->addDays(5)->translatedFormat('d F Y') }}</strong></small>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label fw-semibold">Alasan Kehilangan</label>
