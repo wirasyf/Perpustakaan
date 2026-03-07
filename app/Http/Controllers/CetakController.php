@@ -240,15 +240,28 @@ class CetakController extends Controller
 
 public function kunjunganExportPdf(Request $request)
 {
-    $start  = $request->get('start_date');
-    $end    = $request->get('end_date');
+    $hari  = $request->get('hari');
+    $bulan = $request->get('bulan');
+    $tahun = $request->get('tahun');
+    $kelas = $request->get('kelas');
 
     $visits = Visit::with('user')
-        ->when($start && $end, fn($q) => $q->whereBetween('tanggal_datang', [$start, $end]))
+        ->when($hari, function($q) use ($hari) {
+            if ($hari === 'today') {
+                $q->whereDate('tanggal_datang', today());
+            } else {
+                $q->whereDay('tanggal_datang', $hari);
+            }
+        })
+        ->when($bulan && $bulan !== 'semua', fn($q) => $q->whereMonth('tanggal_datang', $bulan))
+        ->when($tahun && $tahun !== 'semua', fn($q) => $q->whereYear('tanggal_datang', $tahun))
+        ->when($kelas && $kelas !== 'semua', function($q) use ($kelas) {
+            $q->whereHas('user', fn($uq) => $uq->where('kelas', $kelas));
+        })
         ->orderBy('tanggal_datang', 'desc')
         ->get();
 
-    $pdf = Pdf::loadView('cetak.pdf.visit', compact('visits', 'start', 'end'))
+    $pdf = Pdf::loadView('cetak.pdf.visit', compact('visits', 'hari', 'bulan', 'tahun', 'kelas'))
               ->setPaper('A4', 'landscape');
 
     return $pdf->download('laporan-kunjungan.pdf');
@@ -258,9 +271,9 @@ public function kunjunganExportPdf(Request $request)
     public function kunjunganExportExcel(Request $request)
     {
         return Excel::download(new KunjunganExport(
-            $request->get('start_date'),
-            $request->get('end_date'),
-            null, // tahun placeholder if needed but original was (start, end) which is weird given constructor
+            $request->get('hari'),
+            $request->get('bulan'),
+            $request->get('tahun'),
             $request->get('kelas')
         ), 'laporan-kunjungan.xlsx');
     }

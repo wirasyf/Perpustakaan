@@ -168,8 +168,11 @@ document.addEventListener('DOMContentLoaded', function () {
         [
             'id'    => 'hari',
             'label' => 'Hari (Tanggal)',
-            'type'  => 'date',
             'placeholder' => '-',
+            'options' => array_merge(
+                [['value' => 'today', 'label' => 'Hari Ini']],
+                array_map(fn($d) => ['value' => str_pad($d, 2, '0', STR_PAD_LEFT), 'label' => $d], range(1, 31))
+            ),
         ],
         [
             'id'    => 'bulan',

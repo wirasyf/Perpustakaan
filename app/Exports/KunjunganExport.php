@@ -39,7 +39,13 @@ class KunjunganExport implements FromCollection, WithHeadings, WithMapping, With
     public function collection()
     {
         return Visit::with('user')
-            ->when($this->hari,  fn($q) => $q->whereDate('tanggal_datang', $this->hari))
+            ->when($this->hari, function($q) {
+                if ($this->hari === 'today') {
+                    $q->whereDate('tanggal_datang', today());
+                } else {
+                    $q->whereDay('tanggal_datang', $this->hari);
+                }
+            })
             ->when($this->bulan, fn($q) => $q->whereMonth('tanggal_datang', $this->bulan))
             ->when($this->tahun, fn($q) => $q->whereYear('tanggal_datang', $this->tahun))
             ->when($this->kelas && $this->kelas !== 'semua', function($q) {
