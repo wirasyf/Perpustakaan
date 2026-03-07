@@ -21,18 +21,26 @@
         <div class="info">
             <p><strong>Hal : Laporan Daftar Pengunjung Perpustakaan</strong></p>
             <p>Periode : 
-                @if($hari)
-                    {{ \Carbon\Carbon::parse($hari)->format('d/m/Y') }}
-                @elseif($bulan || $tahun)
-                    @if($bulan)
-                        {{ \Carbon\Carbon::create()->month((int)$bulan)->translatedFormat('F') }}
-                    @endif
-                    @if($tahun)
-                        {{ $tahun }}
-                    @endif
-                @else
-                    Semua Data
-                @endif
+                @php
+                    $period = [];
+                    if($hari) {
+                        if($hari === 'today') {
+                            $period[] = 'Hari Ini (' . now()->format('d/m/Y') . ')';
+                        } else {
+                            $period[] = 'Tanggal ' . $hari;
+                        }
+                    }
+                    if($bulan && $bulan !== 'semua') {
+                        $period[] = 'Bulan ' . \Carbon\Carbon::create()->month((int)$bulan)->translatedFormat('F');
+                    }
+                    if($tahun && $tahun !== 'semua') {
+                        $period[] = 'Tahun ' . $tahun;
+                    }
+                    if($kelas && $kelas !== 'semua') {
+                        $period[] = 'Kelas ' . $kelas;
+                    }
+                    echo count($period) > 0 ? implode(' - ', $period) : 'Semua Data';
+                @endphp
             </p>
         </div>
 
