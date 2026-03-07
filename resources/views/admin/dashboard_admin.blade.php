@@ -64,43 +64,46 @@
         <!-- LEFT COLUMN: Pengunjung Hari ini -->
         <div class="panel list-panel">
             <h3 class="panel-title">Pengunjung Hari ini</h3>
-            <table class="visitor-table">
-                <thead>
-                    <tr>
-                        <th>Nama Pengunjung</th>
-                        <th>Transaksi</th>
-                        <th>Kelas</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($todayVisit as $visit)
-                    <tr>
-                        <td>
-                            <div class="visitor-info">
-                                @if($visit->user && $visit->user->profile_photo)
-                                    <img src="{{ asset($visit->user->profile_photo) }}" class="visitor-avatar" alt="Avatar">
-                                @else
-                                    <div class="visitor-avatar">
-                                        <i class="fa-solid fa-user"></i>
-                                    </div>
-                                @endif
-                                <span class="nama-text">{{ $visit->user->name ?? '-' }}</span>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="transaksi-text">{{ $visit->transaction->jenis_transaksi ?? 'Pinjam Buku' }}</span>
-                        </td>
-                        <td>
-                            <span class="kelas-text">{{ $visit->user->kelas ?? '-' }}</span>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="3" style="text-align:center">Tidak ada pengunjung hari ini</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="visitor-table">
+                    <thead>
+                        <tr>
+                            <th>Nama Pengunjung</th>
+                            <th>Transaksi</th>
+                            <th>Kelas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($todayVisit as $visit)
+                        <tr>
+                            <td>
+                                <div class="visitor-info">
+                                    @if($visit->user && $visit->user->profile_photo)
+                                        <img src="{{ asset($visit->user->profile_photo) }}" class="visitor-avatar" alt="Avatar">
+                                    @else
+                                        <div class="visitor-avatar">
+                                            <i class="fa-solid fa-user"></i>
+                                        </div>
+                                    @endif
+                                    <span class="nama-text">{{ $visit->user->name ?? '-' }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="transaksi-text">{{ $visit->transaction->jenis_transaksi ?? 'Pinjam Buku' }}</span>
+                            </td>
+                            <td>
+                                <span class="kelas-text">{{ $visit->user->kelas ?? '-' }}</span>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="3" style="text-align:center">Tidak ada pengunjung hari ini</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
         </div>
 
         <!-- RIGHT COLUMN -->
@@ -109,7 +112,7 @@
             <!-- Laporan Kehilangan (Mini Table Preview) -->
             <div class="panel">
                 <h3 class="panel-title" style="margin-bottom: 5px;">Laporan Kehilangan</h3>
-                <div style="overflow-x: auto;">
+                <div class="table-responsive">
                     <table class="laporan-table">
                         <thead>
                             <tr>

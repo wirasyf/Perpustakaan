@@ -92,37 +92,7 @@
     flex-wrap: wrap;
 }
 
-.search-box {
-    display: flex;
-    background: #fff;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    overflow: hidden;
-    height: 40px;
-}
-
-.search-box i {
-    background: #244b8a;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    font-size: 16px;
-}
-
-.search-box input {
-    border: none;
-    outline: none;
-    padding: 0 14px;
-    font-size: 14px;
-    min-width: 250px;
-    color: #333;
-}
-
-.search-box input::placeholder {
-    color: #9ca3af;
-}
+/* .search-box moved to global app.css */
 
 .btn-filter {
     background: #244b8a;
@@ -371,4 +341,28 @@ tbody tr:hover {
     color: #adb5bd;
     cursor: not-allowed;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* RESPONSIVE COMPACT */
+@media (max-width: 600px) {
+    .header-card {
+        padding: 12px 16px;
+        gap: 10px;
+    }
+
+    .header-card img {
+        display: none;
+    }
+
+    .tab-wrapper {
+        padding: 4px;
+        gap: 4px;
+    }
+
+    .tab-item {
+        padding: 10px 8px;
+        font-size: 13px;
+        flex: 1;
+        text-align: center;
+    }
 }

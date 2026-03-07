@@ -52,7 +52,7 @@
 
 {{-- Filter Status --}}
 <div class="search-box">
-    <i class="fa fa-circle"></i>
+    <i class="fa-solid fa-circle-check"></i>
     <select name="status" onchange="this.form.submit()" style="border:none; outline:none; background:transparent;">
         <option value="">Semua Status</option>
         <option value="belum_dikembalikan" {{ ($status ?? '') == 'belum_dikembalikan' ? 'selected' : '' }}>Belum Dikembalikan</option>
@@ -74,7 +74,8 @@
 
 {{-- TABLE --}}
 <div class="table-card">
-    <table>
+    <div class="table-responsive">
+        <table>
         <thead>
             <tr>
                 <th>No</th>
@@ -185,6 +186,7 @@
         </tbody>
 
     </table>
+    </div>
 {{-- PAGINATION --}}
 <div style="margin-top:20px;">
     @include('components.pagination', ['paginator' => $reports])
@@ -220,12 +222,3 @@
 ])
 
 @endsection
-
-{{-- JS --}}
-@push('scripts')
-<script>
-document.getElementById('toggleSidebar')?.addEventListener('click', function () {
-    document.querySelector('.sidebar')?.classList.toggle('active');
-});
-</script>
-@endpush

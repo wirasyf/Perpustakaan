@@ -2,7 +2,9 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'EduTech Library') | EduTech</title>
+
     
     {{-- FAVICON --}}
     <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/png">
@@ -13,6 +15,39 @@
 
     {{-- CSS GLOBAL --}}
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    
+    <style>
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
+
+        .app-container {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        .table-card,
+        .table-wrapper,
+        .table-responsive {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0; /* Important for flex/grid parents */
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .table-card table,
+            .table-wrapper table,
+            .table-responsive table {
+                min-width: 800px;
+            }
+        }
+    </style>
 
     {{-- CSS TAMBAHAN PER HALAMAN --}}
     @stack('styles')
@@ -26,9 +61,15 @@
 
     {{-- SIDEBAR --}}
     @include('layouts.sidebar')
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     {{-- TOPBAR --}}
 <div class="topbar">
+    <div class="topbar-left">
+        <button class="sidebar-toggle" onclick="toggleSidebar()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
     <div class="user">
         <div class="user-info">
             <span class="user-name">{{ Auth::user()->name }}</span>
@@ -113,8 +154,17 @@
 
 {{-- SCRIPT GLOBAL --}}
 <script>
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+}
+
 function showToast(message, type = 'success') {
     const container = document.getElementById('toast-container');
+    if (!container) return;
+    
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
     
@@ -142,6 +192,7 @@ function showToast(message, type = 'success') {
         }, 500);
     }, 4000);
 }
+
 
 function toggleUserPopup(event) {
     event.stopPropagation();

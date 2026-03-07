@@ -31,13 +31,13 @@
                 <form method="GET" action="{{ route('books.index') }}">
                     <div class="filter-group">
                         <div class="search-box">
-                            <i class="fa fa-search"></i>
+                            <i class="fa-solid fa-magnifying-glass"></i>
                             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Sesuatu...">
                         </div>
                         
                         <!-- FILTER TAHUN -->
                         <div class="search-box">
-                            <i class="fa fa-calendar"></i>
+                            <i class="fa-solid fa-calendar-days"></i>
                             <select name="date" onchange="this.form.submit()">
                                 <option value="">Semua Tahun</option>
                                 @foreach($years as $year)
@@ -50,7 +50,7 @@
 
                         <!-- DROPDOWN KATEGORI -->
                         <div class="search-box">
-                            <i class="fa fa-layer-group"></i>
+                            <i class="fa-solid fa-layer-group"></i>
                             <select name="filter" onchange="this.form.submit()">
                                 <option value="">Semua Kategori</option>
                                 <option value="fiksi" {{ request('filter') == 'fiksi' ? 'selected' : '' }}>Fiksi</option>
@@ -72,74 +72,71 @@
                 @endauth
             </div>
             
-            <table>
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Judul Buku</th>
-                        <th>Kode Buku</th>
-                        <th>Pengarang</th>
-                        <th>Tahun Terbit</th>
-                        <th>Kategori</th>
-                        <th>Rak</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Judul Buku</th>
+                            <th>Kode Buku</th>
+                            <th>Pengarang</th>
+                            <th>Tahun Terbit</th>
+                            <th>Kategori</th>
+                            <th>Rak</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
 
-                <tbody>
-                    @foreach($books as $book)
-                    @if (Auth::user()->role == 'admin')
-                    <tr>
-                        <td>{{ $books->firstItem() + $loop->index }}</td>
-                        <td>{{ $book->judul }}</td>
-                        <td>{{ $book->kode_buku }}</td>
-                        <td>{{ $book->pengarang }}</td>
-                        <td>{{ $book->tahun_terbit }}</td>
-                        <td>{{ $book->kategori_buku == 'fiksi' ? 'Fiksi' : 'Non Fiksi' }}</td>
-                        <td>
-                            {{ $book->row?->bookshelf?->no_rak }} - {{ $book->row?->baris_ke ?? $book->id_baris }}
-                        </td>
-                        <td class="aksi">
-                            @auth
-                            <a href="{{ route('books.edit', $book->id) }}" class="btn edit">
-                                <i class="fa-solid fa-pen"></i>
-                            </a>
-      <button class="btn delete" onclick="openModal(this)" data-id="{{ $book->id }}">
-    <i class="fa-solid fa-trash"></i>
-</button>
-                            @endauth
+                    <tbody>
+                        @foreach($books as $book)
+                        @if (Auth::user()->role == 'admin')
+                        <tr>
+                            <td>{{ $books->firstItem() + $loop->index }}</td>
+                            <td>{{ $book->judul }}</td>
+                            <td>{{ $book->kode_buku }}</td>
+                            <td>{{ $book->pengarang }}</td>
+                            <td>{{ $book->tahun_terbit }}</td>
+                            <td>{{ $book->kategori_buku == 'fiksi' ? 'Fiksi' : 'Non Fiksi' }}</td>
+                            <td>
+                                {{ $book->row?->bookshelf?->no_rak }} - {{ $book->row?->baris_ke ?? $book->id_baris }}
+                            </td>
+                            <td class="aksi">
+                                @auth
+                                <a href="{{ route('books.edit', $book->id) }}" class="btn edit">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+          <button class="btn delete" onclick="openModal(this)" data-id="{{ $book->id }}">
+        <i class="fa-solid fa-trash"></i>
+    </button>
+                                @endauth
 
-<button class="btn view"
-    onclick="openDetail(this)"
-    data-judul="{{ $book->judul }}"
-    data-penulis="{{ $book->pengarang }}"
-    data-kategori="{{ $book->kategori_buku == 'fiksi' ? 'Fiksi' : 'Non Fiksi' }}"
-    data-deskripsi="{{ $book->deskripsi }}"
-    data-gambar="{{ $book->cover_url }}"
->
-    <i class="fa-solid fa-eye"></i>
-</button>
+    <button class="btn view"
+        onclick="openDetail(this)"
+        data-judul="{{ $book->judul }}"
+        data-penulis="{{ $book->pengarang }}"
+        data-kategori="{{ $book->kategori_buku == 'fiksi' ? 'Fiksi' : 'Non Fiksi' }}"
+        data-deskripsi="{{ $book->deskripsi }}"
+        data-gambar="{{ $book->cover_url }}"
+    >
+        <i class="fa-solid fa-eye"></i>
+    </button>
 
-                        </td>
-                    </tr>
-                    @endif
-                    @endforeach
-                </tbody>
+                            </td>
+                        </tr>
+                        @endif
+                        @endforeach
+                    </tbody>
 
-                <tfoot>
-                    <tr>
-                        <td colspan="8">
-                            @include('components.pagination', ['paginator' => $books])
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-
-    </main>
-</div>
-
-</body>
+                    <tfoot>
+                        <tr>
+                            <td colspan="8">
+                                @include('components.pagination', ['paginator' => $books])
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+    </div>
 
     <!-- ================= MODAL HAPUS ================= -->
     <div class="modal-overlay" id="modalHapus" style="display:none;">
@@ -183,8 +180,6 @@
         </div>
     </div>
 
-    
-
 @include('components.modal-cetak', [
     'modalId'   => 'modalCetakBuku',
     'title'     => 'Filter Data Export Buku',
@@ -205,13 +200,10 @@
     ],
     'formats' => ['excel'],
 ])
+@endsection
 
+@push('scripts')
 <script>
-
-function toggleFilter(){
-    // Function removed - filter is now always visible
-}
-
     let selectedRow = null;
     let selectedId = null;
 
@@ -271,6 +263,4 @@ function toggleFilter(){
         if (e.target === this) closeDetail();
     });
 </script>
-
-
-@endsection
+@endpush

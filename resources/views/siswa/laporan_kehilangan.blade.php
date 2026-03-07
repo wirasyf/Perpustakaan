@@ -43,7 +43,8 @@
 
             <!-- TABLE -->
             <div class="table-card">
-                <table>
+                <div class="table-responsive">
+                    <table>
                     <thead>
                         <tr>
                             <th>No</th>
@@ -94,6 +95,7 @@
                         @endforelse
                     </tbody>
                 </table>
+                </div>
                 
     {{-- PAGINATION --}}
 <div style="margin-top:20px;">

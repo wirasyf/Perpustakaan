@@ -51,7 +51,7 @@
     background: #fff;
     border-radius: 10px;
     display: none;
-    box-shadow: 0 5px 20px rgba(0,0,0,.2);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, .2);
     z-index: 100;
 }
 
@@ -200,3 +200,21 @@ td {
 }
 
 
+@media (max-width: 768px) {
+    .profile-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-card {
+        width: 100%;
+    }
+
+    .biodata-card {
+        width: 100%;
+    }
+
+    .header {
+        text-align: center;
+    }
+}

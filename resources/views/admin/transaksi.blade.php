@@ -42,17 +42,17 @@
     <div class="table-header">
         <div class="filter-group">
             <div class="search-box">
-                <i class="fa fa-search"></i>
+                <i class="fa-solid fa-magnifying-glass"></i>
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Sesuatu...">
             </div>
 
             <div class="search-box">
-                <i class="fa fa-calendar"></i>
+                <i class="fa-solid fa-calendar-days"></i>
                 <input type="date" name="tanggal" value="{{ request('tanggal') }}" onchange="this.form.submit()">
             </div>
 
                                     <div class="search-box">
-                            <i class="fa fa-graduation-cap"></i>
+                            <i class="fa-solid fa-graduation-cap"></i>
                             <select name="kelas" onchange="this.form.submit()">
                                 <option value=""> Semua Kelas </option>
                                 @foreach($kelasList as $k)
@@ -66,7 +66,7 @@
 
             @if($mode == 'peminjaman')
             <div class="search-box">
-                <i class="fa fa-circle"></i>
+                <i class="fa-solid fa-circle-check"></i>
                 <select name="status" onchange="this.form.submit()">
                     <option value="">Semua Status</option>
                     <option value="belum_dikembalikan"    {{ ($status ?? '') == 'belum_dikembalikan'    ? 'selected' : '' }}>Belum Dikembalikan</option>

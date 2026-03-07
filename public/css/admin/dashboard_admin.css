@@ -15,7 +15,7 @@
 .metrics-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
+    gap: 15px;
 }
 
 .metric-card {
@@ -106,6 +106,10 @@
     border-radius: 12px;
     padding: 24px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    /* Ensure nothing inside leaks out */
 }
 
 .panel-title {
@@ -288,17 +292,90 @@
 @media (max-width: 768px) {
     .metrics-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .metric-card {
+        padding: 15px 10px;
+    }
+
+    .metric-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+        margin-bottom: 12px;
+    }
+
+    .metric-title {
+        font-size: 12px;
+    }
+
+    .metric-value {
+        font-size: 24px;
     }
 
     .unverified-card {
-        flex-direction: column;
-        text-align: center;
-        gap: 16px;
+        padding: 20px;
+        gap: 15px;
+    }
+
+    .unverified-number {
+        font-size: 36px;
+        padding: 15px 25px;
+    }
+
+    .unverified-text {
+        font-size: 20px;
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 576px) {
     .metrics-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .metric-card {
+        padding: 10px 6px;
+    }
+
+    .metric-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+
+    .metric-title {
+        font-size: 11px;
+    }
+
+    .metric-value {
+        font-size: 18px;
+    }
+
+    .panel {
+        padding: 12px;
+    }
+
+    .panel-title {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+
+    .unverified-card {
+        padding: 12px;
+        flex-direction: row;
+        text-align: left;
+        min-height: auto;
+    }
+
+    .unverified-number {
+        font-size: 22px;
+        padding: 8px 12px;
+    }
+
+    .unverified-text {
+        font-size: 14px;
     }
 }

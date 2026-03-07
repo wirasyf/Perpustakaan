@@ -58,7 +58,8 @@
                 </div>
             @endif
 
-            <table>
+            <div class="table-responsive">
+                <table>
                 <thead>
                     <tr>
                         <th>No</th>
@@ -229,6 +230,7 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>
             {{-- PAGINATION --}}
 <div style="margin-top:20px;">
     @include('components.pagination', ['paginator' => $transactions])

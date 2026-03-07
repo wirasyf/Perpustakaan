@@ -31,17 +31,17 @@
             <div class="table-header">
                 <div class="filter-group">
                     <div class="search-box">
-                        <i class="fa fa-search"></i>
+                        <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Sesuatu...">
                     </div>
 
                     <div class="search-box">
-                        <i class="fa fa-calendar"></i>
+                        <i class="fa-solid fa-calendar-days"></i>
                         <input type="date" name="date" value="{{ request('date') }}" onchange="this.form.submit()">
                     </div>
 
             <div class="search-box">
-                            <i class="fa fa-graduation-cap"></i>
+                            <i class="fa-solid fa-graduation-cap"></i>
                             <select name="kelas" onchange="this.form.submit()" style="border:none; outline:none; background:transparent;">
                                 <option value=""> Semua Kelas </option>
                                 @foreach($kelasList as $k)
@@ -86,15 +86,15 @@
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </td>
-</tr>
-@empty
-<tr>
-    <td colspan="5" style="text-align:center;">
-        Tidak ada data kunjungan
-    </td>
-</tr>
-@endforelse
-</tbody>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" style="text-align:center;">
+                            Tidak ada data kunjungan
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
                 <tfoot>
                     <tr>
                         <td colspan="5">
@@ -104,6 +104,7 @@
                 </tfoot>
             </table>
         </div>
+
 
 @push('scripts')
 <script>

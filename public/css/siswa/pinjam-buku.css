@@ -7,9 +7,7 @@
 
 /* MAIN */
 .main {
-    margin-left: 262px;
-    margin-top: 64px;
-    padding: 30px;
+    padding: 15px;
 }
 
 /* BANNER (UPDATED) */
@@ -345,7 +343,48 @@
     .grid {
         grid-template-columns: 1fr;
     }
+
+    .banner {
+        padding: 15px 20px;
+        gap: 10px;
+    }
+
+    .banner-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+
+    .banner-text h3 {
+        font-size: 16px;
+    }
+
+    .banner-text p {
+        font-size: 12px;
+    }
+
+    .banner-right img {
+        height: 50px;
+    }
+
+    .card {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .card-image {
+        width: 100px;
+    }
+
+    .card-image img {
+        height: 140px;
+    }
+
+    .card-header-info h4 {
+        font-size: 15px;
+    }
 }
+
 
 
 /* ================= PAGINATION (TABLE) ================= */
