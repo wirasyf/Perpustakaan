@@ -6,6 +6,7 @@ use App\Models\Report;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ReportController extends Controller
 {
@@ -253,16 +254,24 @@ class ReportController extends Controller
             return back()->with('error', 'Hanya laporan dengan status menunggu konfirmasi yang bisa disetujui');
         }
 
+        $report->load('transaction.book');
+
         $report->update([
             'status' => 'sudah_dikembalikan',
-            'tanggal_ganti' => now(),
         ]);
 
-        // Update status transaksi
+        // Update status transaksi +kembalikan stok buku
         if ($report->transaction) {
-            $report->transaction->update(['status' => 'sudah_dikembalikan']);
+            $report->transaction->update(['status' => 'sudah_dikembalikan', 
+            'tanggal_pengembalian' => now(),
+            ]);
+        
+        // kembalikan stok & status buku ke tersedia
+        if ($report->transaction->book) {
+            $report->transaction->book->increment('stok');
+            $report->transaction->book->update(['status' => 'tersedia']);
         }
-
+    }
         return back()->with('success', 'Laporan berhasil disetujui. Buku ditandai sudah dikembalikan.');
     }
 

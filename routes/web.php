@@ -17,6 +17,7 @@ use App\Http\Controllers\CetakController;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Auth;
 
+
 /*
 |--------------------------------------------------------------------------
 | Public Routes 
@@ -116,7 +117,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/reports/{report}/approve', [ReportController::class, 'approve'])->name('reports.approve');
         Route::put('/reports/{report}/reject', [ReportController::class, 'reject'])->name('reports.reject');
         Route::get('/reports/status/{status}', [ReportController::class, 'getByStatus'])->name('reports.by-status');
-
+        Route::get('/reports/{id}/cetak-nota', [CetakController::class, 'pengembalianHilangPdf'])->name('reports.cetak-nota');
         Route::resource('visits', VisitController::class);
         Route::get('/visits/user/{user}', [VisitController::class, 'getByUser'])->name('visits.by-user');
         Route::get('/visits/date/search', [VisitController::class, 'getByDate'])->name('visits.by-date');
@@ -217,8 +218,7 @@ Route::middleware(['auth'])->group(function () {
         })->name('kartu.siswa');
 
 
-    Route::get('/cetak/nota/{id}/{jenis?}', [CetakController::class, 'cetakNotaPdf'])
-     ->name('cetak.nota');
+        Route::get('/cetak/nota/{id}/{jenis?}', [CetakController::class, 'cetakNotaPdf'])->name('transactions.cetak-nota');
 
     Route::get('/cetak/pengembalian-hilang/{id}', [CetakController::class, 'pengembalianHilangPdf'])
      ->name('cetak.pengembalian.hilang');

@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-
 @section('title', 'Daftar Pengunjung')
 
 @push('styles')
@@ -41,6 +40,20 @@
                 </button>
             </div>
 
+            <!-- NOTIFIKASI -->
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom: 16px;">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-bottom: 16px;">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
             <!-- TABLE -->
             <div class="table-card">
                 <div class="table-responsive">
@@ -76,15 +89,37 @@
                                 @endif
                             </td>
                             <td>
+                                {{-- Kembalikan: hanya jika belum_dikembalikan --}}
                                 @if($item->status === 'belum_dikembalikan')
-                                    <form action="{{ route('laporan-kehilangan.kembalikan', $item->id) }}" method="POST" style="display: inline;">
+                                    <form action="{{ route('laporan-kehilangan.kembalikan', $item->id) }}"
+                                          method="POST" style="display: inline;" class="form-kembalikan"
+                                          data-judul="{{ $item->transaction->book->judul ?? '-' }}"
+                                          data-tanggal="{{ optional($item->tanggal_ganti)->format('d/m/Y') ?? '-' }}">
                                         @csrf
-                                        <button type="submit" class="btn-pengembalian" title="Kembalikan">
+                                        <button type="submit" class="btn-pengembalian" title="Ajukan Penggantian Buku">
                                             <i class="fa fa-rotate-left"></i>
                                         </button>
                                     </form>
-                                @else
-                                    <span class="no-action">-</span>
+                                @endif
+
+                                {{-- Menunggu konfirmasi: tidak ada aksi --}}
+                                @if($item->status === 'pending')
+                                    <span class="no-action" style="font-size: 11px; color: #999; font-style: italic;">
+                                        Menunggu admin...
+                                    </span>
+                                @endif
+
+                                {{-- Cetak Nota — muncul jika sudah sudah_dikembalikan --}}
+                                @if($item->status === 'sudah_dikembalikan')
+                                    <a href="{{ route('reports.cetak-nota', $item->id) }}"
+                                       target="_blank"
+                                       class="btn-pengembalian"
+                                       title="Cetak Nota Penggantian"
+                                       style="background: linear-gradient(135deg, #f5a623, #e8832a);
+                                              color: white; text-decoration: none;
+                                              display: inline-flex; align-items: center; justify-content: center;">
+                                        <i class="fa fa-print"></i>
+                                    </a>
                                 @endif
                             </td>
                         </tr>
@@ -97,12 +132,13 @@
                 </table>
                 </div>
                 
-    {{-- PAGINATION --}}
-<div style="margin-top:20px;">
-    @include('components.pagination', ['paginator' => $reports])
-</div>
-</div>
+                {{-- PAGINATION --}}
+                <div style="margin-top:20px;">
+                    @include('components.pagination', ['paginator' => $reports])
+                </div>
             </div>
+
+        </div>
 
 </div>
 
@@ -110,16 +146,22 @@
 <div class="modal-overlay" id="modalPengembalian">
     <div class="modal-box">
         <div class="modal-header">
-            Kembalikan Buku
+            Ajukan Penggantian Buku
         </div>
 
         <div class="modal-body">
-            Apakah kamu yakin ingin mengembalikan buku?
+            <p>Apakah kamu yakin sudah siap mengganti buku <strong id="modalJudulBuku"></strong>?</p>
+            <p style="font-size: 13px; color: #666; margin-top: 8px;">
+                Tanggal mengganti yang dijanjikan: <strong id="modalTanggalGanti"></strong>
+            </p>
+            <p style="font-size: 12px; color: #999; margin-top: 4px;">
+                Pengajuan akan dikirim ke admin untuk disetujui.
+            </p>
         </div>
 
         <div class="modal-footer">
             <button class="btn-batal" id="btnBatal">Batal</button>
-            <button class="btn-ya" id="btnYa">Iya, saya yakin</button>
+            <button class="btn-ya" id="btnYa">Iya, Ajukan Penggantian</button>
         </div>
     </div>
 </div>
@@ -129,10 +171,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let currentForm = null;
 
-    document.querySelectorAll('.btn-pengembalian').forEach(btn => {
+    document.querySelectorAll('.form-kembalikan .btn-pengembalian').forEach(btn => {
         btn.addEventListener('click', function (e) {
-            e.preventDefault(); // Prevent immediate submission
+            e.preventDefault();
             currentForm = this.closest('form');
+
+            // Tampilkan info buku di modal
+            const judul   = currentForm.dataset.judul;
+            const tanggal = currentForm.dataset.tanggal;
+            document.getElementById('modalJudulBuku').textContent    = judul;
+            document.getElementById('modalTanggalGanti').textContent = tanggal;
+
             document.getElementById('modalPengembalian').style.display = 'flex';
         });
     });

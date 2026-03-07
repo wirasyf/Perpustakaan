@@ -15,16 +15,32 @@ class LaporanKehilanganController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'transactions_id' => 'required|exists:transactions,id',
-            'tanggal_ganti' => 'required|date',
-            'keterangan' => 'required|string|max:500'
-        ]);
+    $request->validate([
+        'transactions_id' => 'required|exists:transactions,id',
+        'tanggal_ganti'   => [
+            'required',
+            'date',
+            // Validasi server-side: minimal 5 hari dari sekarang
+            'after_or_equal:' . now()->addDays(5)->format('Y-m-d'),
+        ],
+        'keterangan' => 'required|string|max:500'
+    ], [
+        'tanggal_ganti.after_or_equal' => 'Tanggal mengganti buku minimal 5 hari dari sekarang (' . now()->addDays(5)->translatedFormat('d F Y') . ').',
+    ]);
 
         // Pastikan user hanya bisa membuat laporan untuk transaksi mereka sendiri
         $transaction = \App\Models\Transaction::where('id', $request->transactions_id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
+        ->where('user_id', Auth::id())
+        ->firstOrFail();
+
+        // Cek apakah laporan untuk transaksi ini sudah ada
+        $sudahAda = \App\Models\Report::where('transactions_id', $request->transactions_id)
+            ->whereIn('status', ['belum_dikembalikan', 'pending', 'approved'])
+            ->exists();
+
+        if ($sudahAda) {
+            return back()->with('error', 'Laporan kehilangan untuk buku ini sudah ada.');
+        }
 
         Report::create([
             'user_id' => Auth::id(),
