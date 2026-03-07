@@ -179,7 +179,6 @@ Route::middleware(['auth'])->group(function () {
         
         Route::post('/transactions/{transaction}/ajukan-pengembalian', [TransactionController::class, 'returnBook'])->name('transactions.ajukanPengembalian');
         Route::post('/transactions/{transaction}/perpanjang', [TransactionController::class, 'perpanjang'])->name('transactions.perpanjang');
-        Route::get('/transactions/{id}/cetak-nota', [CetakController::class, 'cetakNotaPdf']);
 
         // Laporan Kehilangan
         Route::resource('laporan-kehilangan', LaporanKehilanganController::class)->names([
@@ -219,8 +218,7 @@ Route::middleware(['auth'])->group(function () {
         })->name('kartu.siswa');
 
 
-    Route::get('/cetak/nota/{id}/{jenis?}', [CetakController::class, 'cetakNotaPdf'])
-     ->name('cetak.nota');
+        Route::get('/cetak/nota/{id}/{jenis?}', [CetakController::class, 'cetakNotaPdf'])->name('transactions.cetak-nota');
 
     Route::get('/cetak/pengembalian-hilang/{id}', [CetakController::class, 'pengembalianHilangPdf'])
      ->name('cetak.pengembalian.hilang');
