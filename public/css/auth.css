@@ -351,29 +351,41 @@ body {
 
 /* Responsive */
 @media (max-width: 992px) {
+  .header-logo {
+    padding: 15px 10px;
+  }
+
   .auth-card {
     flex-direction: column;
   }
 
   .auth-section {
     width: 100%;
-    padding: 40px;
+    padding: 30px;
   }
 
   .illustration-section {
     order: -1;
     border-radius: 0 !important;
-    padding: 40px;
+    padding: 20px;
   }
 
   .illustration-section img {
-    max-width: 300px;
+    max-width: 180px;
   }
 }
 
 @media (max-width: 576px) {
   .auth-section {
-    padding: 30px 20px;
+    padding: 20px 15px;
+  }
+
+  .illustration-section {
+    padding: 15px;
+  }
+
+  .illustration-section img {
+    max-width: 140px;
   }
 
   .form-row {
@@ -382,6 +394,7 @@ body {
   }
 
   .form-section h2 {
-    font-size: 26px;
+    font-size: 24px;
+    margin-bottom: 20px;
   }
 }
