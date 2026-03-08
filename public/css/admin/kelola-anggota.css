@@ -54,7 +54,7 @@
 .header-icon {
     width: 45px;
     height: 45px;
-    background: rgba(255,255,255,.3);
+    background: rgba(255, 255, 255, .3);
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -78,7 +78,7 @@
     background: #fff;
     border-radius: 12px;
     padding: 20px;
-      margin-top: 10px;
+    margin-top: 10px;
 }
 
 .table-header .filter {
@@ -122,7 +122,8 @@ thead {
     color: #fff;
 }
 
-th, td {
+th,
+td {
     padding: 12px;
     font-size: 14px;
     text-align: left;
@@ -157,14 +158,8 @@ tbody tr {
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-    /* sidebar layout removed to rely on app.css */
-
     .main-content {
         margin-left: 0;
-    }
-
-    .topbar {
-        left: 0;
     }
 }
 
@@ -172,10 +167,11 @@ tbody tr {
     background: #fff;
     border-radius: 12px;
     padding: 6px;
-    display: inline-flex;        /* ⬅️ NGIKUT ISI */
+    display: inline-flex;
+    /* ⬅️ NGIKUT ISI */
     gap: 6px;
     width: 100%;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .tab-item {
@@ -203,20 +199,25 @@ tbody tr {
 @media (max-width: 600px) {
     .tab-wrapper {
         width: 100%;
-        justify-content: space-between;
+        display: flex;
+        gap: 4px;
+        padding: 4px;
     }
 
     .tab-item {
         flex: 1;
         text-align: center;
+        padding: 10px 8px;
+        font-size: 13px;
     }
 }
+
 /* ===== MODAL ===== */
 .modal {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
     z-index: 999;
@@ -231,8 +232,15 @@ tbody tr {
 }
 
 @keyframes zoom {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .modal-content h3 {
@@ -293,7 +301,8 @@ tbody tr {
    ACTIVE (BIRU)
 =================================*/
 .nav-btn.active {
-    background: #4c6ef5; /* biru lembut seperti desain */
+    background: #4c6ef5;
+    /* biru lembut seperti desain */
     color: #ffffff;
     box-shadow: 0 8px 20px rgba(76, 110, 245, 0.35);
 }
@@ -310,8 +319,5 @@ tbody tr {
     background: #f1f3f5;
     color: #adb5bd;
     cursor: not-allowed;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
-
-
-

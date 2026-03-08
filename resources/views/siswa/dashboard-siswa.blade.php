@@ -74,7 +74,7 @@
         <!-- TRANSAKSI TABLE -->
         <div class="table-card">
             <h3>Riwayat Transaksi</h3>
-            <div style="overflow-x:auto;">
+            <div class="table-responsive">
                 <table class="custom-table">
                     <thead>
                         <tr>

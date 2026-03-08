@@ -270,3 +270,35 @@
     overflow: hidden;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
 }
+
+/* Extra compact tweaks for CRUD pages */
+@media (max-width: 576px) {
+    .header-card {
+        padding: 12px 20px !important;
+    }
+
+    .header-img,
+    .header-card img {
+        display: none !important;
+    }
+
+    .card {
+        padding: 20px !important;
+    }
+
+    .form-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
+
+    .span-4,
+    .span-3,
+    .span-12 {
+        grid-column: auto !important;
+    }
+
+    .btn-simpan {
+        width: 100%;
+    }
+}
