@@ -221,7 +221,7 @@
     </form>
 @elseif($trx->status == 'sudah_dikembalikan')
 <span class="btn-filter btn-nota"
-      onclick="window.open('{{ route('cetak.nota', [$trx->id, 'pengembalian']) }}', '_blank')">
+      onclick="window.open('{{ route('transactions.cetak-nota', [$trx->id, 'pengembalian']) }}', '_blank')">
     <i class="fa-solid fa-print"></i>
 </span>
 @endif
