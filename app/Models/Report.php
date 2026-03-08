@@ -19,6 +19,10 @@ class Report extends Model
         'keterangan',
     ];
 
+    protected $casts = [
+        'tanggal_ganti' => 'date',
+    ];
+
     public function transaction()
     {
         return $this->belongsTo(Transaction::class, 'transactions_id');
