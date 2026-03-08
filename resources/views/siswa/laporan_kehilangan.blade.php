@@ -24,21 +24,43 @@
             </div>
 
             <!-- FILTER -->
-            <div class="filter">
-                <div class="search">
-                    <i class="fa fa-search"></i>
-                    <input type="text" placeholder="Cari sesuatu...">
-                </div>
+            <form method="GET" action="{{ route('laporan-kehilangan.index') }}" id="filterForm">
+                <div class="filter">
+                    <div class="search">
+                        <i class="fa fa-search"></i>
+                        <input type="text" name="search" value="{{ request('search') }}"
+                               placeholder="Cari judul / keterangan..."
+                               onchange="document.getElementById('filterForm').submit()">
+                    </div>
 
-                <div class="date">
-                    <i class="fa fa-calendar"></i>
-                    <input type="date">
-                </div>
+                    <div class="date">
+                        <i class="fa fa-calendar"></i>
+                        <input type="date" name="tanggal" value="{{ request('tanggal') }}"
+                               onchange="document.getElementById('filterForm').submit()">
+                    </div>
 
-                <button class="btn-filter">
-                    <i class="fa fa-sliders"></i>
-                </button>
-            </div>
+                    <div class="date" style="min-width: 180px;">
+                        <i class="fa fa-circle" style="font-size:10px;"></i>
+                        <select name="status" onchange="document.getElementById('filterForm').submit()"
+                                style="border:none; outline:none; background:transparent; font-size:13px; cursor:pointer; width:100%; padding: 0 8px;">
+                            <option value="">Semua Status</option>
+                            <option value="belum_dikembalikan" {{ request('status') == 'belum_dikembalikan' ? 'selected' : '' }}>Belum Dikembalikan</option>
+                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu Konfirmasi</option>
+                            <option value="sudah_dikembalikan" {{ request('status') == 'sudah_dikembalikan' ? 'selected' : '' }}>Sudah Dikembalikan</option>
+                        </select>
+                    </div>
+
+                    @if(request('search') || request('tanggal') || request('status'))
+                        <a href="{{ route('laporan-kehilangan.index') }}" class="btn-filter" title="Reset" style="text-decoration:none;">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    @else
+                        <button type="button" class="btn-filter">
+                            <i class="fa fa-sliders"></i>
+                        </button>
+                    @endif
+                </div>
+            </form>
 
             <!-- NOTIFIKASI -->
             @if(session('success'))
@@ -108,7 +130,7 @@
                                     </span>
                                 @endif
 
-                                {{-- Cetak Nota — muncul jika sudah sudah_dikembalikan --}}
+                                {{-- ✅ Cetak Nota — muncul jika sudah sudah_dikembalikan --}}
                                 @if($item->status === 'sudah_dikembalikan')
                                     <a href="{{ route('reports.cetak-nota', $item->id) }}"
                                        target="_blank"

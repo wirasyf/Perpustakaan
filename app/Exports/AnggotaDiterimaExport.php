@@ -59,7 +59,7 @@ class AnggotaDiterimaExport implements FromCollection, WithHeadings, WithMapping
             $this->rowNumber,
             $user->name,
             $user->username,
-            (string) ($user->nis ?? '-'),
+            (string) ($user->nis_nisn ?? '-'),
             $user->kelas ?? '-',
             $user->telephone ?? '-',
             $user->alamat ?? '-',

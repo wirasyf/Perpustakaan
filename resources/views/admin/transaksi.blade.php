@@ -133,14 +133,27 @@
     @endif
     </td>
 <td class="aksi">
-@if($trx->status == 'belum_dikembalikan')
-<span class="btn-filter btn-nota"
-      onclick="window.open('{{ route('cetak.nota', [$trx->id, 'peminjaman']) }}', '_blank')">
-    <i class="fa-solid fa-print"></i>
-</span>
-@elseif(in_array($trx->status, ['terlambat', 'buku_hilang']))
-    <span>-</span>
-@endif
+    {{-- Sedang dipinjam: cetak nota peminjaman --}}
+    @if($trx->status == 'belum_dikembalikan')
+        <span class="btn-filter btn-nota"
+              onclick="window.open('{{ route('transactions.cetak-nota', [$trx->id, 'peminjaman']) }}', '_blank')"
+              title="Cetak Nota Peminjaman">
+            <i class="fa-solid fa-print"></i>
+        </span>
+
+    {{-- Sudah dikembalikan: cetak nota pengembalian --}}
+    @elseif($trx->status == 'sudah_dikembalikan')
+        <span class="btn-filter btn-nota"
+              onclick="window.open('{{ route('transactions.cetak-nota', [$trx->id, 'pengembalian']) }}', '_blank')"
+              title="Cetak Nota Pengembalian"
+              style="background: linear-gradient(135deg, #f5a623, #e8832a); color: white;">
+            <i class="fa-solid fa-print"></i>
+        </span>
+
+    {{-- Terlambat / Buku Hilang / lainnya: tidak ada aksi --}}
+    @else
+        <span>-</span>
+    @endif
 </td>
 </tr>
 @empty

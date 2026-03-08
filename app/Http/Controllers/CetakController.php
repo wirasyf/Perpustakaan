@@ -107,25 +107,24 @@ class CetakController extends Controller
     // 🔹 TRANSAKSI - CETAK PER ID (nota)
     // =====================================================
 
-    public function cetakNotaPdf($id)
+    public function cetakNotaPdf($id, $jenis = 'peminjaman')
     {
-        $query = Transaction::with(['book', 'user'])
-            ->where('id', $id)
-            ->where('status', 'sudah_dikembalikan');
+        $transaksi = Transaction::with('user', 'book')->findOrFail($id);
 
-        if (Auth::user()->role !== 'admin') {
-            $query->where('user_id', Auth::id());
+        if ($jenis === 'pengembalian') {
+            $pdf = Pdf::loadView('cetak.nota.cetak-pengembalian', [
+                'transaksi'     => $transaksi,
+                'tanggal_cetak' => now()->translatedFormat('d F Y'),
+                'no_nota'       => 'NOTA-' . str_pad($transaksi->id, 5, '0', STR_PAD_LEFT),
+            ])->setPaper('a5', 'portrait');
+            return $pdf->download('nota-pengembalian-' . $transaksi->id . '.pdf');
         }
 
-        $transaksi = $query->firstOrFail();
-
-        $pdf = Pdf::loadView('cetak.nota.cetak-pengembalian', [
-            'transaksi'     => $transaksi,
-            'tanggal_cetak' => now()->translatedFormat('d F Y'),
-            'no_nota'       => 'NOTA-' . str_pad($transaksi->id, 5, '0', STR_PAD_LEFT),
+        // Peminjaman → PDF biru
+        $pdf = Pdf::loadView('cetak.nota.cetak-peminjaman', [
+            'transaksi' => $transaksi,
         ])->setPaper('a5', 'portrait');
-
-        return $pdf->download('nota-pengembalian-' . $transaksi->id . '.pdf');
+        return $pdf->download('nota-peminjaman-' . $transaksi->id . '.pdf');
     }
 
     // =====================================================

@@ -88,7 +88,7 @@ class KehilanganExport implements FromCollection, WithHeadings, WithMapping, Wit
             'B' => 25,
             'C' => 14,
             'D' => 35,
-            'E' => 18,
+            'E' => 200,
             'F' => 18,
             'G' => 18,
         ];
@@ -142,7 +142,6 @@ class KehilanganExport implements FromCollection, WithHeadings, WithMapping, Wit
         // Rata tengah
         $sheet->getStyle("A2:A{$lastRow}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         $sheet->getStyle("C2:C{$lastRow}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-        $sheet->getStyle("E2:E{$lastRow}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         $sheet->getStyle("F2:F{$lastRow}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         $sheet->getStyle("G2:G{$lastRow}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 

@@ -262,17 +262,31 @@ class TransactionController extends Controller
         return back()->with('success', 'Perpanjangan berhasil! Buku dapat dikembalikan dalam 3 hari lagi');
     }
 
-    /**
-     * Get user's own transactions
-     */
-    public function myTransactions()
+    public function myTransactions(Request $request)
     {
         $user = Auth::user();
-        // paginate user's transactions so view pagination works
-        $transactions = Transaction::where('user_id', $user->id)
-            ->with('book')
-            ->latest()
-            ->paginate(10);
+
+        $query = Transaction::where('user_id', $user->id)
+            ->with('book');
+
+        // Filter search (judul buku)
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->whereHas('book', fn($q) => $q->where('judul', 'like', "%{$search}%")
+                ->orWhere('kode_buku', 'like', "%{$search}%"));
+        }
+
+        // Filter tanggal peminjaman
+        if ($request->filled('tanggal')) {
+            $query->whereDate('tanggal_peminjaman', $request->tanggal);
+        }
+
+        // Filter status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $transactions = $query->latest()->paginate(10)->withQueryString();
 
         return view('siswa.pengembalian-buku', compact('transactions'));
     }
