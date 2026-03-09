@@ -8,8 +8,8 @@
 @section('content')
 <div class="main-content">
     <div class="profile-banner">
-        @if(auth()->user()->profile_photo)
-            <img src="{{ asset('storage/'.auth()->user()->profile_photo) }}" alt="Avatar" class="banner-avatar">
+        @if(auth()->user()->profile_photo_url)
+            <img src="{{ auth()->user()->profile_photo_url }}" alt="Avatar" class="banner-avatar">
         @else
             <div class="banner-avatar default-avatar">
                 <i class="fa fa-user"></i>
@@ -36,8 +36,8 @@
             <h3 class="card-title">Profil {{ auth()->user()->role == 'admin' ? 'Admin' : 'Siswa' }}</h3>
             
             <div class="profile-main-avatar-container">
-                @if(auth()->user()->profile_photo)
-                    <img src="{{ asset('storage/'.auth()->user()->profile_photo) }}" alt="Avatar" class="profile-main-avatar">
+                @if(auth()->user()->profile_photo_url)
+                    <img src="{{ auth()->user()->profile_photo_url }}" alt="Avatar" class="profile-main-avatar">
                 @else
                     <div class="profile-main-avatar default-avatar">
                         <i class="fa fa-user"></i>
