@@ -8,7 +8,6 @@ return new class extends Migration
     public function up(): void
     {
         DB::statement("ALTER TABLE transactions MODIFY status ENUM(
-            'buku_hilang',
             'sudah_dikembalikan',
             'belum_dikembalikan',
             'menunggu_konfirmasi',
@@ -19,7 +18,6 @@ return new class extends Migration
     public function down(): void
     {
         DB::statement("ALTER TABLE transactions MODIFY status ENUM(
-            'buku_hilang',
             'sudah_dikembalikan',
             'belum_dikembalikan',
             'menunggu_konfirmasi'

@@ -69,7 +69,6 @@ class ReportController extends Controller
         ->orderBy('users.kelas')
         ->pluck('users.kelas');
 
-    $reports = $request->get('status');
     $reports = $query->latest()->paginate(10);
     $statuses = ['pending', 'belum_dikembalikan', 'sudah_dikembalikan'];
 
@@ -107,7 +106,7 @@ class ReportController extends Controller
             'transactions_id' => 'required|exists:transactions,id',
             'tanggal_ganti' => 'nullable|date',
             'jenis_transaksi' => 'required|in:dipinjam,dikembalikan',
-            'status' => 'required|in:buku_hilang,sudah_dikembalikan,belum_dikembalikan',
+            'status' => 'required|in:sudah_dikembalikan,belum_dikembalikan',
             'keterangan' => 'required|string|max:500',
         ]);
 
@@ -183,7 +182,7 @@ class ReportController extends Controller
         $data = $request->validate([
             'tanggal_ganti' => 'nullable|date',
             'jenis_transaksi' => 'required|in:dipinjam,dikembalikan',
-            'status' => 'required|in:buku_hilang,sudah_dikembalikan,belum_dikembalikan',
+            'status' => 'required|in:sudah_dikembalikan,belum_dikembalikan',
             'keterangan' => 'required|string|max:500',
         ]);
 

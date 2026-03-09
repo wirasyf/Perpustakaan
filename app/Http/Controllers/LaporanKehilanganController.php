@@ -50,12 +50,13 @@ class LaporanKehilanganController extends Controller
             'status' => 'belum_dikembalikan'
         ]);
 
-        // Update status transaksi menjadi 'hilang'
-        $transaction->update(['status' => 'buku_hilang']);
+        // Update status transaksi tetap 'belum_dikembalikan' atau biarkan (hilang dihapus)
+        // Karena 'buku_hilang' dihapus, kita biarkan status transaksi sebagaimana mestinya.
+        // Jika sebelumnya user mengubah ini menjadi 'buku_hilang', kita pastikan sekarang konsisten.
 
         return redirect()
             ->route('anggota.pengembalian')
-            ->with('success', 'Laporan kehilangan berhasil dibuat. Buku ditandai sebagai hilang.');
+            ->with('success', 'Laporan kehilangan berhasil dibuat. Silakan tunggu konfirmasi penggantian buku.');
     }
 
     public function index(Request $request)

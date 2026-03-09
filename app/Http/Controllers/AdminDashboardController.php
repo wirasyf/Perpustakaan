@@ -33,7 +33,7 @@ class AdminDashboardController extends Controller
         $totalVisit = Visit::count();
 
         //Total Buku Hilang
-        $totalLostBooks = Report::where('status', 'buku_hilang')->count();
+        $totalLostBooks = Report::where('status', 'belum_dikembalikan')->count();
 
         // Total Belum Dikembalikan
         $totalBelumDikembalikan = Transaction::where('status', 'belum_dikembalikan')->count();

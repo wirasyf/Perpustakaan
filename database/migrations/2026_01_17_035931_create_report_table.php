@@ -18,7 +18,6 @@ return new class extends Migration
             $table->date('tanggal_ganti')->nullable();
             $table->enum('jenis_transaksi', ['dipinjam', 'dikembalikan']);
             $table->enum('status', [
-                'buku_hilang',
                 'sudah_dikembalikan',
                 'belum_dikembalikan'
                 ])->default('belum_dikembalikan');

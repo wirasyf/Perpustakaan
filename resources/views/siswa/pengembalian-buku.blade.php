@@ -54,7 +54,6 @@
                             <option value="sudah_dikembalikan" {{ request('status') == 'sudah_dikembalikan' ? 'selected' : '' }}>Selesai</option>
                             <option value="menunggu_konfirmasi" {{ request('status') == 'menunggu_konfirmasi' ? 'selected' : '' }}>Menunggu Persetujuan</option>
                             <option value="terlambat" {{ request('status') == 'terlambat' ? 'selected' : '' }}>Terlambat</option>
-                            <option value="buku_hilang" {{ request('status') == 'buku_hilang' ? 'selected' : '' }}>Buku Hilang</option>
                         </select>
                     </div>
 
@@ -119,8 +118,6 @@
                                     <span class="status warning">Menunggu Persetujuan</span>
                                 @elseif($trx->status == 'terlambat')
                                     <span class="status danger">Terlambat</span>
-                                @elseif($trx->status == 'buku_hilang')
-                                    <span class="status danger">Buku Hilang</span>
                                 @endif
                             </td>
                             <td class="aksi">
@@ -181,10 +178,7 @@
                                     </a>
                                 @endif
 
-                                {{-- BUKU HILANG --}}
-                                @if($trx->status == 'buku_hilang')
-                                    <span style="font-size: 11px; color: #999; font-style: italic;">Lihat laporan kehilangan</span>
-                                @endif
+
 
                             </td>
                         </tr>

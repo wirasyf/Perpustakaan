@@ -27,15 +27,6 @@
                 <i class="fa-solid fa-book-bookmark"></i>
             </div>
             <div class="metric-title">Buku dipinjam</div>
-            <div class="metric-value">{{ number_format($totalBorrow) }}</div>
-        </div>
-
-        <!-- Card 3: Belum dikembalikan -->
-        <div class="metric-card">
-            <div class="metric-icon icon-blue-light">
-                <i class="fa-solid fa-book-open-reader"></i>
-            </div>
-            <div class="metric-title">Belum dikembalikan</div>
             <div class="metric-value">{{ number_format($totalBelumDikembalikan) }}</div>
         </div>
 

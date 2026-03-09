@@ -108,10 +108,7 @@
                 $status = 'Sudah Dikembalikan';
                 $statusClass = 'status-green';
                 break;
-            case 'buku_hilang':
-                $status = 'Belum Dikembalikan';
-                $statusClass = 'status-red';
-                break;
+
             case 'approved':
                 $status = 'Disetujui';
                 $statusClass = 'status-green';
