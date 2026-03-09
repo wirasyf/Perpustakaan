@@ -111,13 +111,15 @@
                             <td>{{ optional($trx->tanggal_jatuh_tempo)->format('d/m/Y') ?? '-' }}</td>
                             <td>
                                 @if($trx->status == 'belum_dikembalikan')
-                                    <span class="status danger">Belum Dikembalikan</span>
+                                    <span class="status danger">Sedang dipinjam</span>
                                 @elseif($trx->status == 'sudah_dikembalikan')
-                                    <span class="status success">✓ Selesai</span>
+                                    <span class="status success">Sudah Dikembalikan</span>
                                 @elseif($trx->status == 'menunggu_konfirmasi')
-                                    <span class="status warning">Menunggu Persetujuan</span>
+                                    <span class="status warning">Menunggu Konfirmasi</span>
                                 @elseif($trx->status == 'terlambat')
                                     <span class="status danger">Terlambat</span>
+                                @elseif($trx->status == 'buku_hilang')
+                                    <span class="status danger">Buku Hilang</span>
                                 @endif
                             </td>
                             <td class="aksi">
@@ -155,12 +157,21 @@
                                         data-bs-target="#modalPerpanjang{{ $trx->id }}" title="Perpanjang">
                                         <i class="bi bi-calendar-event"></i>
                                     </button>
+                                    <button class="aksi-btn red" data-bs-toggle="modal"
+                                        data-bs-target="#modalKehilangan{{ $trx->id }}" title="Laporan Kehilangan">
+                                        <i class="bi bi-chat-dots"></i>
+                                    </button>
                                     <a href="{{ route('transactions.cetak-nota', [$trx->id, 'peminjaman']) }}"
                                        target="_blank" class="aksi-btn" title="Cetak Nota Peminjaman"
                                        style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white;
                                               text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">
                                         <i class="bi bi-printer-fill"></i>
                                     </a>
+                                @endif
+
+                                {{-- BUKU HILANG --}}
+                                @if($trx->status == 'buku_hilang')
+                                    <span style="font-size: 11px; color: #dc3545; font-weight: 600;">Sudah Dilaporkan Hilang</span>
                                 @endif
 
                                 {{-- MENUNGGU KONFIRMASI --}}
@@ -231,7 +242,7 @@
                         @endif
 
                         {{-- Modal Laporan Kehilangan --}}
-                        @if($trx->status == 'belum_dikembalikan')
+                        @if(in_array($trx->status, ['belum_dikembalikan', 'terlambat']))
                         <div class="modal fade" id="modalKehilangan{{ $trx->id }}" tabindex="-1">
                             <div class="modal-dialog modal-lg modal-dialog-centered">
                                 <div class="modal-content">
@@ -279,11 +290,7 @@
                     @endforelse
                 </tbody>
             </table>
-<<<<<<< HEAD
-
-=======
             </div>
->>>>>>> 84a9b608856ab47e5d6b68e302cf7881547cc46b
             {{-- PAGINATION --}}
             <div style="margin-top:20px;">
                 @include('components.pagination', ['paginator' => $transactions])

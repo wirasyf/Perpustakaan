@@ -69,7 +69,7 @@
                 <i class="fa-solid fa-circle-check"></i>
                 <select name="status" onchange="this.form.submit()">
                     <option value="">Semua Status</option>
-                    <option value="belum_dikembalikan"    {{ ($status ?? '') == 'belum_dikembalikan'    ? 'selected' : '' }}>Belum Dikembalikan</option>
+                    <option value="belum_dikembalikan"    {{ ($status ?? '') == 'belum_dikembalikan'    ? 'selected' : '' }}>Sedang dipinjam</option>
                     <option value="sudah_dikembalikan"    {{ ($status ?? '') == 'sudah_dikembalikan'    ? 'selected' : '' }}>Sudah Dikembalikan</option>
                     <option value="terlambat"             {{ ($status ?? '') == 'terlambat'             ? 'selected' : '' }}>Terlambat</option>
                     <option value="buku_hilang"           {{ ($status ?? '') == 'buku_hilang'           ? 'selected' : '' }}>Buku Hilang</option>
@@ -201,7 +201,7 @@
     <td>{{ optional($trx->tanggal_jatuh_tempo)->format('d/m/Y') }}</td>
     <td>
         @if($trx->status == 'menunggu_konfirmasi')
-            <span class="status warning">Menunggu Persetujuan</span>
+            <span class="status warning">Menunggu Konfirmasi</span>
         @elseif($trx->status == 'sudah_dikembalikan')
             <span class="status success">Sudah Dikembalikan</span>
         @endif
@@ -253,7 +253,7 @@
             'placeholder' => 'Pilih Status',
             'allOption'   => true,
             'options'     => [
-                ['value' => 'belum_dikembalikan', 'label' => 'Belum Dikembalikan'],
+                ['value' => 'belum_dikembalikan', 'label' => 'Sedang dipinjam'],
                 ['value' => 'sudah_dikembalikan', 'label' => 'Sudah Dikembalikan'],
                 ['value' => 'terlambat',          'label' => 'Terlambat'],
                 ['value' => 'buku_hilang',        'label' => 'Buku Hilang'],

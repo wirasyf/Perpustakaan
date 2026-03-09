@@ -124,7 +124,7 @@
                                     @endif
                                     <div class="user-info">
                                         <strong>{{ $user->name }}</strong>
-                                        <small>@.{{ $user->username }}</small>
+                                        <small>{{ '@' . $user->username }}</small>
                                     </div>
                                 </td>
 

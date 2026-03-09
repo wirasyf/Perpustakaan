@@ -23,14 +23,16 @@ class SiswaDashboardController extends Controller
          * RINGKASAN DATA
          * ======================= */
 
-        // Total buku yang sedang dipinjam siswa
+        // Total buku yang sedang dipinjam siswa (status belum_dikembalikan atau terlambat)
         $totalDipinjam = Transaction::where('user_id', $userId)
             ->where('jenis_transaksi', 'dipinjam')
+            ->whereIn('status', ['belum_dikembalikan', 'terlambat', 'menunggu_konfirmasi'])
             ->count();
-        //total buku hilang
-        $totalBukuHilang = Report::whereHas('transaction', function($q) use ($userId) {
-            $q->where('user_id', $userId);
-        })->count();
+            
+        // Total buku hilang (status buku_hilang)
+        $totalBukuHilang = Transaction::where('user_id', $userId)
+            ->where('status', 'buku_hilang')
+            ->count();
 
         //total pengembalian buku
         $totalPengembalian = Transaction::where('user_id', $userId)
@@ -55,9 +57,12 @@ class SiswaDashboardController extends Controller
 
             
         // Status kunjungan hari ini
-                $kunjunganHariIni = Visit::where('user_id', $userId)
-                    ->whereDate('tanggal_datang', Carbon::today())
-                    ->exists();
+        $kunjunganHariIni = Visit::where('user_id', $userId)
+            ->whereDate('tanggal_datang', Carbon::today())
+            ->exists();
+
+        // Total kunjungan siswa
+        $totalKunjungan = Visit::where('user_id', $userId)->count();
 
 
         /* =======================

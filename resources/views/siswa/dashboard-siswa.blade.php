@@ -38,7 +38,7 @@
             <div class="stat-icon-wrapper icon-purple">
                 <i class="fa fa-book-bookmark"></i>
             </div>
-            <div class="stat-title">Sedang dipinjam</div>
+            <div class="stat-title">Buku Dipinjam</div>
             <div class="stat-number">{{ $totalDipinjam ?? 0 }}</div>
         </div>
 
@@ -55,7 +55,7 @@
                 <i class="fa fa-users"></i>
             </div>
             <div class="stat-title">Kunjungan</div>
-            <div class="stat-number">{{ $totalKunjungan ?? 0 }}</div>
+            <div class="stat-number" id="visitCount">{{ $totalKunjungan ?? 0 }}</div>
         </div>
 
         <div class="stat-item">
@@ -145,11 +145,64 @@
 
 </main>
 
+<!-- MODAL ABSENSI -->
+<div class="modal-overlay" id="modalAbsen">
+    <div class="modal-box">
+        <!-- Step 1: Konfirmasi -->
+        <div id="stepConfirm">
+            <div class="modal-icon-wrapper icon-confirm">
+                <i class="fa fa-question"></i>
+            </div>
+            <h3 class="modal-title">Konfirmasi Hadir</h3>
+            <p class="modal-message">Apakah kamu yakin ingin melakukan absensi kunjungan hari ini?</p>
+            <div class="modal-footer">
+                <button class="btn-modal btn-cancel" onclick="closeAbsenModal()">Batal</button>
+                <button class="btn-modal btn-confirm" id="confirmAbsen">Iya, Absen</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Sukses -->
+        <div id="stepSuccess" style="display: none;">
+            <div class="modal-icon-wrapper icon-success">
+                <i class="fa fa-check"></i>
+            </div>
+            <h3 class="modal-title">Berhasil!</h3>
+            <p class="modal-message" id="successMessage">Check-in berhasil dilakukan.</p>
+            <div class="modal-footer">
+                <button class="btn-modal btn-confirm" onclick="closeAbsenModal()">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 // Absensi Kunjungan
+const modalAbsen = document.getElementById('modalAbsen');
 const btnHadir = document.getElementById('btnHadir');
+const confirmAbsen = document.getElementById('confirmAbsen');
+const stepConfirm = document.getElementById('stepConfirm');
+const stepSuccess = document.getElementById('stepSuccess');
+const successMessage = document.getElementById('successMessage');
+const visitCountLabel = document.getElementById('visitCount');
+
 if(btnHadir){
-    btnHadir.addEventListener('click', async () => {
+    btnHadir.addEventListener('click', () => {
+        if(btnHadir.disabled) return;
+        modalAbsen.classList.add('active');
+        stepConfirm.style.display = 'block';
+        stepSuccess.style.display = 'none';
+    });
+}
+
+function closeAbsenModal() {
+    modalAbsen.classList.remove('active');
+}
+
+if(confirmAbsen){
+    confirmAbsen.addEventListener('click', async () => {
+        confirmAbsen.disabled = true;
+        confirmAbsen.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Loading...';
+        
         try {
             const response = await fetch("{{ route('checkin') }}", {
                 method: "POST",
@@ -162,14 +215,30 @@ if(btnHadir){
             const data = await response.json();
 
             if(response.ok){
+                // Update UI button
                 btnHadir.innerHTML = 'Sudah Hadir';
                 btnHadir.disabled = true;
-                alert(data.message || 'Berhasil check-in');
+                
+                // Update visit count
+                if(visitCountLabel) {
+                    let currentCount = parseInt(visitCountLabel.innerText) || 0;
+                    visitCountLabel.innerText = currentCount + 1;
+                }
+
+                // Show success step
+                successMessage.innerText = data.message || 'Check-in berhasil dilakukan.';
+                stepConfirm.style.display = 'none';
+                stepSuccess.style.display = 'block';
             } else {
                 alert(data.message || 'Gagal check-in');
+                closeAbsenModal();
             }
         } catch (error) {
             alert("Terjadi error");
+            closeAbsenModal();
+        } finally {
+            confirmAbsen.disabled = false;
+            confirmAbsen.innerHTML = 'Iya, Absen';
         }
     });
 }

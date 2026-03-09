@@ -19,23 +19,14 @@ return new class extends Migration
             $table->date('tanggal_jatuh_tempo');
             $table->date('tanggal_pengembalian')->nullable();
             $table->enum('jenis_transaksi', ['dipinjam', 'dikembalikan']);
-            // The original enum definition for 'status' is removed here.
-            // The DB::statement below will define or alter the column.
+            $table->enum('status', [
+                'sudah_dikembalikan',
+                'belum_dikembalikan',
+                'menunggu_konfirmasi',
+                'terlambat'
+            ])->default('belum_dikembalikan');
             $table->timestamps();
         });
-
-        // This DB::statement should be outside the Schema::create closure
-        // if it's meant to alter an existing column, or if it's defining
-        // the column after creation. Given the context, it's likely
-        // intended to define the column's enum values and constraints.
-        // For initial creation, it's better to use $table->enum directly.
-        // However, following the provided Code Edit, we'll place it after creation.
-        DB::statement("ALTER TABLE transactions MODIFY status ENUM(
-            'sudah_dikembalikan',
-            'belum_dikembalikan',
-            'menunggu_konfirmasi',
-            'terlambat'
-        ) NOT NULL");
     }
 
     /**

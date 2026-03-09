@@ -47,15 +47,14 @@ class LaporanKehilanganController extends Controller
             'transactions_id' => $request->transactions_id,
             'tanggal_ganti' => $request->tanggal_ganti,
             'keterangan' => $request->keterangan,
-            'status' => 'belum_dikembalikan'
+            'status' => 'pending'
         ]);
 
-        // Update status transaksi tetap 'belum_dikembalikan' atau biarkan (hilang dihapus)
-        // Karena 'buku_hilang' dihapus, kita biarkan status transaksi sebagaimana mestinya.
-        // Jika sebelumnya user mengubah ini menjadi 'buku_hilang', kita pastikan sekarang konsisten.
+        // Update status transaksi menjadi 'buku_hilang'
+        $transaction->update(['status' => 'buku_hilang']);
 
         return redirect()
-            ->route('anggota.pengembalian')
+            ->route('laporan-kehilangan.index')
             ->with('success', 'Laporan kehilangan berhasil dibuat. Silakan tunggu konfirmasi penggantian buku.');
     }
 
@@ -130,7 +129,7 @@ class LaporanKehilanganController extends Controller
             ->where('user_id', Auth::id())
             ->firstOrFail();
 
-        if ($laporan->status !== 'belum_dikembalikan') {
+        if ($laporan->status !== 'pending' && $laporan->status !== 'belum_dikembalikan') {
             return back()->with('error', 'Hanya laporan yang belum diproses bisa dihapus');
         }
 

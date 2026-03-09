@@ -70,7 +70,7 @@ class ReportController extends Controller
         ->pluck('users.kelas');
 
     $reports = $query->latest()->paginate(10);
-    $statuses = ['pending', 'belum_dikembalikan', 'sudah_dikembalikan'];
+    $statuses = ['pending', 'belum_dikembalikan', 'sudah_dikembalikan', 'rejected'];
 
     return view('admin.laporan_data_kehilangan', compact('reports', 'statuses', 'kelasList', 'kelas', 'status'));
 }
@@ -249,7 +249,7 @@ class ReportController extends Controller
     {
         if (Auth::user()?->role !== 'admin') abort(403);
 
-        if ($report->status !== 'pending') {
+        if ($report->status !== 'pending' && $report->status !== 'belum_dikembalikan') {
             return back()->with('error', 'Hanya laporan dengan status menunggu konfirmasi yang bisa disetujui');
         }
 
@@ -259,18 +259,19 @@ class ReportController extends Controller
             'status' => 'sudah_dikembalikan',
         ]);
 
-        // Update status transaksi +kembalikan stok buku
+        // Update status transaksi + kembalikan stok buku
         if ($report->transaction) {
-            $report->transaction->update(['status' => 'sudah_dikembalikan', 
-            'tanggal_pengembalian' => now(),
+            $report->transaction->update([
+                'status' => 'sudah_dikembalikan', 
+                'tanggal_pengembalian' => now(),
             ]);
         
-        // kembalikan stok & status buku ke tersedia
-        if ($report->transaction->book) {
-            $report->transaction->book->increment('stok');
-            $report->transaction->book->update(['status' => 'tersedia']);
+            // kembalikan stok & status buku ke tersedia
+            if ($report->transaction->book) {
+                $report->transaction->book->increment('stok');
+                $report->transaction->book->update(['status' => 'tersedia']);
+            }
         }
-    }
         return back()->with('success', 'Laporan berhasil disetujui. Buku ditandai sudah dikembalikan.');
     }
 
@@ -281,11 +282,16 @@ class ReportController extends Controller
     {
         if (Auth::user()?->role !== 'admin') abort(403);
 
-        if ($report->status !== 'pending') {
+        if ($report->status !== 'pending' && $report->status !== 'belum_dikembalikan') {
             return back()->with('error', 'Hanya laporan dengan status menunggu konfirmasi yang bisa ditolak');
         }
 
-        $report->update(['status' => 'belum_dikembalikan']);
+        $report->update(['status' => 'rejected']);
+
+        // Kembalikan status transaksi ke 'belum_dikembalikan'
+        if ($report->transaction) {
+            $report->transaction->update(['status' => 'belum_dikembalikan']);
+        }
 
         return back()->with('success', 'Laporan ditolak. Status dikembalikan ke belum dikembalikan.');
     }

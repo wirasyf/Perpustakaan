@@ -44,7 +44,7 @@
                         <select name="status" onchange="document.getElementById('filterForm').submit()"
                                 style="border:none; outline:none; background:transparent; font-size:13px; cursor:pointer; width:100%; padding: 0 8px;">
                             <option value="">Semua Status</option>
-                            <option value="belum_dikembalikan" {{ request('status') == 'belum_dikembalikan' ? 'selected' : '' }}>Belum Dikembalikan</option>
+                            <option value="belum_dikembalikan" {{ request('status') == 'belum_dikembalikan' ? 'selected' : '' }}>Sedang dipinjam</option>
                             <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu Konfirmasi</option>
                             <option value="sudah_dikembalikan" {{ request('status') == 'sudah_dikembalikan' ? 'selected' : '' }}>Sudah Dikembalikan</option>
                         </select>
@@ -105,7 +105,7 @@
                                 @elseif($item->status === 'sudah_dikembalikan')
                                     <span class="status-green">Sudah Dikembalikan</span>
                                 @elseif($item->status === 'belum_dikembalikan')
-                                    <span class="status-red">Belum Dikembalikan</span>
+                                    <span class="status-red">Sedang dipinjam</span>
                                 @else
                                     <span class="status-gray">{{ ucfirst(str_replace('_', ' ', $item->status)) }}</span>
                                 @endif

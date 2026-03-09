@@ -55,9 +55,10 @@
     <i class="fa-solid fa-circle-check"></i>
     <select name="status" onchange="this.form.submit()" style="border:none; outline:none; background:transparent;">
         <option value="">Semua Status</option>
-        <option value="belum_dikembalikan" {{ ($status ?? '') == 'belum_dikembalikan' ? 'selected' : '' }}>Belum Dikembalikan</option>
+        <option value="pending"            {{ ($status ?? '') == 'pending'            ? 'selected' : '' }}>Menunggu Konfirmasi</option>
+        <option value="belum_dikembalikan" {{ ($status ?? '') == 'belum_dikembalikan' ? 'selected' : '' }}>Sedang dipinjam</option>
         <option value="sudah_dikembalikan" {{ ($status ?? '') == 'sudah_dikembalikan' ? 'selected' : '' }}>Sudah Dikembalikan</option>
-        <option value="pending"            {{ ($status ?? '') == 'pending'            ? 'selected' : '' }}>Pending</option>
+        <option value="rejected"           {{ ($status ?? '') == 'rejected'           ? 'selected' : '' }}>Ditolak</option>
     </select>
 </div>
 </div>
