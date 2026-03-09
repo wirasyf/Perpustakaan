@@ -69,8 +69,8 @@
                         <tr>
                             <td>
                                 <div class="visitor-info">
-                                    @if($visit->user && $visit->user->profile_photo)
-                                        <img src="{{ asset($visit->user->profile_photo) }}" class="visitor-avatar" alt="Avatar">
+                                    @if($visit->user && $visit->user->profile_photo_url)
+                                        <img src="{{ $visit->user->profile_photo_url }}" class="visitor-avatar" alt="Avatar">
                                     @else
                                         <div class="visitor-avatar">
                                             <i class="fa-solid fa-user"></i>
