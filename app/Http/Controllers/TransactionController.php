@@ -197,6 +197,25 @@ class TransactionController extends Controller
         return back()->with('success', 'Pengembalian buku berhasil diterima');
     }
 
+    public function tolakPengembalian($id)
+{
+    if (Auth::user()->role !== 'admin') {
+        abort(403);
+    }
+
+    $transaction = Transaction::findOrFail($id);
+
+    if ($transaction->status !== 'menunggu_konfirmasi') {
+        return back()->with('error', 'Status transaksi tidak valid untuk ditolak');
+    }
+
+    $transaction->update([
+        'status' => 'belum_dikembalikan'
+    ]);
+
+    return back()->with('success', 'Pengajuan pengembalian ditolak');
+}
+
     /**
      * User mengajukan pengembalian ulang setelah ditolak
      */
