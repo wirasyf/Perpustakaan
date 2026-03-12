@@ -139,7 +139,7 @@ class TransactionController extends Controller
         // Update visit jika ada
     if ($visit) {
         $visit->update([
-            'transaction_id' => $transaction->id
+            'transactions_id' => $transaction->id
         ]);
     }
 

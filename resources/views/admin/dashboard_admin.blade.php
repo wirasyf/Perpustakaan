@@ -80,7 +80,21 @@
                                 </div>
                             </td>
                             <td>
-                                <span class="transaksi-text">{{ $visit->transaction->jenis_transaksi ?? 'Pinjam Buku' }}</span>
+                                @php
+                                    $activity = 'Tidak ada';
+                                    if ($visit->transaction) {
+                                        $visitDate = \Carbon\Carbon::parse($visit->tanggal_datang)->toDateString();
+                                        $borrowDate = \Carbon\Carbon::parse($visit->transaction->tanggal_peminjaman)->toDateString();
+                                        $returnDate = $visit->transaction->tanggal_pengembalian ? \Carbon\Carbon::parse($visit->transaction->tanggal_pengembalian)->toDateString() : null;
+
+                                        if ($borrowDate === $visitDate) {
+                                            $activity = 'Pinjam Buku';
+                                        } elseif ($returnDate === $visitDate) {
+                                            $activity = 'Kembalikan Buku';
+                                        }
+                                    }
+                                @endphp
+                                <span class="transaksi-text">{{ $activity }}</span>
                             </td>
                             <td>
                                 <span class="kelas-text">{{ $visit->user->kelas ?? '-' }}</span>

@@ -50,7 +50,7 @@ class AdminDashboardController extends Controller
         // =====================
 
         // Pengunjung hari ini
-        $todayVisit = Visit::whereDate('tanggal_datang', now())->latest()->take(5)->get();
+        $todayVisit = Visit::with(['user', 'transaction'])->whereDate('tanggal_datang', now())->latest()->take(5)->get();
 
 
         // Laporan kehilangan terbaru

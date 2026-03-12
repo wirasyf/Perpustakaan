@@ -105,7 +105,7 @@ class VisitController extends Controller
 
     Visit::create([
         'user_id' => $user->id,
-        'transaction_id' => $activeTransaction?->id,
+        'transactions_id' => $activeTransaction?->id,
         'tanggal_datang' => today(),
     ]);
 
