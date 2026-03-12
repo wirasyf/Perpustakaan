@@ -9,7 +9,7 @@
 .header-card {
     background: #2D588C;
     color: #fff;
-    padding: 25px 30px;
+    padding: 22px 28px;
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -26,14 +26,14 @@
 
 /* icon buku */
 .header-icon {
-    width: 44px;
-    height: 44px;
+    width: 55px;
+    height: 55px;
     background: rgba(255, 255, 255, .25);
-    border-radius: 12px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 24px;
     position: relative;
 }
 
@@ -49,18 +49,19 @@
 
 /* teks */
 .header-text h3 {
-    font-size: 17px;
+    font-size: 20px;
     font-weight: 600;
 }
 
 .header-text p {
-    font-size: 12.5px;
+    font-size: 14px;
     opacity: .9;
 }
 
 /* gambar kanan */
 .header-image {
-    width: 52px;
+    height: 80px;
+    object-fit: contain;
     opacity: .9;
 }
 

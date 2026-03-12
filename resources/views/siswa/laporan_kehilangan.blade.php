@@ -9,18 +9,17 @@
 
 @section('content')
 
-            <!-- HEADER -->
-            <div class="header-card" style="display: flex; align-items: center; justify-content: space-between;">
-                <div style="display: flex; align-items: center; gap: 16px;">
-                    <div style="width: 65px; height: 65px; background: rgba(255, 255, 255, 0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; backdrop-filter: blur(4px);">
+            <div class="header-card">
+                <div class="header-left">
+                    <div class="header-icon">
                         <i class="fa fa-book-open"></i>
                     </div>
-                    <div>
-                        <h5 style="font-size: 22px; font-weight: 700; margin-bottom: 4px; letter-spacing: 0.5px;">Laporan Kehilangan Buku</h5>
-                        <p style="font-size: 14px; opacity: 0.9; margin: 0;">Catatan kehilangan buku</p>
+                    <div class="header-text">
+                        <h5>Laporan Kehilangan Buku</h5>
+                        <p>Catatan kehilangan buku</p>
                     </div>
                 </div>
-                <img src="{{ asset('img/ikon-buku.png') }}" class="header-image" alt="Ilustrasi Buku" style="width: 65px;">
+                <img src="{{ asset('img/ikon-buku.png') }}" class="header-image" alt="Ilustrasi Buku">
             </div>
 
             <!-- FILTER -->
@@ -54,27 +53,10 @@
                         <a href="{{ route('laporan-kehilangan.index') }}" class="btn-filter" title="Reset" style="text-decoration:none;">
                             <i class="fa fa-times"></i>
                         </a>
-                    @else
-                        <button type="button" class="btn-filter">
-                            <i class="fa fa-sliders"></i>
-                        </button>
                     @endif
                 </div>
             </form>
 
-            <!-- NOTIFIKASI -->
-            @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom: 16px;">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            @endif
-            @if(session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-bottom: 16px;">
-                    {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            @endif
 
             <!-- TABLE -->
             <div class="table-card">
@@ -94,7 +76,7 @@
                     <tbody>
                         @forelse($reports as $item)
                         <tr>
-                            <td>{{ $reports->firstItem() + $loop->index }}</td>
+                            <td>{{ $reports->firstItem() + $loop->index }}</td>  
                             <td>{{ $item->transaction->book->judul ?? '-' }}</td>
                             <td>{{ $item->keterangan }}</td>
                             <td>{{ optional($item->transaction->tanggal_peminjaman)->format('d/m/Y') ?? '-' }}</td>

@@ -40,10 +40,10 @@ class SiswaDashboardController extends Controller
             ->count();
 
         // Total buku terlambat
-                $totalTerlambat = Transaction::where('user_id', $userId)
-                    ->where('jenis_transaksi', 'dipinjam')
-                    ->whereDate('tanggal_pengembalian', '<', Carbon::today())
-                    ->count();
+        $totalTerlambat = Transaction::where('user_id', $userId)
+            ->whereIn('status', ['belum_dikembalikan', 'terlambat'])
+            ->whereDate('tanggal_jatuh_tempo', '<', Carbon::today())
+            ->count();
 
         /* =======================
          * LIST DATA TERBARU

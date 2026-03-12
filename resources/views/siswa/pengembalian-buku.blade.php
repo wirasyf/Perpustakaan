@@ -9,14 +9,14 @@
 @section('content')
 
         {{-- HEADER --}}
-        <div class="header-card" style="display: flex; align-items: center; justify-content: space-between;">
-            <div style="display: flex; align-items: center; gap: 16px;">
-                <div style="width: 65px; height: 65px; background: rgba(255, 255, 255, 0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; backdrop-filter: blur(4px);">
+        <div class="header-card">
+            <div class="header-left">
+                <div class="header-icon">
                     <i class="fa-solid fa-clock-rotate-left"></i>
                 </div>
-                <div>
-                    <h5 style="font-size: 22px; font-weight: 700; margin-bottom: 4px; letter-spacing: 0.5px;">Pengembalian Buku</h5>
-                    <p style="font-size: 14px; opacity: 0.9; margin: 0;">Pengelolaan pengembalian buku</p>
+                <div class="header-text">
+                    <h5>Pengembalian Buku</h5>
+                    <p>Pengelolaan pengembalian buku</p>
                 </div>
             </div>
             <img src="{{ asset('img/ikon-buku.png') }}" alt="Ilustrasi Buku">
@@ -62,10 +62,6 @@
                         <a href="{{ route('anggota.pengembalian') }}" class="btn-filter" title="Reset Filter" style="text-decoration:none;">
                             <i class="bi bi-x-lg"></i>
                         </a>
-                    @else
-                        <button type="button" class="btn-filter">
-                            <i class="fa fa-sliders"></i>
-                        </button>
                     @endif
 
                 </div>
@@ -75,18 +71,6 @@
 
         {{-- TABLE --}}
         <div class="table-card">
-            @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            @endif
-            @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            @endif
 
             <div class="table-responsive">
                 <table>

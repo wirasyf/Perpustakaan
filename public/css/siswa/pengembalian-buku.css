@@ -3,7 +3,7 @@
     background: #2D588C;
     color: #fff;
     border-radius: 12px;
-    padding: 25px 30px;
+    padding: 22px 28px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -11,7 +11,8 @@
 }
 
 .header-card img {
-    width: 60px;
+    height: 80px;
+    object-fit: contain;
 }
 
 /* FILTER */

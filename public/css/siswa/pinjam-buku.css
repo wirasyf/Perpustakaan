@@ -14,7 +14,7 @@
 .banner {
     background: #2D588C;
     color: #fff;
-    padding: 25px 30px;
+    padding: 22px 28px;
     border-radius: 12px;
     display: flex;
     justify-content: space-between;
@@ -29,19 +29,19 @@
 }
 
 .banner-icon {
-    width: 65px;
-    height: 65px;
+    width: 55px;
+    height: 55px;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 26px;
+    font-size: 24px;
     backdrop-filter: blur(4px);
 }
 
 .banner-text h3 {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
     margin-bottom: 4px;
     letter-spacing: 0.5px;
@@ -54,7 +54,7 @@
 }
 
 .banner-right img {
-    height: 100px;
+    height: 80px;
     object-fit: contain;
 }
 

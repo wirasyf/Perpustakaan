@@ -188,6 +188,7 @@ class TransactionController extends Controller
 
         $transaction->update([
             'status' => 'sudah_dikembalikan',
+            'jenis_transaksi' => 'dikembalikan',
             'tanggal_pengembalian' => now(),
         ]);
 
@@ -251,6 +252,7 @@ class TransactionController extends Controller
 
         $transaksi->update([
             'status' => 'buku_hilang',
+            'jenis_transaksi' => 'dikembalikan',
             'tanggal_pengembalian' => now(),
         ]);
 
