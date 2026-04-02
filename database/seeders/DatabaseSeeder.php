@@ -21,12 +21,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
-        Bookshelf::factory(5)->create();
-        Row::factory(10)->create();
-        Book::factory(20)->create();
-        Transaction::factory(20)->create();
-        Visit::factory(20)->create();
-        Report::factory(20)->create();
+        $this->call(AdminUserSeeder::class);
+        
+        //User::factory(10)->create();
+        //Bookshelf::factory(5)->create();
+        //Row::factory(10)->create();
+        //Book::factory(20)->create();
+        //Transaction::factory(20)->create();
+        //Visit::factory(20)->create();
+        //Report::factory(20)->create();
     }
 }

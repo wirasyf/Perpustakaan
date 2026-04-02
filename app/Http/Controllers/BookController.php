@@ -35,7 +35,7 @@ class BookController extends Controller
     {
         if (Auth::user()?->role !== 'admin') abort(403);
 
-        // Ambil filter dari request + default
+        // Ambil filter dari parameter dari url
         $search = $request->input('search', '');
         $date = $request->input('date', '');
         $filter = $request->input('filter', '');
@@ -132,7 +132,7 @@ class BookController extends Controller
             ['keterangan' => '-']
         );
 
-        // Assign id_baris
+        // hubungkan buku ke baris rak
         $data['id_baris'] = $row->id;
 
         // Handle cover upload

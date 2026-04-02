@@ -442,3 +442,68 @@ table tfoot,
 table tfoot td {
     border-top: none !important;
 }
+
+/* ================= TABLE CARD ================= */
+.table-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+/* ================= TABLE ================= */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+    background-color: #ffffff;
+}
+
+/* HEADER */
+thead {
+    background: #244b8a;
+    color: #fff;
+}
+
+thead th:first-child {
+    border-top-left-radius: 8px;
+}
+
+thead th:last-child {
+    border-top-right-radius: 8px;
+}
+
+/* CELL */
+th,
+td {
+    padding: 14px;
+    font-size: 14px;
+    text-align: center;
+}
+
+th {
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+/* BODY */
+tbody tr {
+    background-color: #ffffff;
+    border-bottom: 1px solid #f3f4f6;
+    transition: background 0.15s;
+}
+
+/* HOVER */
+tbody tr:hover {
+    background: #f9fafb;
+}
+
+/* ZEBRA (biar keren) */
+tbody tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+/* EMPTY STATE */
+tbody tr td[colspan] {
+    background-color: #f9fafb;
+    font-style: italic;
+}

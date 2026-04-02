@@ -51,7 +51,7 @@ class AnggotaDiterimaExport implements FromCollection, WithHeadings, WithMapping
         ];
     }
 
-    public function map($user): array // map() mengubah setipa row data mejadi array untuk excel
+    public function map($user): array // map() mengubah setiap row data mejadi array untuk excel
     {
         $this->rowNumber++;
 

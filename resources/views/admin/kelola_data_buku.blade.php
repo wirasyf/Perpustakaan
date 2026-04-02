@@ -88,44 +88,47 @@
                     </thead>
 
                     <tbody>
-                        @foreach($books as $book)
-                        @if (Auth::user()->role == 'admin')
-                        <tr>
-                            <td>{{ $books->firstItem() + $loop->index }}</td>
-                            <td>{{ $book->judul }}</td>
-                            <td>{{ $book->kode_buku }}</td>
-                            <td>{{ $book->pengarang }}</td>
-                            <td>{{ $book->tahun_terbit }}</td>
-                            <td>{{ $book->kategori_buku == 'fiksi' ? 'Fiksi' : 'Non Fiksi' }}</td>
-                            <td>
-                                {{ $book->row?->bookshelf?->no_rak }} - {{ $book->row?->baris_ke ?? $book->id_baris }}
-                            </td>
-                            <td class="aksi">
-                                @auth
-                                <a href="{{ route('books.edit', $book->id) }}" class="btn edit">
-                                    <i class="fa-solid fa-pen"></i>
-                                </a>
-          <button class="btn delete" onclick="openModal(this)" data-id="{{ $book->id }}">
-        <i class="fa-solid fa-trash"></i>
-    </button>
-                                @endauth
+                    @forelse($books as $book)
+                    <tr>
+                        <td>{{ $books->firstItem() + $loop->index }}</td>
+                        <td>{{ $book->judul }}</td>
+                        <td>{{ $book->kode_buku }}</td>
+                        <td>{{ $book->pengarang }}</td>
+                        <td>{{ $book->tahun_terbit }}</td>
+                        <td>{{ $book->kategori_buku == 'fiksi' ? 'Fiksi' : 'Non Fiksi' }}</td>
+                        <td>
+                            {{ $book->row?->bookshelf?->no_rak }} - {{ $book->row?->baris_ke ?? $book->id_baris }}
+                        </td>
+                        <td class="aksi">
+                            <a href="{{ route('books.edit', $book->id) }}" class="btn edit">
+                                <i class="fa-solid fa-pen"></i>
+                            </a>
 
-    <button class="btn view"
-        onclick="openDetail(this)"
-        data-judul="{{ $book->judul }}"
-        data-penulis="{{ $book->pengarang }}"
-        data-kategori="{{ $book->kategori_buku == 'fiksi' ? 'Fiksi' : 'Non Fiksi' }}"
-        data-deskripsi="{{ $book->deskripsi }}"
-        data-gambar="{{ $book->cover_url }}"
-    >
-        <i class="fa-solid fa-eye"></i>
-    </button>
+                            <button class="btn delete" onclick="openModal(this)" data-id="{{ $book->id }}">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
 
-                            </td>
-                        </tr>
-                        @endif
-                        @endforeach
-                    </tbody>
+                            <button class="btn view"
+                                onclick="openDetail(this)"
+                                data-judul="{{ $book->judul }}"
+                                data-penulis="{{ $book->pengarang }}"
+                                data-kategori="{{ $book->kategori_buku == 'fiksi' ? 'Fiksi' : 'Non Fiksi' }}"
+                                data-deskripsi="{{ $book->deskripsi }}"
+                                data-gambar="{{ $book->cover_url }}"
+                            >
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+
+                    @empty
+                    <tr>
+                    <td colspan="8" class="text-center text-muted py-4" style="background-color: #f9fafb;">
+                        Tidak ada data buku
+                    </td>
+                    </tr>
+                    @endforelse
+                </tbody>
 
                     <tfoot>
                         <tr>
@@ -218,7 +221,7 @@
     }
 
     function hapusData() {
-        fetch(`/books/${selectedId}`, {
+        fetch(`/admin/books/${selectedId}`, {
             method: 'DELETE',
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}',

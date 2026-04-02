@@ -43,6 +43,7 @@ class AuthController extends Controller
 
             }
 
+            // jika login gagal, kembali ke form dengan pesan error
             return back()->withErrors([
                 'username' => 'Username atau password salah, atau akun belum diaktifkan.',
             ])->onlyInput('username');
@@ -95,13 +96,13 @@ class AuthController extends Controller
 {
     $data = $request->validate([
         'name' => 'required|string|max:255',
-        'username' => 'required|string|max:255|unique:users',
+        'username' => 'required|string|max:255|unique:users', //username tidak boleh sama
         'nis_nisn' => 'nullable|string|max:255',
         'telephone' => 'nullable|string|max:255',
         'password' => 'required|string|min:6',
         'kelas' => 'nullable|string|max:255',
         'alamat' => 'nullable|string|max:255',
-        'photo_profile' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'photo_profile' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', //max 2mb
     ]);
 
     // Upload foto jika ada
