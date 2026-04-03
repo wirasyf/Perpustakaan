@@ -153,10 +153,10 @@
  /* Signature Section */
 .signature-section {
     position: absolute;
-    bottom: 15px;
+    bottom: 20px;
     right: 30px;
     text-align: center;
-    width: 120px;
+    width: 180px;
     z-index: 3;
 }
 
@@ -169,12 +169,13 @@
  }
 
 .signature-image {
-    width: 100px;
+    width: 150px;
     height: auto;
     margin: 0 auto;
     display: block;
     z-index: 5;
-    margin-bottom: 2px;
+    margin-bottom: -60px;
+    position: relative;
 }
 
 .signature-section p.title {
