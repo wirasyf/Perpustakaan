@@ -314,9 +314,7 @@ public function kunjunganExportPdf(Request $request)
     {
         $user = \Illuminate\Support\Facades\Auth::user();
         $pdf = Pdf::loadView('cetak.cetak-kartu', compact('user'))
-            ->setPaper('A4', 'portrait');
-
-        return $pdf->download("kartu-anggota-{$user->nis_nisn}.pdf");
+            ->setPaper([0, 0, 650, 370], 'landscape');        return $pdf->download("kartu-anggota-{$user->nis_nisn}.pdf");
     }
 
     // =====================================================
@@ -329,9 +327,7 @@ public function kunjunganExportPdf(Request $request)
 
         $user = \App\Models\User::findOrFail($id);
         $pdf = Pdf::loadView('cetak.cetak-kartu', compact('user'))
-            ->setPaper('A4', 'portrait');
-
-        return $pdf->download("kartu-anggota-{$user->nis_nisn}.pdf");
+            ->setPaper([0, 0, 650, 370], 'landscape');        return $pdf->download("kartu-anggota-{$user->nis_nisn}.pdf");
     }
 
     // =====================================================

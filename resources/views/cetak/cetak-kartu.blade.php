@@ -80,9 +80,8 @@
 
         <!-- Signature -->
         <div class="signature-section">
-            <p class="name">Alfian Tambal Ban</p>
-            <img src="{{ public_path('img/ttd.png') }}" class="signature-image" alt="TTD">
-            <p class="title">Pembina Perpustakaan</p>
+            <img src="{{ public_path('img/ttd_baru.png') }}" class="signature-image" alt="TTD">
+            <p class="title">Ika Susilowati, S.Pd</p>
         </div>
 
     </div>
