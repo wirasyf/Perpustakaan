@@ -51,7 +51,7 @@ class BukuSheetExport implements FromCollection, WithTitle, WithHeadings,
 
     public function headings(): array
     {
-        return ['No', 'Kode Buku', 'Judul', 'Pengarang', 'Tahun Terbit', 'Kategori', 'Status', 'Rak'];
+        return ['No', 'Kode Buku', 'Judul', 'Pengarang', 'Tahun Terbit', 'Kategori', 'Stok', 'Rak'];
     }
 
 public function map($book): array
@@ -86,7 +86,7 @@ public function map($book): array
         $stok,
         $rak,
     ];
-    
+
 }    public function columnWidths(): array
     {
         return [

@@ -121,7 +121,7 @@
             <div class="col-left">
                 <div class="card-box">
                     <div class="card-box-label">Kode Buku</div>
-                    <div class="card-box-value">{{ $report->transaction->book->kode_buku ?? '-' }}</div>
+                    <div class="card-box-value">{{ $report->transaction->bookItem->kode_buku ?? '-' }}</div>
                 </div>
             </div>
             <div class="col-right">
