@@ -22,7 +22,7 @@ class ReportController extends Controller
 {
     if (Auth::user()?->role !== 'admin') abort(403);
 
-    $query = Report::with(['transaction.user', 'transaction.book', 'user']);
+    $query = Report::with(['transaction.user', 'transaction.bookItem.book', 'user']);
 
     $kelas  = $request->get('kelas');
     $status = $request->get('status');
@@ -35,22 +35,16 @@ class ReportController extends Controller
     // Search
     if ($request->search) {
         $search = $request->search;
-
         $query->where(function($q) use ($search) {
-            $q->whereHas('transaction.user', function ($qq) use ($search) {
-                $qq->where('name', 'like', "%$search%");
-            })
-            ->orWhereHas('transaction.book', function ($qq) use ($search) {
-                $qq->where('judul', 'like', "%$search%");
-            });
+            $q->whereHas('transaction.user', fn($qq) => $qq->where('name', 'like', "%$search%"))
+              ->orWhereHas('transaction.bookItem.book', fn($qq) => $qq->where('judul', 'like', "%$search%"));
         });
     }
 
     // Filter tanggal
     if ($request->filled('date')) {
-        $query->whereHas('transaction', function($q) use ($request) {
-            $q->whereDate('tanggal_peminjaman', $request->date);
-        });
+        $query->whereHas('transaction', fn($q) => 
+        $q->whereDate('tanggal_peminjaman', $request->date));
     }
 
     // Filter kelas
@@ -249,31 +243,27 @@ class ReportController extends Controller
     {
         if (Auth::user()?->role !== 'admin') abort(403);
 
-        if ($report->status !== 'pending' && $report->status !== 'belum_dikembalikan') {
+        if ($report->status !== 'menunggu_konfirmasi') {
             return back()->with('error', 'Hanya laporan dengan status menunggu konfirmasi yang bisa disetujui');
         }
 
-        $report->load('transaction.book');
+        $report->update(['status' => 'sudah_dikembalikan']);
 
-        $report->update([
-            'status' => 'sudah_dikembalikan',
-        ]);
-
-        // Update status transaksi + kembalikan stok buku
         if ($report->transaction) {
             $report->transaction->update([
-                'status' => 'sudah_dikembalikan', 
+                'status' => 'sudah_dikembalikan',
                 'tanggal_pengembalian' => now(),
             ]);
-        
-            // kembalikan stok & status buku ke tersedia
-            if ($report->transaction->book) {
-                $report->transaction->book->increment('stok');
-                $report->transaction->book->update(['status' => 'tersedia']);
+
+            // Kembalikan status eksemplar ke tersedia
+            if ($report->transaction->bookItem) {
+                $report->transaction->bookItem->update(['status' => 'tersedia']);
             }
         }
-        return back()->with('success', 'Laporan berhasil disetujui. Buku ditandai sudah dikembalikan.');
+
+        return back()->with('success', 'Laporan disetujui. Buku ditandai sudah dikembalikan.');
     }
+
 
     /**
      * Admin menolak pengembalian buku (reject)
@@ -282,18 +272,15 @@ class ReportController extends Controller
     {
         if (Auth::user()?->role !== 'admin') abort(403);
 
-        if ($report->status !== 'pending' && $report->status !== 'belum_dikembalikan') {
+        if ($report->status !== 'menunggu_konfirmasi') {
             return back()->with('error', 'Hanya laporan dengan status menunggu konfirmasi yang bisa ditolak');
         }
 
         $report->update(['status' => 'rejected']);
 
-        // Kembalikan status transaksi ke 'belum_dikembalikan'
-        if ($report->transaction) {
-            $report->transaction->update(['status' => 'belum_dikembalikan']);
-        }
+        // Transaksi tetap buku_hilang, tidak perlu diubah
 
-        return back()->with('success', 'Laporan ditolak. Status dikembalikan ke belum dikembalikan.');
+        return back()->with('success', 'Laporan ditolak.');
     }
 
     /**

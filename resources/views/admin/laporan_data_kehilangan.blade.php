@@ -55,10 +55,10 @@
     <i class="fa-solid fa-circle-check"></i>
     <select name="status" onchange="this.form.submit()" style="border:none; outline:none; background:transparent;">
         <option value="">Semua Status</option>
-        <option value="pending"            {{ ($status ?? '') == 'pending'            ? 'selected' : '' }}>Menunggu Konfirmasi</option>
-        <option value="belum_dikembalikan" {{ ($status ?? '') == 'belum_dikembalikan' ? 'selected' : '' }}>Sedang dipinjam</option>
-        <option value="sudah_dikembalikan" {{ ($status ?? '') == 'sudah_dikembalikan' ? 'selected' : '' }}>Sudah Dikembalikan</option>
-        <option value="rejected"           {{ ($status ?? '') == 'rejected'           ? 'selected' : '' }}>Ditolak</option>
+        <option value="pending"               {{ ($status ?? '') == 'pending'               ? 'selected' : '' }}>Laporan Masuk</option>
+        <option value="menunggu_konfirmasi"   {{ ($status ?? '') == 'menunggu_konfirmasi'   ? 'selected' : '' }}>Menunggu Konfirmasi</option>
+        <option value="sudah_dikembalikan"    {{ ($status ?? '') == 'sudah_dikembalikan'    ? 'selected' : '' }}>Sudah Dikembalikan</option>
+        <option value="rejected"              {{ ($status ?? '') == 'rejected'              ? 'selected' : '' }}>Ditolak</option>
     </select>
 </div>
 </div>
@@ -96,32 +96,25 @@
         @php
         switch($report->status){
             case 'pending':
-                $status = 'Menunggu Konfirmasi';
-                $statusClass = 'status-yellow';
-                break;
-
-            case 'belum_dikembalikan':
-                $status = 'Belum Dikembalikan';
+                $statusLabel = 'Buku Hilang';
                 $statusClass = 'status-red';
                 break;
-
-            case 'sudah_dikembalikan':
-                $status = 'Sudah Dikembalikan';
-                $statusClass = 'status-green';
+            case 'menunggu_konfirmasi':
+                $statusLabel = 'Menunggu Konfirmasi';
+                $statusClass = 'status-yellow';
                 break;
-
-            case 'approved':
-                $status = 'Disetujui';
+            case 'sudah_dikembalikan':
+                $statusLabel = 'Sudah Dikembalikan';
                 $statusClass = 'status-green';
                 break;
             case 'rejected':
-                $status = 'Ditolak';
+                $statusLabel = 'Ditolak';
                 $statusClass = 'status-red';
                 break;
-
             default:
-                $status = ucfirst(str_replace('_', ' ', $report->status));
+                $statusLabel = ucfirst(str_replace('_', ' ', $report->status));
                 $statusClass = 'status-gray';
+                break;
         }
         @endphp
 
@@ -130,7 +123,7 @@
 
             <td>{{ $report->transaction->user->name ?? '-' }}</td>
 
-            <td>{{ $report->transaction->book->judul ?? '-' }}</td>
+            <td>{{ $report->transaction->bookItem->book->judul ?? '-' }}</td>
 
             <td>{{ $report->transaction->user->kelas ?? '-' }}</td>
 
@@ -144,44 +137,39 @@
 
             <td>
                 <span class="{{ $statusClass }}">
-                    {{ $status }}
+                    {{ $statusLabel }}
                 </span>
             </td>
-
             <td class="aksi">
-                @if($report->status === 'pending')
+                @if($report->status === 'menunggu_konfirmasi')
                     <form action="{{ route('reports.approve', $report->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('PUT')
+                        @csrf @method('PUT')
                         <button type="submit" class="btn ok" title="Setujui">
                             <i class="fa fa-check"></i>
                         </button>
                     </form>
-
                     <form action="{{ route('reports.reject', $report->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('PUT')
+                        @csrf @method('PUT')
                         <button type="submit" class="btn del" title="Tolak">
                             <i class="fa fa-xmark"></i>
                         </button>
                     </form>
                 @elseif($report->status === 'sudah_dikembalikan')
-<span class="btn-filter btn-nota"
-      onclick="window.open('{{ route('cetak.pengembalian.hilang', $report->id) }}', '_blank')">
-    <i class="fa-solid fa-print"></i>
-</span>
+                    <span class="btn-filter btn-nota"
+                        onclick="window.open('{{ route('cetak.pengembalian.hilang', $report->id) }}', '_blank')">
+                        <i class="fa-solid fa-print"></i>
+                    </span>
                 @else
                     <span class="no-action">-</span>
                 @endif
-            </td>
-        </tr>
+                            </td>
+                        </tr>
 
-        @empty
-        <tr>
-            <td colspan="8" style="text-align:center">Data tidak ada</td>
-        </tr>
-        @endforelse
-        </tbody>
+                        @empty
+                        <tr>
+                            <td colspan="8" style="text-align:center">Data tidak ada</td>
+                        </tr>
+                        @endforelse
 
     </table>
     </div>

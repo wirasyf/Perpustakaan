@@ -61,13 +61,13 @@ class LaporanKehilanganController extends Controller
     public function index(Request $request)
     {
         $query = Report::where('user_id', Auth::id())
-            ->with('transaction.book');
+            ->with('transaction.bookItem.book');
 
         // Filter search (judul buku / keterangan)
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
-                $q->whereHas('transaction.book', fn($qq) => $qq->where('judul', 'like', "%{$search}%"))
+                $q->whereHas('transaction.bookItem.book', fn($qq) => $qq->where('judul', 'like', "%{$search}%"))
                 ->orWhere('keterangan', 'like', "%{$search}%");
             });
         }
@@ -152,18 +152,16 @@ class LaporanKehilanganController extends Controller
     {
         $laporan = Report::where('id', $id)
             ->where('user_id', Auth::id())
-            ->with('transaction.book')
             ->firstOrFail();
 
-        if ($laporan->status !== 'belum_dikembalikan') {
+        if ($laporan->status !== 'pending') {
             return back()->with('error', 'Laporan tidak dapat diproses');
         }
 
-        // Set laporan menjadi approved dan update transaksi + buku
-        $laporan->update(['status' => 'pending']);
+        $laporan->update(['status' => 'menunggu_konfirmasi']);
 
         return redirect()
             ->route('laporan-kehilangan.index')
-            ->with('success', 'Buku berhasil dikembalikan');
+            ->with('success', 'Pengajuan penggantian buku berhasil dikirim, menunggu konfirmasi admin');
     }
 }

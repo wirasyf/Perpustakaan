@@ -192,7 +192,7 @@ td:nth-child(6) {
 
 th:nth-child(7),
 td:nth-child(7) {
-    width: 90px;
+    width: 150px;
     text-align: center;
 }
 
@@ -230,6 +230,12 @@ td:nth-child(7) {
     border-radius: 8px;
     color: #fff;
     cursor: pointer;
+}
+
+.btn-pengembalian.btn-text {
+    width: auto;
+    padding: 6px 14px;
+    white-space: nowrap;
 }
 
 .modal-overlay {
