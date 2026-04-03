@@ -12,7 +12,6 @@ class Book extends Model
     protected $table = 'books';
 
     protected $fillable = [
-        'kode_buku',
         'judul',
         'pengarang',
         'tahun_terbit',
@@ -20,8 +19,6 @@ class Book extends Model
         'id_baris',
         'cover',
         'deskripsi',
-        'status',
-        'stok',
     ];
 
     public function row()
@@ -45,4 +42,16 @@ class Book extends Model
 
         return asset('storage/' . $this->cover);
     }
+
+    public function items()
+    {
+        return $this->hasMany(BookItem::class);
+    }
+
+    // Hitung stok dari items yang tersedia
+    public function getStokAttribute()
+    {
+        return $this->items()->where('status', 'tersedia')->count();
+    }
+
 }

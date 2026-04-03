@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Book;
+use App\Models\BookItem;
 use App\Models\Visit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -86,66 +87,71 @@ class TransactionController extends Controller
         if (Auth::user()?->role !== 'anggota') {
             abort(403);
         }
-        
-        $books = Book::where('stok', '>', 0)->with('row')->get();
 
-        $hasActiveLoan = Transaction::where('user_id', Auth::id())
-            ->whereIn('status', ['belum_dikembalikan', 'menunggu_konfirmasi', 'terlambat'])
-            ->exists();
+    $books = Book::select('judul', 'pengarang', 'kategori_buku', 'deskripsi')
+        ->selectRaw('SUM(stok) as stok')
+        ->selectRaw('MIN(id) as id')
+        ->selectRaw('MIN(cover) as cover')
+        ->groupBy('judul', 'pengarang', 'kategori_buku', 'deskripsi')
+        ->having('stok', '>', 0) // pindah ke HAVING, bukan WHERE
+        ->get();
 
-        return view('siswa.pinjam-buku', compact('books', 'hasActiveLoan'));
-    }
+    $hasActiveLoan = Transaction::where('user_id', Auth::id())
+        ->whereIn('status', ['belum_dikembalikan', 'menunggu_konfirmasi', 'terlambat'])
+        ->exists();
+
+    return view('siswa.pinjam-buku', compact('books', 'hasActiveLoan'));
+}
 
     /**
      * Store a new book borrowing transaction
      */
-    public function pinjam(Request $request, $bukuId)
+    public function pinjam(Request $request, $bookId)
     {
-        $buku = Book::findOrFail($bukuId);
-        $visit = Visit::where('user_id', Auth::id())
-        ->whereDate('tanggal_datang', now()->toDateString())
-        ->first();
-
         $request->validate([
             'tanggal_peminjaman' => 'required|date',
             'tanggal_jatuh_tempo' => 'required|date|after_or_equal:tanggal_peminjaman',
         ]);
 
-        // Cek apakah buku tersedia
-        if ($buku->status !== 'tersedia') {
-            return back()->with('error', 'Buku tidak tersedia untuk dipinjam');
+        // Cari eksemplar yang tersedia
+        $bookItem = BookItem::where('book_id', $bookId)
+            ->where('status', 'tersedia')
+            ->first();
+
+        if (!$bookItem) {
+            return back()->with('error', 'Stok buku habis');
         }
 
-        // Cek apakah siswa sudah memiliki pinjaman aktif
         $hasActiveLoan = Transaction::where('user_id', Auth::id())
             ->whereIn('status', ['belum_dikembalikan', 'menunggu_konfirmasi', 'terlambat'])
             ->exists();
 
         if ($hasActiveLoan) {
-            return back()->with('error', 'Anda masih memiliki buku yang belum dikembalikan. Kembalikan terlebih dahulu sebelum meminjam buku lain.');
+            return back()->with('error', 'Masih ada buku yang belum dikembalikan');
         }
 
-         $transaction = Transaction::create([
-        'user_id' => Auth::id(),
-        'buku_id' => $bukuId,
-        'tanggal_peminjaman' => $request->tanggal_peminjaman,
-        'tanggal_jatuh_tempo' => $request->tanggal_jatuh_tempo,
-        'jenis_transaksi' => 'dipinjam',
-        'status' => 'belum_dikembalikan',
+        $transaction = Transaction::create([
+            'user_id'            => Auth::id(),
+            'buku_id'            => $bookItem->id,
+            'tanggal_peminjaman' => $request->tanggal_peminjaman,
+            'tanggal_jatuh_tempo'=> $request->tanggal_jatuh_tempo,
+            'jenis_transaksi'    => 'dipinjam',
+            'status'             => 'belum_dikembalikan',
         ]);
 
-        // Ubah status buku menjadi dipinjam
-        $buku->update(['status' => 'dipinjam']);
-        // Update visit jika ada
-    if ($visit) {
-        $visit->update([
-            'transactions_id' => $transaction->id
-        ]);
-    }
+        // Tandai eksemplar sebagai dipinjam
+        $bookItem->update(['status' => 'dipinjam']);
 
-        return back()->with('success', 'Buku "' . $buku->judul . '" berhasil dipinjam!');
-    }
+        $visit = Visit::where('user_id', Auth::id())
+            ->whereDate('tanggal_datang', now()->toDateString())
+            ->first();
 
+        if ($visit) {
+            $visit->update(['transactions_id' => $transaction->id]);
+        }
+
+        return back()->with('success', 'Buku berhasil dipinjam!');
+    }
     /**
      * User mengajukan pengembalian buku (status menjadi 'menunggu_konfirmasi')
      */
@@ -176,28 +182,25 @@ class TransactionController extends Controller
      */
     public function terimaPengembalian($id)
     {
+        if (Auth::user()->role !== 'admin') abort(403);
+
         $transaction = Transaction::findOrFail($id);
 
-        if (Auth::user()->role !== 'admin') {
-            abort(403);
-        }
-
         if ($transaction->status !== 'menunggu_konfirmasi') {
-            return back()->with('error', 'Status transaksi tidak valid untuk diterima');
+            return back()->with('error', 'Status transaksi tidak valid');
         }
 
         $transaction->update([
-            'status' => 'sudah_dikembalikan',
-            'jenis_transaksi' => 'dikembalikan',
+            'status'             => 'sudah_dikembalikan',
+            'jenis_transaksi'    => 'dikembalikan',
             'tanggal_pengembalian' => now(),
         ]);
 
-        // Ubah status buku kembali menjadi tersedia
-        $transaction->book->update(['status' => 'tersedia']);
+        // Kembalikan status eksemplar ke tersedia
+        $transaction->bookItem->update(['status' => 'tersedia']);
 
         return back()->with('success', 'Pengembalian buku berhasil diterima');
     }
-
     public function tolakPengembalian($id)
 {
     if (Auth::user()->role !== 'admin') {

@@ -78,11 +78,11 @@
                         <tr>
                             <th>No</th>
                             <th>Judul Buku</th>
-                            <th>Kode Buku</th>
                             <th>Pengarang</th>
                             <th>Tahun Terbit</th>
                             <th>Kategori</th>
                             <th>Rak</th>
+                            <th>Stok</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -92,13 +92,13 @@
                     <tr>
                         <td>{{ $books->firstItem() + $loop->index }}</td>
                         <td>{{ $book->judul }}</td>
-                        <td>{{ $book->kode_buku }}</td>
                         <td>{{ $book->pengarang }}</td>
                         <td>{{ $book->tahun_terbit }}</td>
                         <td>{{ $book->kategori_buku == 'fiksi' ? 'Fiksi' : 'Non Fiksi' }}</td>
                         <td>
                             {{ $book->row?->bookshelf?->no_rak }} - {{ $book->row?->baris_ke ?? $book->id_baris }}
                         </td>
+                        <td>{{ $book->items->where('status', 'tersedia')->count() }} / {{ $book->items->count() }}</td>
                         <td class="aksi">
                             <a href="{{ route('books.edit', $book->id) }}" class="btn edit">
                                 <i class="fa-solid fa-pen"></i>

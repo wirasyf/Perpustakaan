@@ -33,16 +33,16 @@ class BukuSheetExport implements FromCollection, WithTitle, WithHeadings,
         $this->kategori = $kategori;
     }
 
-public function collection()
-{
-    $query = Book::with('row.bookshelf');  // ← Book, bukan Buku
+    public function collection()
+    {
+        $query = Book::with(['row.bookshelf', 'items']);
 
-    if ($this->kategori !== 'semua') {
-        $query->where('kategori_buku', $this->kategori); // ← kategori_buku
+        if ($this->kategori !== 'semua') {
+            $query->where('kategori_buku', $this->kategori);
+        }
+
+        return $query->orderBy('id')->get();
     }
-
-    return $query->orderBy('id')->get();
-}
 
     public function title(): string
     {
@@ -59,34 +59,35 @@ public function map($book): array
     static $no = 0;
     $no++;
 
-    // Kolom Kategori
     $kategori = match($book->kategori_buku) {
         'fiksi'    => 'Fiksi',
         'nonfiksi' => 'Non Fiksi',
         default    => '-',
     };
 
-    // Kolom Rak
     $rak = '-';
     if ($book->row && $book->row->bookshelf) {
         $rak = $book->row->bookshelf->no_rak . ' - ' . $book->row->baris_ke;
-    } elseif ($book->id_baris) {
-        $rak = $book->id_baris;
     }
+
+    // Kode buku: gabungkan semua kode eksemplar
+    $kodeBuku = $book->items->pluck('kode_buku')->join(', ') ?: '-';
+    
+    // Stok: tersedia / total
+    $stok = $book->items->where('status', 'tersedia')->count() . ' / ' . $book->items->count();
 
     return [
         $no,
-        $book->kode_buku ?? '-',
+        $kodeBuku,
         $book->judul,
         $book->pengarang,
         $book->tahun_terbit,
-        $kategori,         
-        ucfirst($book->status ?? '-'),
-        $rak,              
+        $kategori,
+        $stok,
+        $rak,
     ];
-}
-
-    public function columnWidths(): array
+    
+}    public function columnWidths(): array
     {
         return [
             'A' => 6,

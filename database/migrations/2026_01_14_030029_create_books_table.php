@@ -13,15 +13,13 @@ return new class extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_buku')->unique();
             $table->string('judul');
             $table->string('pengarang');
             $table->year('tahun_terbit');
             $table->enum('kategori_buku', ['fiksi', 'nonfiksi']);
             $table->foreignId('id_baris')->constrained('row')->onDelete('cascade');
-            $table->string('cover');
+            $table->string('cover')->nullable();
             $table->text('deskripsi');
-            $table->enum('status', ['tersedia', 'dipinjam'])->default('tersedia');
             $table->timestamps();
         });
     }

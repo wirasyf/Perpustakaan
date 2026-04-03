@@ -15,6 +15,7 @@ class Transaction extends Model
     protected $fillable = [
         'user_id',
         'buku_id',
+        'book_item_id',
         'tanggal_peminjaman',
         'tanggal_jatuh_tempo',
         'tanggal_pengembalian',
@@ -38,7 +39,19 @@ class Transaction extends Model
         return $this->belongsTo(Book::class, 'buku_id');
     }
 
-   public function reports()
+    public function bookItem()
+    {
+        return $this->belongsTo(BookItem::class, 'buku_id');
+    }
+
+    // Akses book lewat bookItem
+    public function getBookAttribute()
+    {
+        return $this->bookItem?->book;
+    }
+
+
+    public function reports()
     {
         return $this->hasOne(Report::class, 'transactions_id');
     }
@@ -47,5 +60,4 @@ class Transaction extends Model
     {
         return $this->hasMany(Visit::class, 'transactions_id');
     }
-
 }

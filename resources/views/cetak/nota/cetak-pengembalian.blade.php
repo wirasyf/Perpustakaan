@@ -207,20 +207,20 @@
 
         <div class="card-box">
             <div class="card-box-label">Judul Buku</div>
-            <div class="card-box-value">{{ $transaksi->book->judul }}</div>
+            <div class="card-box-value">{{ $transaksi->bookItem->book->judul ?? '-' }}</div>
         </div>
 
         <div class="two-col">
             <div class="col-left">
                 <div class="card-box">
                     <div class="card-box-label">Kode Buku</div>
-                    <div class="card-box-value">{{ $transaksi->book->kode_buku }}</div>
+                    <div class="card-box-value">{{ $transaksi->bookItem->kode_buku ?? '-' }}</div>
                 </div>
             </div>
             <div class="col-right">
                 <div class="card-box">
                     <div class="card-box-label">Pengarang</div>
-                    <div class="card-box-value">{{ $transaksi->book->pengarang }}</div>
+                    <div class="card-box-value">{{ $transaksi->bookItem->book->pengarang ?? '-' }}</div>
                 </div>
             </div>
         </div>
@@ -247,11 +247,9 @@
         <div class="card-box">
             <div class="card-box-label">Tanggal Dikembalikan</div>
             <div class="card-box-value">
-            {{ optional($transaksi->tanggal_pengembalian)->translatedFormat('d F Y') ?? '-' }}
+                {{ optional($transaksi->tanggal_pengembalian)->translatedFormat('d F Y') ?? '-' }}
             </div>
         </div>
-
-        <hr class="divider">
 
         {{-- FOOTER --}}
         <div class="footer-row">

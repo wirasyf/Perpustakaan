@@ -93,14 +93,84 @@
                 @enderror
             </div>
 
-            <!-- Kode Buku -->
-            <div class="form-group span-3">
-                <label>Kode Buku</label>
-                <input type="text" name="kode_buku" value="{{ old('kode_buku', $book->kode_buku ?? '') }}" placeholder="Masukkan Kode Buku">
-                @error('kode_buku')
-                    <div class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</div>
-                @enderror
-            </div>
+<!-- Kode Buku -->
+@if($book)
+<div class="form-group span-12" style="margin-top: 8px;">
+    <label>Eksemplar Buku</label>
+    <table style="width:100%; border-collapse:collapse; margin-bottom:10px;">
+        <thead>
+            <tr style="background:var(--color-background-secondary)">
+                <th style="padding:8px 12px; text-align:left; font-size:13px;">No</th>
+                <th style="padding:8px 12px; text-align:left; font-size:13px;">Kode Buku</th>
+                <th style="padding:8px 12px; text-align:left; font-size:13px;">Status</th>
+                <th style="padding:8px 12px; text-align:left; font-size:13px;">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($book->items as $item)
+            <tr style="border-bottom:1px solid var(--color-border-tertiary)">
+                <td style="padding:8px 12px; font-size:13px;">{{ $loop->iteration }}</td>
+                <td style="padding:8px 12px;">
+                    <form action="{{ route('books.items.update', $item->id) }}" method="POST" style="display:flex; gap:8px;">
+                        @csrf @method('PUT')
+                        <input type="text" name="kode_buku" value="{{ $item->kode_buku }}"
+                            style="border:1px solid var(--color-border-primary); border-radius:6px; padding:4px 8px; font-size:13px; width:140px;">
+                        <button type="submit" style="background:var(--color-background-info); color:var(--color-text-info); border:none; border-radius:6px; padding:4px 10px; cursor:pointer; font-size:12px;">
+                            Simpan
+                        </button>
+                    </form>
+                </td>
+                <td style="padding:8px 12px; font-size:13px;">
+                    <span style="color: {{ $item->status === 'tersedia' ? 'var(--color-text-success)' : 'var(--color-text-danger)' }}">
+                        {{ $item->status }}
+                    </span>
+                </td>
+                <td style="padding:8px 12px;">
+                    @if($item->status !== 'dipinjam')
+                    <form action="{{ route('books.items.destroy', $item->id) }}" method="POST"
+                        onsubmit="return confirm('Hapus eksemplar ini?')">
+                        @csrf @method('DELETE')
+                        <button type="submit" style="background:var(--color-background-danger); color:var(--color-text-danger); border:none; border-radius:6px; padding:4px 10px; cursor:pointer; font-size:12px;">
+                            Hapus
+                        </button>
+                    </form>
+                    @else
+                        <span style="font-size:12px; color:var(--color-text-secondary)">Sedang dipinjam</span>
+                    @endif
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="4" style="padding:12px; text-align:center; font-size:13px; color:var(--color-text-secondary)">
+                    Belum ada eksemplar
+                </td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+
+    {{-- Tambah eksemplar baru --}}
+    <form action="{{ route('books.items.store', $book->id) }}" method="POST" style="display:flex; gap:8px; align-items:center;">
+        @csrf
+        <input type="text" name="kode_buku" placeholder="Kode buku baru (cth: BK-F005)"
+            style="border:1px solid var(--color-border-primary); border-radius:6px; padding:6px 12px; font-size:13px; width:220px;">
+        <button type="submit" class="btn-simpan" style="margin:0;">
+            <i class="fa-solid fa-plus"></i> Tambah Eksemplar
+        </button>
+    </form>
+    @error('kode_buku')
+        <div class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</div>
+    @enderror
+</div>
+@else
+<div class="form-group span-3">
+    <label>Kode Buku</label>
+    <input type="text" name="kode_buku" value="{{ old('kode_buku') }}" placeholder="Masukkan Kode Buku">
+    @error('kode_buku')
+        <div class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</div>
+    @enderror
+</div>
+@endif
 
             @error('id_baris')
                 <div class="error-msg span-12" style="margin-top: -10px; margin-bottom: 10px;">

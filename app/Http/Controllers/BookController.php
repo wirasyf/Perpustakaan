@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Exports\BukuExport; 
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\BookItem;
 
 class BookController extends Controller
 {
@@ -42,13 +43,14 @@ class BookController extends Controller
 
         // Query Builder (BELUM get)
         $query = Book::with('row.bookshelf');
+        $query = Book::with(['row.bookshelf', 'items']); // tambah items
 
         // Search
         if ($search) {
             $query->where(function($q) use ($search) {
                 $q->where('judul', 'like', "%{$search}%")
-                  ->orWhere('pengarang', 'like', "%{$search}%")
-                  ->orWhere('kode_buku', 'like', "%{$search}%");
+                ->orWhere('pengarang', 'like', "%{$search}%")
+                ->orWhereHas('items', fn($qq) => $qq->where('kode_buku', 'like', "%{$search}%")); // ganti ini
             });
         }
 
@@ -92,65 +94,99 @@ class BookController extends Controller
 ]);
     }
 
-
     public function store(Request $request)
+{
+    if (Auth::user()?->role !== 'admin') abort(403);
+
+    $data = $request->validate([
+        'kode_buku' => 'required|string|unique:book_items,kode_buku',
+        'judul' => 'required|string|max:255',
+        'pengarang' => 'required|string|max:255',
+        'tahun_terbit' => 'required|integer|min:1900|max:' . date('Y'),
+        'kategori_buku' => 'required|in:fiksi,nonfiksi',
+        'nomor_rak' => 'required|string|max:50',
+        'baris_ke' => 'required|integer',
+        'cover' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        'deskripsi' => 'required|string',
+    ]);
+
+    $bookshelf = Bookshelf::firstOrCreate(
+        ['no_rak' => $data['nomor_rak']],
+        ['keterangan' => '-']
+    );
+
+    $row = Row::firstOrCreate(
+        ['rak_id' => $bookshelf->id, 'baris_ke' => $data['baris_ke']],
+        ['keterangan' => '-']
+    );
+
+    $data['id_baris'] = $row->id;
+
+    if ($request->hasFile('cover')) {
+        $data['cover'] = $request->file('cover')->store('covers', 'public');
+    }
+
+    $kode_buku = $data['kode_buku'];
+    unset($data['nomor_rak'], $data['baris_ke'], $data['kode_buku']);
+
+    // Cek apakah buku dengan judul+pengarang sudah ada
+    $book = Book::firstOrCreate(
+        ['judul' => $data['judul'], 'pengarang' => $data['pengarang']],
+        $data
+    );
+
+    // Tambah eksemplar baru
+    BookItem::create([
+        'book_id' => $book->id,
+        'kode_buku' => $kode_buku,
+        'status' => 'tersedia',
+    ]);
+
+    return redirect()->route('books.index')->with('success', 'Buku berhasil ditambahkan');
+}
+
+    public function storeItem(Request $request, Book $book)
     {
         if (Auth::user()?->role !== 'admin') abort(403);
 
-        $data = $request->validate([
-            'kode_buku' => 'nullable|string|unique:books,kode_buku',
-            'judul' => 'required|string|max:255',
-            'pengarang' => 'required|string|max:255',
-            'tahun_terbit' => 'required|integer|min:1900|max:' . date('Y'),
-            'kategori_buku' => 'required|in:fiksi,nonfiksi',
-            'nomor_rak' => 'required|string|max:50',
-            'baris_ke' => 'required|integer',
-            'cover' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-            'deskripsi' => 'required|string',
+        $request->validate([
+            'kode_buku' => 'required|string|unique:book_items,kode_buku',
         ]);
 
-        // Auto-generate kode_buku if empty
-        if (empty($data['kode_buku'])) {
-            do {
-                $generated = str_pad(random_int(100, 999), 3, '0', STR_PAD_LEFT);
-            } while (Book::where('kode_buku', $generated)->exists());
-            $data['kode_buku'] = $generated;
-        }
+        BookItem::create([
+            'book_id'   => $book->id,
+            'kode_buku' => $request->kode_buku,
+            'status'    => 'tersedia',
+        ]);
 
-        // Find or create Bookshelf
-        $bookshelf = Bookshelf::firstOrCreate(
-            ['no_rak' => $data['nomor_rak']],
-            ['keterangan' => '-']
-        );
-
-        // Find or create Row
-        $row = Row::firstOrCreate(
-            [
-                'rak_id' => $bookshelf->id,
-                'baris_ke' => $data['baris_ke']
-            ],
-            ['keterangan' => '-']
-        );
-
-        // hubungkan buku ke baris rak
-        $data['id_baris'] = $row->id;
-
-        // Handle cover upload
-        if ($request->hasFile('cover')) {
-            $data['cover'] = $request->file('cover')->store('covers', 'public');
-        }
-
-        $data['status'] = 'tersedia';
-
-        // Remove helper fields before storage
-        unset($data['nomor_rak'], $data['baris_ke']);
-
-        Book::create($data);
-
-        return redirect()->route('books.index')
-                         ->with('success', 'Buku berhasil ditambahkan');
+        return back()->with('success', 'Eksemplar berhasil ditambahkan');
     }
 
+    public function updateItem(Request $request, BookItem $item)
+    {
+        if (Auth::user()?->role !== 'admin') abort(403);
+
+        $request->validate([
+            'kode_buku' => 'required|string|unique:book_items,kode_buku,' . $item->id,
+        ]);
+
+        $item->update(['kode_buku' => $request->kode_buku]);
+
+        return back()->with('success', 'Kode buku berhasil diupdate');
+}
+
+    public function destroyItem(BookItem $item)
+    {
+        if (Auth::user()?->role !== 'admin') abort(403);
+
+        if ($item->status === 'dipinjam') {
+            return back()->with('error', 'Tidak bisa hapus eksemplar yang sedang dipinjam');
+        }
+
+        $item->delete();
+
+        return back()->with('success', 'Eksemplar berhasil dihapus');
+    }
     public function show(Book $book)
     {
         if (Auth::user()?->role !== 'admin') abort(403);
@@ -161,7 +197,7 @@ class BookController extends Controller
     public function edit(Book $book)
     {
         if (Auth::user()?->role !== 'admin') abort(403);
-        $book->load('row.bookshelf');
+        $book->load('row.bookshelf', 'items'); // tambah items
         return view('admin.CRUD_kelola_buku', compact('book'));
     }
 
@@ -170,7 +206,6 @@ class BookController extends Controller
         if (Auth::user()?->role !== 'admin') abort(403);
 
         $data = $request->validate([
-            'kode_buku' => 'nullable|string|unique:books,kode_buku,' . $book->id,
             'judul' => 'nullable|string|max:255',
             'pengarang' => 'nullable|string|max:255',
             'tahun_terbit' => 'nullable|integer|min:1900|max:' . date('Y'),
@@ -249,13 +284,18 @@ class BookController extends Controller
     public function browse()
     {
         if (Auth::user()?->role !== 'anggota') abort(403);
-        $books = Book::where('status', 'tersedia')->with('row')->get();
 
-        // Cek apakah siswa sudah meminjam buku (masih aktif)
+        $books = Book::with(['items' => function($q) {
+            $q->where('status', 'tersedia');
+        }])->get()->map(function($book) {
+            $book->stok = $book->items->count();
+            return $book;
+        });
+
         $hasActiveLoan = Transaction::where('user_id', Auth::id())
             ->whereIn('status', ['belum_dikembalikan', 'menunggu_konfirmasi', 'terlambat'])
             ->exists();
 
         return view('siswa.pinjam-buku', compact('books', 'hasActiveLoan'));
     }
-}
+    }

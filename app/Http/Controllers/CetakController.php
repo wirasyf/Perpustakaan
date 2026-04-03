@@ -109,7 +109,7 @@ class CetakController extends Controller
 
     public function cetakNotaPdf($id, $jenis = 'peminjaman')
     {
-        $transaksi = Transaction::with('user', 'book')->findOrFail($id);
+        $transaksi = Transaction::with('user', 'bookItem.book')->findOrFail($id);
 
         if ($jenis === 'pengembalian') {
             $pdf = Pdf::loadView('cetak.nota.cetak-pengembalian', [

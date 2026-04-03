@@ -54,7 +54,7 @@
                     <div class="badge-row">
                         <span class="badge-category">{{ $book->kategori_buku }}</span>
                         <span class="stock-info">
-                            <i class="fa-solid fa-book-open"></i> {{ rand(5, 20) }} Stok buku
+                            {{ $book->stok }} Stok buku
                         </span>
                     </div>
 
@@ -65,8 +65,9 @@
                             <button type="button" class="btn-pinjam disabled" disabled>
                                 Tidak Bisa Meminjam
                             </button>
-                        @elseif($book->status === 'tersedia')
-                            <button type="button" class="btn-pinjam" onclick="openModal({{ $book->id }}, '{{ $book->judul }}')">
+                        @elseif($book->stok > 0)
+                            <button type="button" class="btn-pinjam" 
+                                onclick="openModal({{ $book->id }}, '{{ addslashes($book->judul) }}')">
                                 Pinjam Buku
                             </button>
                         @else
@@ -124,31 +125,18 @@ let currentBookId = null;
 function openModal(bookId, bookTitle) {
     currentBookId = bookId;
     document.getElementById('bookTitle').textContent = bookTitle;
-    
     const today = new Date();
-
     const tglPinjam = document.getElementById('tglPinjam');
     const tglKembali = document.getElementById('tglKembali');
 
     tglPinjam.value = formatDate(today);
     tglKembali.value = formatDate(tambahHari(today, 3));
 
-    // Update form action
     const form = document.getElementById('formPinjam');
     form.action = '/pinjam-buku/' + bookId;
 
     document.getElementById('modalPinjam').classList.add('show');
 }
-
-// otomatis update tanggal kembali saat tanggal pinjam diubah
-document.getElementById('tglPinjam')?.addEventListener('change', function () {
-    if (!this.value) return;
-
-    const pinjam = new Date(this.value);
-    const kembali = tambahHari(pinjam, 3);
-
-    document.getElementById('tglKembali').value = formatDate(kembali);
-});
 
 // tutup modal
 function closeModal() {

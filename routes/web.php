@@ -112,6 +112,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/cek-terlambat', [TransactionController::class, 'cekKeterlambatan']);
         Route::put('/transactions/{transaction}/accept-return', [TransactionController::class, 'terimaPengembalian'])->name('transactions.terimaPengembalian');
         Route::put('/transactions/{transaction}/reject-return', [TransactionController::class, 'tolakPengembalian'])->name('transactions.tolakPengembalian');
+        // Book Items
+        Route::post('/books/{book}/items', [BookController::class, 'storeItem'])->name('books.items.store');
+        Route::put('/book-items/{item}', [BookController::class, 'updateItem'])->name('books.items.update');
+        Route::delete('/book-items/{item}', [BookController::class, 'destroyItem'])->name('books.items.destroy');
 
         Route::resource('reports', ReportController::class);
         Route::put('/reports/{report}/approve', [ReportController::class, 'approve'])->name('reports.approve');
@@ -174,7 +178,7 @@ Route::middleware(['auth'])->group(function () {
 
         // Peminjaman & Pengembalian
         Route::get('/pinjam-buku', [BookController::class, 'browse'])->name('books.browse');
-        Route::post('/pinjam-buku/{bookId}', [TransactionController::class, 'pinjam'])->name('transactions.pinjam');
+      Route::post('/pinjam-buku/{book}', [TransactionController::class, 'pinjam'])->name('transactions.pinjam');
         Route::get('/pengembalian-buku', [TransactionController::class, 'myTransactions'])->name('anggota.pengembalian');
         
         Route::post('/transactions/{transaction}/ajukan-pengembalian', [TransactionController::class, 'returnBook'])->name('transactions.ajukanPengembalian');
