@@ -88,20 +88,21 @@ class TransactionController extends Controller
             abort(403);
         }
 
-    $books = Book::select('judul', 'pengarang', 'kategori_buku', 'deskripsi')
-        ->selectRaw('SUM(stok) as stok')
-        ->selectRaw('MIN(id) as id')
-        ->selectRaw('MIN(cover) as cover')
-        ->groupBy('judul', 'pengarang', 'kategori_buku', 'deskripsi')
-        ->having('stok', '>', 0) // pindah ke HAVING, bukan WHERE
-        ->get();
+        $books = Book::with(['items' => function($q) {
+            $q->where('status', 'tersedia');
+        }])->get()->map(function($book) {
+            $book->stok = $book->items->count();
+            return $book;
+        })->filter(function($book) {
+            return $book->stok > 0;
+        })->values();
 
-    $hasActiveLoan = Transaction::where('user_id', Auth::id())
-        ->whereIn('status', ['belum_dikembalikan', 'menunggu_konfirmasi', 'terlambat'])
-        ->exists();
+        $hasActiveLoan = Transaction::where('user_id', Auth::id())
+            ->whereIn('status', ['belum_dikembalikan', 'menunggu_konfirmasi', 'terlambat'])
+            ->exists();
 
-    return view('siswa.pinjam-buku', compact('books', 'hasActiveLoan'));
-}
+        return view('siswa.pinjam-buku', compact('books', 'hasActiveLoan'));
+    }
 
     /**
      * Store a new book borrowing transaction
