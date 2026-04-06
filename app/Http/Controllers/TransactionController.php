@@ -98,7 +98,7 @@ class TransactionController extends Controller
         })->values();
 
         $hasActiveLoan = Transaction::where('user_id', Auth::id())
-            ->whereIn('status', ['belum_dikembalikan', 'menunggu_konfirmasi', 'terlambat'])
+            ->whereIn('status', ['belum_dikembalikan', 'menunggu_konfirmasi', 'terlambat', 'buku_hilang'])
             ->exists();
 
         return view('siswa.pinjam-buku', compact('books', 'hasActiveLoan'));
@@ -124,7 +124,7 @@ class TransactionController extends Controller
         }
 
         $hasActiveLoan = Transaction::where('user_id', Auth::id())
-            ->whereIn('status', ['belum_dikembalikan', 'menunggu_konfirmasi', 'terlambat'])
+            ->whereIn('status', ['belum_dikembalikan', 'menunggu_konfirmasi', 'terlambat', 'buku_hilang'])
             ->exists();
 
         if ($hasActiveLoan) {
@@ -260,8 +260,8 @@ class TransactionController extends Controller
             'tanggal_pengembalian' => now(),
         ]);
 
-        // Tetap tandai buku sebagai tersedia untuk bisa dipinjam lagi
-        $transaksi->book->update(['status' => 'tersedia']);
+        // Tandai buku sebagai hilang, baru tersedia setelah admin approve penggantian
+        $transaksi->book->update(['status' => 'hilang']);
 
         return back()->with('success', 'Buku berhasil dilaporkan hilang');
     }
