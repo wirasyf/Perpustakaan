@@ -90,7 +90,7 @@
                         <tr>
                             <td>{{ $transactions->firstItem() + $loop->index }}</td>
                             <td>{{ $trx->book->judul ?? '-' }}</td>
-                            <td>{{ $trx->book->kode_buku ?? '-' }}</td>
+                            <td>{{ $trx->bookItem->kode_buku ?? '-' }}</td>
                             <td>{{ optional($trx->tanggal_peminjaman)->format('d/m/Y') ?? '-' }}</td>
                             <td>{{ optional($trx->tanggal_jatuh_tempo)->format('d/m/Y') ?? '-' }}</td>
                             <td>
